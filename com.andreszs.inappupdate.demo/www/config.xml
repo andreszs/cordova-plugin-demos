@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<widget xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0" id="com.andreszs.inappupdate.demo" android-versionCode="133" version="1.3.3">
+	<name>In-App Update Demo</name>
+	<description>InAppUpdate Cordova plugin demo implementation.</description>
+	<author href="https://www.andreszsogon.com/cordova-in-app-update-plugin-demo-app/">Andres Zsögön</author>
+	<access origin="*"/>
+	<allow-intent href="http://*/*" />
+	<allow-intent href="https://*/*" />
+	<allow-intent href="tel:*" />
+	<allow-intent href="sms:*" />
+	<preference name="fullscreen" value="false"/>
+	<preference name="webviewbounce" value="false"/>
+	<platform name="android">
+		<icon background="res/icons/android/mipmap-hdpi/ic_launcher_background.png" density="hdpi" foreground="res/icons/android/mipmap-hdpi/ic_launcher_foreground.png" src="res/icons/android/mipmap-hdpi/ic_launcher.png" />
+		<icon background="res/icons/android/mipmap-mdpi/ic_launcher_background.png" density="mdpi" foreground="res/icons/android/mipmap-mdpi/ic_launcher_foreground.png" src="res/icons/android/mipmap-mdpi/ic_launcher.png" />
+		<icon background="res/icons/android/mipmap-xhdpi/ic_launcher_background.png" density="xhdpi" foreground="res/icons/android/mipmap-xhdpi/ic_launcher_foreground.png" src="res/icons/android/mipmap-xhdpi/ic_launcher.png" />
+		<icon background="res/icons/android/mipmap-xxhdpi/ic_launcher_background.png" density="xxhdpi" foreground="res/icons/android/mipmap-xxhdpi/ic_launcher_foreground.png" src="res/icons/android/mipmap-xxhdpi/ic_launcher.png" />
+		<icon background="res/icons/android/mipmap-xxxhdpi/ic_launcher_background.png" density="xxxhdpi" foreground="res/icons/android/mipmap-xxxhdpi/ic_launcher_foreground.png" src="res/icons/android/mipmap-xxxhdpi/ic_launcher.png" />
+	</platform>
+	<preference name="AndroidXEnabled" value="true"/>
+	<preference name="android-minSdkVersion" value="22" />
+	<preference name="android-targetSdkVersion" value="30" />
+</widget>

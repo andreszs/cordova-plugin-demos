@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
+		<meta name="format-detection" content="telephone=no">
+		<meta name="msapplication-tap-highlight" content="no">
+		<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height" />
+		<link rel="stylesheet" type="text/css" href="css/index.css">
+		<script src="js/jquery-3.6.0.min.js"></script>
+		<title>Fingerprint AIO Demo</title>
+	</head>
+	<body>
+		<h1>cordova-plugin-fingerprint-aio demo</h1>
+		<fieldset>
+			<legend>Methods</legend>
+			<button type="button" id="btnIsAvailable">Fingerprint.isAvailable</button><hr />
+			<label>Title</label>
+			<input type="text" id="txtTitle" value="" placeholder="<APP_NAME> Biometric Sign On" maxlength="60" />
+			<label>Subtitle</label>
+			<input type="text" id="txtSubtitle" value="Optional subtitle" placeholder="nell" maxlength="60" />
+			<label>Description</label>
+			<input type="text" id="txtDescription" value="disableBackup=false" placeholder="null" maxlength="60" />
+			<label>fallbackButtonTitle</label>
+			<input type="text" id="txtFallbackButtonTitle" value="Use backup" placeholder="Use backup" maxlength="60" />
+			<label>cancelButtonTitle</label>
+			<input type="text" id="txtCancelButtonTitle" value="Cancel" placeholder="Cancel" maxlength="60" />
+			<label><input type="checkbox" id="disableBackup" /> disableBackup</label>
+			<label><input type="checkbox" id="confirmationRequired" checked="checked" /> confirmationRequired</label>
+			<button type="button" id="btnShow">Fingerprint.show</button>
+		</fieldset>
+
+		<fieldset>
+			<legend>Status</legend>
+			<label id="status"></label>
+		</fieldset>
+
+		<!--<fieldset>
+			<legend>Events</legend>
+			<label id="event" class="purple">Waiting for event.</label>
+		</fieldset>-->
+
+		<fieldset id="versions">
+			<legend>Versions</legend>
+			<img alt="" class="info" src="img/outline_info_black_36dp.png" />
+			<label id="app_version" class="blue">App version</label>
+			<label id="plugin_version" class="blue">Plugin version</label>
+		</fieldset>
+
+		<fieldset>
+			<legend>About Plugin</legend>
+			<label>Refer to README for more info.</label>
+			<hr />
+			<button type="button" id="btnGitHub">GitHub</button>
+		</fieldset>
+
+		<fieldset>
+			<legend>About Demo App</legend>
+			<label>Visit website for demo app reference.</label>
+			<hr />
+			<button type="button" id="btnWebsite">Website</button>
+			<button type="button" id="btnPluginDemos">Plugin Demos</button>
+			<button type="button" id="btnPlayStore">Play Store</button>
+		</fieldset>
+
+		<script type="text/javascript" src="cordova.js"></script>
+		<script type="text/javascript" src="js/index.js"></script>
+	</body>
+</html>

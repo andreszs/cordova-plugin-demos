@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
+		<meta name="format-detection" content="telephone=no">
+		<meta name="msapplication-tap-highlight" content="no">
+		<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height" />
+		<link rel="stylesheet" type="text/css" href="css/index.css">
+		<script src="js/jquery-3.6.0.min.js"></script>
+		<title>SMS Receive Plugin Demo</title>
+	</head>
+	<body>
+		<h1>cordova-plugin-sms-receive demo</h1>
+		<fieldset>
+			<legend>Methods</legend>
+			<button type="button" id="startWatch">startWatch</button>
+			<button type="button" id="stopWatch">stopWatch</button><hr />
+			<label><small>On Android 6+ the permission dialog will show up to request SMS receiving permission.</small></label>
+		</fieldset>
+
+		<fieldset>
+			<legend>Status</legend>
+			<label id="status" class="orange">Initializing...</label>
+		</fieldset>
+
+		<fieldset>
+			<legend>Events</legend>
+			<label id="event" class="purple">Waiting for event.</label>
+		</fieldset>
+
+		<fieldset id="versions">
+			<legend>Versions</legend>
+			<img alt="" class="info" src="img/outline_info_black_36dp.png" />
+			<label id="app_version" class="blue">App version</label>
+			<label id="plugin_version" class="blue">Plugin version</label>
+		</fieldset>
+
+		<fieldset>
+			<legend>About Plugin</legend>
+			<label>Created by Andres Zsögön. Refer to README for details.</label>
+			<hr />
+			<button type="button" id="btnGitHub">GitHub</button>
+		</fieldset>
+
+		<fieldset>
+			<legend>About Demo App</legend>
+			<label>Visit GitHub for plugin usage reference.</label>
+			<hr />
+			<button type="button" id="btnWebsite">Website</button>
+			<button type="button" id="btnPluginDemos">Plugin Demos</button>
+		</fieldset>
+
+		<script type="text/javascript" src="cordova.js"></script>
+		<script type="text/javascript" src="js/index.js"></script>
+	</body>
+</html>

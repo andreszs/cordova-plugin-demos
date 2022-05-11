@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="Content-Security-Policy" content="connect-src *; default-src * 'self' 'unsafe-inline' 'unsafe-eval' gap: data: ms-appdata: blob: file:; style-src 'self' 'unsafe-inline'; media-src *" />
+		<meta name="format-detection" content="telephone=no">
+		<meta name="msapplication-tap-highlight" content="no">
+		<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height" />
+		<link rel="stylesheet" type="text/css" href="css/index.css" />
+		<script src="js/jquery-3.6.0.min.js"></script>
+		<title>InAppUpdate Plugin Demo</title>
+	</head>
+	<body>
+		<h1>cordova-plugin-inappupdate demo</h1>
+		<fieldset>
+			<legend>Methods</legend>
+			<button type="button" id="getUpdateAvailability">getUpdateAvailability()</button><hr />
+			<button type="button" id="updateFlexible">updateFlexible()</button>
+			<button type="button" id="updateImmediate">updateImmediate()</button><hr />
+			<label>Snackbar label text:</label>
+			<input type="text" id="snackbarText" value="Actualización lista para instalar." placeholder="Snackbar text" /><br />
+			<label>Snackbar button text:</label>
+			<input type="text" id="snackbarButton" value="REINICIAR" placeholder="Button label" /><br />
+			<label>Snackbar button color</label>
+			<input type="text" id="snackbarButtonColor" value="#00E5FF" placeholder="#00E5FF" maxlength="7" /><br />
+			<button type="button" id="setSnackbarOptions">setSnackbarOptions()</button>
+		</fieldset>
+
+		<fieldset>
+			<legend>Status</legend>
+			<textarea id="status" rows="5"></textarea>
+		</fieldset>
+
+		<fieldset id="versions">
+			<legend>Versions</legend>
+			<img alt="" class="info" src="img/outline_info_black_36dp.png" />
+			<label id="app_version" class="blue">App version</label>
+			<label id="plugin_version" class="blue">Plugin version</label>
+		</fieldset>
+
+		<fieldset>
+			<legend>About Plugin</legend>
+			<label>Created by Andres Zsögön. Refer to README for details.</label>
+			<hr />
+			<button type="button" id="btnGitHub">GitHub</button>
+		</fieldset>
+
+		<fieldset>
+			<legend>About Demo App</legend>
+			<label>Visit website for demo app reference.</label>
+			<hr />
+			<button type="button" id="btnWebsite">Website</button>
+			<button type="button" id="btnPluginDemos">Plugin Demos</button>
+			<button type="button" id="btnPlayStore">Play Store</button>
+		</fieldset>
+
+		<script type="text/javascript" src="cordova.js"></script>
+		<script type="text/javascript" src="js/index.js"></script>
+	</body>
+</html>
