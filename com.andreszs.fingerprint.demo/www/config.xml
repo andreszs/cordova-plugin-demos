@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<widget xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0" id="com.andreszs.fingerprint.demo" android-versionCode="102" version="1.0.2">
+<widget xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0" id="com.andreszs.fingerprint.demo" android-versionCode="103" version="1.0.3">
 	<name>Fingerprint Demo</name>
 	<description>Sample app demonstrating the Fingerprint AIO cordova plugin implementation.</description>
 	<author href="https://www.andreszsogon.com">Andres Zsögön</author>

@@ -34,11 +34,8 @@ var app = {
 		$('#btnGitHub').on('click', function () {
 			window.open('https://github.com/NiklasMerz/cordova-plugin-fingerprint-aio', '_system');
 		});
-		$('#btnWebsite,#lblWebsite').on('click', function () {
+		$('#btnWebsite').on('click', function () {
 			window.open('https://www.andreszsogon.com/cordova-fingerprint-plugin-demo/', '_system');
-		});
-		$('#btnPlayStore').on('click', function () {
-			window.open('https://play.google.com/store/apps/details?id=com.andreszs.fingerprint.demo', '_system');
 		});
 		$('#btnPluginDemos').on('click', function () {
 			window.open('https://github.com/andreszs/cordova-plugin-demos', '_system');
