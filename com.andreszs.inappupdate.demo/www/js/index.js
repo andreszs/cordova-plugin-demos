@@ -2,7 +2,7 @@
 
 var app = {
 	/* informative variables manually updated */
-	plugin_version: '2.0.0',
+	plugin_version: '2.0.5',
 	getVersion: function () {
 		if (typeof (cordova.getAppVersion) != 'undefined') {
 			// cordova-plugin-app-version present
@@ -26,7 +26,7 @@ var app = {
 
 		// Bind sample app own methods
 		$('#btnGitHub').on('click', function () {
-			window.open('http://github.com/andreszs/cordova-plugin-in-app-update', '_system');
+			window.open('http://github.com/andreszs/cordova-plugin-in-app-updates', '_system');
 		});
 		$('#btnWebsite').on('click', function () {
 			window.open('https://www.andreszsogon.com/cordova-in-app-update-plugin-demo-app/', '_system');
