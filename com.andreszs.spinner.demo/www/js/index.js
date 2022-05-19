@@ -27,7 +27,7 @@ var app = {
 			window.open('https://github.com/greybax/cordova-plugin-native-spinner', '_system');
 		});
 		$('#btnWebsite').on('click', function () {
-			window.open('https://github.com/andreszs/cordova-plugin-demos', '_system');
+			window.open('https://www.andreszsogon.com/cordova-native-spinner-plugin-demo/', '_system');
 		});
 		$('#btnPluginDemos').on('click', function () {
 			window.open('https://github.com/andreszs/cordova-plugin-demos', '_system');
