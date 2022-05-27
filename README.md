@@ -1,3 +1,5 @@
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/andreszs/cordova-plugin-demos) ![GitHub top language](https://img.shields.io/github/languages/top/andreszs/cordova-plugin-demos) ![GitHub](https://img.shields.io/github/license/andreszs/cordova-plugin-demos) ![GitHub last commit](https://img.shields.io/github/last-commit/andreszs/cordova-plugin-demos)
+
 # Apache Cordova plugin demos
 
 Source code for the **www** and **res** folders of some plugin demo apps by Andrés Zsögön. Refer to the [individual page for each demo app](https://www.andreszsogon.com/category/plugin-demo-apps/ "individual page for each demo app") for usage reference and compiled APK downloads.
