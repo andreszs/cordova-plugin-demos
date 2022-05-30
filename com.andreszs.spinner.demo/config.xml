@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="utf-8"?>
 <widget xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0" id="com.andreszs.spinner.demo" android-versionCode="101" version="1.0.1">
 	<name>Spinner Demo</name>
 	<description>Sample app demonstrating the spinner Cordova plugin implementation.</description>
