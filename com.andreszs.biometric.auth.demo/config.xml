@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<widget xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0" id="com.andreszs.biometric.auth.demo" android-versionCode="100" version="1.0.0">
+	<name>Biometric Auth Demo</name>
+	<description>Sample app demonstrating the Biometric Auth cordova plugin implementation.</description>
+	<author href="https://www.andreszsogon.com">Andres Zsögön</author>
+	<content src="index.html" />
+	<allow-intent href="http://*/*" />
+	<allow-intent href="https://*/*" />
+	<platform name="android">
+		<icon background="res/icons/android/mipmap-hdpi/ic_launcher_background.png" density="hdpi" foreground="res/icons/android/mipmap-hdpi/ic_launcher_foreground.png" src="res/icons/android/mipmap-hdpi/ic_launcher.png" />
+		<icon background="res/icons/android/mipmap-mdpi/ic_launcher_background.png" density="mdpi" foreground="res/icons/android/mipmap-mdpi/ic_launcher_foreground.png" src="res/icons/android/mipmap-mdpi/ic_launcher.png" />
+		<icon background="res/icons/android/mipmap-xhdpi/ic_launcher_background.png" density="xhdpi" foreground="res/icons/android/mipmap-xhdpi/ic_launcher_foreground.png" src="res/icons/android/mipmap-xhdpi/ic_launcher.png" />
+		<icon background="res/icons/android/mipmap-xxhdpi/ic_launcher_background.png" density="xxhdpi" foreground="res/icons/android/mipmap-xxhdpi/ic_launcher_foreground.png" src="res/icons/android/mipmap-xxhdpi/ic_launcher.png" />
+		<icon background="res/icons/android/mipmap-xxxhdpi/ic_launcher_background.png" density="xxxhdpi" foreground="res/icons/android/mipmap-xxxhdpi/ic_launcher_foreground.png" src="res/icons/android/mipmap-xxxhdpi/ic_launcher.png" />
+	</platform>
+	<preference name="android-minSdkVersion" value="21" />
+	<preference name="android-targetSdkVersion" value="30" />
+</widget>

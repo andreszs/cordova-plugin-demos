@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
+		<meta name="format-detection" content="telephone=no">
+		<meta name="msapplication-tap-highlight" content="no">
+		<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height" />
+		<link rel="icon" href="favicon.ico">
+		<link rel="stylesheet" type="text/css" href="css/index.css">
+		<script src="js/jquery-3.6.0.min.js"></script>
+		<title>Cordova Biometric Auth Demo</title>
+	</head>
+	<body>
+		<h1>cordova-plugin-biometricauth demo</h1>
+		<fieldset>
+			<legend>Authenticator</legend>
+			<select size="1" id="selAuthenticators">
+				<option value="0">ANY</option>
+				<option value="1">KEYGUARD_MANAGER</option>
+				<option value="15">BIOMETRIC_STRONG</option>
+				<option value="255">BIOMETRIC_WEAK</option>
+				<option value="32768">DEVICE_CREDENTIAL</option>
+				<option value="32783">BIOMETRIC_STRONG+DEVICE_CREDENTIAL</option>
+				<option value="33023">BIOMETRIC_WEAK+DEVICE_CREDENTIAL</option>
+			</select>
+		</fieldset>
+		<fieldset>
+			<legend>Methods</legend>
+			<button type="button" id="btnIsAvailable">isAvailable</button>
+			<label>title</label>
+			<input type="text" id="txtTitle" maxlength="100" value="Biometric Sign On" placeholder="Enter unlock credentials" />
+			<label>subtitle</label>
+			<input type="text" id="txtSubtitle" maxlength="100" value="Confirm demo app by andreszsogon.com" placeholder="null" />
+			<label>negativeButtonText</label>
+			<input type="text" id="negativeButtonText" maxlength="60" value="Cancel" placeholder="null" />
+			<label><input type="checkbox" id="disableBackup" /> disableBackup</label>
+			<button type="button" id="btnAuthenticate">authenticate</button>
+		</fieldset>
+
+		<fieldset>
+			<legend>Status</legend>
+			<label id="status"></label>
+		</fieldset>
+
+		<!--<fieldset>
+			<legend>Events</legend>
+			<label id="event" class="purple">Waiting for event.</label>
+		</fieldset>-->
+
+		<fieldset id="versions">
+			<legend>Versions</legend>
+			<img alt="" class="info" src="img/outline_info_black_36dp.png" />
+			<label id="app_version" class="blue">App version</label>
+			<label id="plugin_version" class="blue">Plugin version</label>
+		</fieldset>
+
+		<fieldset>
+			<legend>About Plugin</legend>
+			<label>Refer to README for more info.</label>
+			<hr />
+			<button type="button" id="btnGitHub">GitHub</button>
+		</fieldset>
+
+		<fieldset>
+			<legend>About Demo App</legend>
+			<label>Visit website for demo app reference.</label>
+			<hr />
+			<button type="button" id="btnWebsite">Website</button>
+			<button type="button" id="btnPluginDemos">Plugin Demos</button>
+		</fieldset>
+
+		<script type="text/javascript" src="cordova.js"></script>
+		<script type="text/javascript" src="js/index.js"></script>
+	</body>
+</html>
