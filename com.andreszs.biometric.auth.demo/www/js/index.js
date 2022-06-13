@@ -34,7 +34,7 @@ var app = {
 
 		// Bind sample app own methods
 		$('#btnGitHub').on('click', function () {
-			window.open('https://github.com/NiklasMerz/cordova-plugin-biometric-auth', '_system');
+			window.open('https://github.com/andreszs/cordova-plugin-biometric-auth', '_system');
 		});
 		$('#btnWebsite').on('click', function () {
 			window.open('https://www.andreszsogon.com/cordova-biometric-auth-plugin-demo/', '_system');
