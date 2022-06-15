@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
+		<meta name="format-detection" content="telephone=no">
+		<meta name="msapplication-tap-highlight" content="no">
+		<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height" />
+		<link rel="icon" href="favicon.ico">
+		<link rel="stylesheet" type="text/css" href="css/index.css">
+		<script src="js/jquery-3.6.0.min.js"></script>
+		<title>Google Code Scanner Demo</title>
+	</head>
+	<body>
+		<h1>cordova-plugin-google-code-scanner</h1>
+		<fieldset>
+			<legend>Scan barcode</legend>
+			<select size="1" id="selBarcodeFormat">
+				<option value="0">FORMAT_ALL_FORMATS</option>
+				<option value="4096">FORMAT_AZTEC</option>
+				<option value="8">FORMAT_CODABAR</option>
+				<option value="1">FORMAT_CODE_128</option>
+				<option value="2">FORMAT_CODE_39</option>
+				<option value="4">FORMAT_CODE_93</option>
+				<option value="16">FORMAT_DATA_MATRIX</option>
+				<option value="32">FORMAT_EAN_13</option>
+				<option value="64">FORMAT_EAN_8</option>
+				<option value="128">FORMAT_ITF</option>
+				<option value="2048">FORMAT_PDF417</option>
+				<option value="256">FORMAT_QR_CODE</option>
+				<option value="512">FORMAT_UPC_A</option>
+				<option value="1024">FORMAT_UPC_E</option>
+			</select>
+			<input type="tel" id="txtBarcodeFormats" maxlength="6" value="" placeholder="Other formats as int bit field" />
+			<hr />
+			<button type="button" id="btnStartScan">startScan</button>
+		</fieldset>
+		<fieldset>
+			<legend>Get barcode constant</legend>
+			<input type="text" id="strBarcodeFormat" maxlength="90" value="" placeholder="FORMAT_AZTEC" />
+			<button type="button" id="btnGetBarcodeConstant">getBarcodeConstant</button>
+		</fieldset>
+
+		<fieldset>
+			<legend>Status</legend>
+			<label id="status" style="word-break: break-all"></label>
+		</fieldset>
+
+		<!--<fieldset>
+			<legend>Events</legend>
+			<label id="event" class="purple">Waiting for event.</label>
+		</fieldset>-->
+
+		<fieldset id="versions">
+			<legend>Versions</legend>
+			<img alt="" class="info" src="img/outline_info_black_36dp.png" />
+			<label id="app_version" class="blue">App version</label>
+			<label id="plugin_version" class="blue">Plugin version</label>
+		</fieldset>
+
+		<fieldset>
+			<legend>About Plugin</legend>
+			<label>Refer to README for more info.</label>
+			<hr />
+			<button type="button" id="btnGitHub">GitHub</button>
+		</fieldset>
+
+		<fieldset>
+			<legend>About Demo App</legend>
+			<label>Visit website for demo app reference.</label>
+			<hr />
+			<button type="button" id="btnWebsite">Website</button>
+			<button type="button" id="btnPluginDemos">Plugin Demos</button>
+		</fieldset>
+
+		<script type="text/javascript" src="cordova.js"></script>
+		<script type="text/javascript" src="js/index.js"></script>
+	</body>
+</html>
