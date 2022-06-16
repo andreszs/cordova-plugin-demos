@@ -2,7 +2,7 @@
 
 var app = {
 	/* informative variables manually updated */
-	PLUGIN_VERSION: '1.0.0',
+	PLUGIN_VERSION: '1.0.1',
 	getVersion: function () {
 		if (typeof (cordova.getAppVersion) != 'undefined') {
 			// cordova-plugin-app-version present
@@ -22,6 +22,13 @@ var app = {
 		$('#btnStartScan').on('click', app.startScan);
 		$('#btnGetBarcodeConstant').on('click', app.getBarcodeConstant);
 
+		// Populate barcode formats select
+		$.each(cordova.plugins.GoogleCodeScanner.BarcodeFormat, function (key, value) {
+			if (value > -1) {
+				$('#selBarcodeFormat').append('<option value="' + value + '">' + key + '</option>');
+			}
+		});
+
 		// Bind sample app own methods
 		$('#btnGitHub').on('click', function () {
 			window.open('https://github.com/andreszs/cordova-plugin-google-code-scanner', '_system');
@@ -34,9 +41,9 @@ var app = {
 		});
 	},
 	getBarcodeConstant: function () {
-		var onSuccess = function (jsonConstant) {
-			var formatName = jsonConstant.formatName;
-			var formatValue = jsonConstant.formatValue;
+		var onSuccess = function (jsonBarcode) {
+			var formatName = jsonBarcode.formatName;
+			var formatValue = jsonBarcode.formatValue;
 
 			$('#status').html('<span class="success">formatName: ' + formatName + '</span>');
 			$('#status').append('<br /><span class="success">formatValue: ' + formatValue + '</span>');

@@ -15,22 +15,7 @@
 		<h1>cordova-plugin-google-code-scanner</h1>
 		<fieldset>
 			<legend>Scan barcode</legend>
-			<select size="1" id="selBarcodeFormat">
-				<option value="0">FORMAT_ALL_FORMATS</option>
-				<option value="4096">FORMAT_AZTEC</option>
-				<option value="8">FORMAT_CODABAR</option>
-				<option value="1">FORMAT_CODE_128</option>
-				<option value="2">FORMAT_CODE_39</option>
-				<option value="4">FORMAT_CODE_93</option>
-				<option value="16">FORMAT_DATA_MATRIX</option>
-				<option value="32">FORMAT_EAN_13</option>
-				<option value="64">FORMAT_EAN_8</option>
-				<option value="128">FORMAT_ITF</option>
-				<option value="2048">FORMAT_PDF417</option>
-				<option value="256">FORMAT_QR_CODE</option>
-				<option value="512">FORMAT_UPC_A</option>
-				<option value="1024">FORMAT_UPC_E</option>
-			</select>
+			<select size="1" id="selBarcodeFormat"></select>
 			<input type="tel" id="txtBarcodeFormats" maxlength="6" value="" placeholder="Other formats as int bit field" />
 			<hr />
 			<button type="button" id="btnStartScan">startScan</button>
