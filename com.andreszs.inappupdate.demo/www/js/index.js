@@ -2,7 +2,7 @@
 
 var app = {
 	/* informative variables manually updated */
-	plugin_version: '2.0.5',
+	plugin_version: '2.1.0',
 	getVersion: function () {
 		if (typeof (cordova.getAppVersion) != 'undefined') {
 			// cordova-plugin-app-version present
