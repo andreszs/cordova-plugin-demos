@@ -19,55 +19,75 @@ To build and test a demo app, create a new Cordova project and add the **www** a
 # Demo apps included
 
 ## com.andreszs.biometric.auth.demo
+<img src="https://github.com/andreszs/cordova-plugin-demos/blob/main/com.andreszs.biometric.auth.demo/res/icons/android/mipmap-mdpi/ic_launcher.png?raw=true" align="right" width="36px" height="36px">
 
-Sample app for my [cordova-plugin-biometric-auth](https://github.com/andreszs/cordova-plugin-biometric-auth) Cordova plugin, which allows to authenticate users with biometrics or fallback PIN, pattern or password.
-
-**Plugin platforms**: android, browser (filler platform)
+- Plugin: [cordova-plugin-biometric-auth](https://github.com/andreszs/cordova-plugin-biometric-auth)
+- Library: [KeyguardManager](https://developer.android.com/reference/android/app/KeyguardManager) & [BiometricManager](https://developer.android.com/reference/android/hardware/biometrics/BiometricManager)
+- Authenticate device users with biometrics or fallback PIN, pattern or password.
 
 ## com.andreszs.btprinter.demo
+<img src="https://github.com/andreszs/cordova-plugin-demos/blob/main/com.andreszs.btprinter.demo/res/icons/android/mipmap-mdpi/ic_launcher.png?raw=true" align="right" width="36px" height="36px">
 
-Sample app for the [cordova-plugin-btprinter](https://github.com/CesarBalzer/Cordova-Plugin-BTPrinter) Cordova plugin, which allows to print text, images, barcodes and QR codes to any bluetooth-paired printer.
-
-**Plugin platforms**: android.
+- Plugin: [cordova-plugin-btprinter](https://github.com/CesarBalzer/Cordova-Plugin-BTPrinter)
+- Bluetooth printer implementation to print text, images, barcodes and QR codes to any bluetooth-paired printer.
 
 ## com.andreszs.camera.preview.demo
+<img src="https://github.com/andreszs/cordova-plugin-demos/blob/main/com.andreszs.camera.preview.demo/res/icons/android/mipmap-mdpi/ic_launcher.png?raw=true" align="right" width="36px" height="36px">
 
-Sample app for the [cordova-plugin-camera-preview](https://github.com/cordova-plugin-camera-preview/cordova-plugin-camera-preview) Cordova plugin, which allows direct camera interaction from Javascript and HTML.
-
-**Plugin platforms**: android, ios.
+- Plugin: [cordova-plugin-camera-preview](https://github.com/cordova-plugin-camera-preview/cordova-plugin-camera-preview) 
+- Direct camera interaction from Javascript and HTML.
 
 ## com.andreszs.fingerprint.demo
+<img src="https://github.com/andreszs/cordova-plugin-demos/blob/main/com.andreszs.fingerprint.demo/res/icons/android/mipmap-mdpi/ic_launcher.png?raw=true" align="right" width="36px" height="36px">
 
-Sample app for the [cordova-plugin-fingerprint-aio](https://github.com/NiklasMerz/cordova-plugin-fingerprint-aio) Cordova plugin, which allows to use biometric validation in Android using the deprecated Fingerprint Manager API.
-
-**Plugin platforms**: android, ios.
+- Plugin: [cordova-plugin-fingerprint-aio](https://github.com/NiklasMerz/cordova-plugin-fingerprint-aio)
+- Library: [FingerprintManager](https://developer.android.com/reference/android/hardware/fingerprint/FingerprintManager) (deprecated)
+- Authenticate users with biometric validation.
 
 ## com.andreszs.gcs.demo
+<img src="https://github.com/andreszs/cordova-plugin-demos/blob/main/com.andreszs.gcs.demo/res/icons/android/mipmap-mdpi/ic_launcher.png?raw=true" align="right" width="36px" height="36px">
 
-Sample app for my [cordova-plugin-google-code-scanner](https://github.com/andreszs/cordova-plugin-google-code-scanner) Cordova plugin, which allows scanning of codes without requesting camera permissions using the new Google Play Services barcode API.
+- Plugin: [cordova-plugin-google-code-scanner](https://github.com/andreszs/cordova-plugin-google-code-scanner)
+- Library: [Google code scanner](https://developers.google.com/ml-kit/vision/barcode-scanning/code-scanner)
+- Complete solution for scanning code without requiring your app to request camera permission, while preserving user privacy.
 
-**Plugin platforms**: android, browser (filler platform with manual code input).
+## com.andreszs.grecaptcha.demo
+<img src="https://github.com/andreszs/cordova-plugin-demos/blob/main/com.andreszs.grecaptcha.demo/res/icons/android/mipmap-mdpi/ic_launcher.png?raw=true" align="right" width="36px" height="36px">
+
+- Plugin: [cordova-plugin-recaptcha-enterprise](https://github.com/andreszs/cordova-plugin-recaptcha-enterprise)
+- Library: [Google reCAPTCHA Enterprise](https://cloud.google.com/recaptcha-enterprise/docs/overview)
+- Google reCAPTCHA implementation for retrieving tokens used in risk score assessments.
 
 ## com.andreszs.inappupdate.demo
+<img src="https://github.com/andreszs/cordova-plugin-demos/blob/main/com.andreszs.inappupdate.demo/res/icons/android/mipmap-mdpi/ic_launcher.png?raw=true" align="right" width="36px" height="36px">
 
-Sample app for my [cordova-plugin-in-app-updates](https://github.com/andreszs/cordova-plugin-in-app-updates) Cordova plugin, which allows to check for and install updates from Play Store using the native in-app updates library.
+- Plugin: [cordova-plugin-in-app-updates](https://github.com/andreszs/cordova-plugin-in-app-updates)
+- Library: [In-app updates](https://developer.android.com/guide/playcore/in-app-updates)
+- A Google Play Core libraries feature that prompts active users to update your app.
 
-**Plugin platforms**: android, browser (filler platform).
+## com.andreszs.recaptcha.v2.demo
+<img src="https://github.com/andreszs/cordova-plugin-demos/blob/main/com.andreszs.recaptcha.v2.demo/res/icons/android/mipmap-mdpi/ic_launcher.png?raw=true" align="right" width="36px" height="36px">
+
+- Plugin: [cordova-plugin-recaptcha-v2](https://github.com/andreszs/cordova-plugin-recaptcha-v2)
+- Library: [SafetyNet reCAPTCHA](https://developer.android.com/privacy-and-security/safetynet/recaptcha)
+- The SafetyNet service includes a reCAPTCHA API that you can use to protect your app from malicious traffic.
 
 ## com.andreszs.smsreceive.demo
+<img src="https://github.com/andreszs/cordova-plugin-demos/blob/main/com.andreszs.smsreceive.demo/res/icons/android/mipmap-mdpi/ic_launcher.png?raw=true" align="right" width="36px" height="36px">
 
-Sample app for my [cordova-plugin-sms-receive](https://github.com/andreszs/cordova-plugin-sms-receive) Cordova plugin, which allows to receive and read SMS messages using the Telephony API provided by Android.
-
-**Plugin platforms**: android.
+- Plugin: [cordova-plugin-sms-receive](https://github.com/andreszs/cordova-plugin-sms-receive)
+- Library: [Telephony](https://developer.android.com/reference/android/provider/Telephony)
+- Receive and read SMS messages using the Telephony API provided by Android.
 
 ## com.andreszs.smsretriever.demo
+<img src="https://github.com/andreszs/cordova-plugin-demos/blob/main/com.andreszs.smsretriever.demo/res/icons/android/mipmap-mdpi/ic_launcher.png?raw=true" align="right" width="36px" height="36px">
 
-Sample app for my [cordova-plugin-sms-retriever](https://github.com/andreszs/cordova-plugin-sms-retriever) Cordova plugin, which allows to receive and read SMS messages using the SMS Verification APIs provided by Android.
-
-**Plugin platforms**: android.
+- Plugin: [cordova-plugin-sms-retriever](https://github.com/andreszs/cordova-plugin-sms-retriever)
+- Library: [SMS Retriever](https://developers.google.com/identity/sms-retriever/overview)
+- Receive and read SMS verification messages without requesting SMS permissions.
 
 ## com.andreszs.spinner.demo
+<img src="https://github.com/andreszs/cordova-plugin-demos/blob/main/com.andreszs.spinner.demo/res/icons/android/mipmap-mdpi/ic_launcher.png?raw=true" align="right" width="36px" height="36px">
 
-Sample app for the the [cordova-plugin-native-spinner](https://github.com/greybax/cordova-plugin-native-spinner), which allows to show a platform's native spinner and/or message for preventing user interaction during blocking operations.
-
-**Plugin platforms**: android, browser, ios, windows, wp.
+- Plugin: [cordova-plugin-native-spinner](https://github.com/greybax/cordova-plugin-native-spinner)
+- Show a platform's native spinner and/or message for preventing user interaction during blocking operations.
