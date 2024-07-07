@@ -9,7 +9,7 @@ Source code for the **www** and **res** folders of some plugin demo apps by Andr
 # Building demo apps
 
 To build and test a demo app with the provided source code:
-- [Create a new Cordova project](https://cordova.apache.org/docs/en/dev/reference/cordova-cli/index.html#cordova-create-command "Create a new Cordova project")
+- [Create a new Cordova project](https://cordova.apache.org/docs/en/dev/reference/cordova-cli/index.html#cordova-create-command "Create a new Cordova project") using the provided package name (com.andreszs.*)
 - Add the **www** folder provided
 - Add the **res** folder and **config.xml** if you want to include the demo app icons.
 - Install the **cordova-plugin-app-version** plugin (used to retrieve app's version)
