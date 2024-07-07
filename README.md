@@ -8,9 +8,15 @@ Source code for the **www** and **res** folders of some plugin demo apps by Andr
 
 # Building demo apps
 
-To build and test a demo app, create a new Cordova project and add the **www** and **res** folders provided. The included **config.xml** can be ignored, since it does not provide critical information apart from the drawer icons, app name, version and the minSdkVersion number.
+To build and test a demo app with the provided source code:
+- [Create a new Cordova project](https://cordova.apache.org/docs/en/dev/reference/cordova-cli/index.html#cordova-create-command "Create a new Cordova project")
+- Add the **www** folder provided
+- Add the **res** folder and **config.xml** if you want to include the demo app icons.
+- Install the **cordova-plugin-app-version** plugin (used to retrieve app's version)
+- Install the **cordova-plugin-device** plugin (used in some demos that provide both android and browser platform)
+- Install the relevant plugin from either NPM or GitHub. In general, they are the same versions.
 
-:heavy_exclamation_mark: Remember to add the relevant plugin from npm or GitHub into your app.
+:heavy_exclamation_mark: Some older demos may wrongly include *minSdkVersion* and *targetSdkVersion* variables. Kindly remove them because those values depend on your **cordova-android** platform version. Sorry about that.
 
 # Contributing
 
