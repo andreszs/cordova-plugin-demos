@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: https://*.hcaptcha.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
+		<meta name="format-detection" content="telephone=no">
+		<meta name="msapplication-tap-highlight" content="no">
+		<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height" />
+		<link rel="icon" href="favicon.ico">
+		<link rel="stylesheet" type="text/css" href="css/index.css">
+		<script src="js/jquery-3.6.0.min.js"></script>
+		<title>Hcaptcha Demo</title>
+	</head>
+	<body>
+		<h1>cordova-plugin-hcaptcha demo</h1>
+		<fieldset>
+			<legend>Config Params</legend>
+
+			<label>siteKey</label>
+			<input type="text" id="siteKey" value="c0389acc-b4d2-49c2-a80e-c156cda05efa" />
+
+			<label>locale</label>
+			<select size="1" id="locale">
+				<option value="auto" selected="selected">AUTO</option>
+				<option value="af">af - Afrikaans</option>
+				<option value="am">am - Amharic</option>
+				<option value="ar">ar - Arabic</option>
+				<option value="az">az - Azerbaijani</option>
+				<option value="be">be - Belarusian</option>
+				<option value="bg">bg - Bulgarian</option>
+				<option value="bn">bn - Bengali</option>
+				<option value="bs">bs - Bosnian</option>
+				<option value="ca">ca - Catalan</option>
+				<option value="ceb">ceb - Cebuano</option>
+				<option value="co">co - Corsican</option>
+				<option value="cs">cs - Czech</option>
+				<option value="cy">cy - Welsh</option>
+				<option value="da">da - Danish</option>
+				<option value="de">de - German</option>
+				<option value="el">el - Greek</option>
+				<option value="en">en - English</option>
+				<option value="eo">eo - Esperanto</option>
+				<option value="es">es - Spanish</option>
+				<option value="et">et - Estonian</option>
+				<option value="eu">eu - Basque</option>
+				<option value="fa">fa - Persian</option>
+				<option value="fi">fi - Finnish</option>
+				<option value="fr">fr - French</option>
+				<option value="fy">fy - Frisian</option>
+				<option value="ga">ga - Irish</option>
+				<option value="gd">gd - Gaelic</option>
+				<option value="gl">gl - Galician</option>
+				<option value="gu">gu - Gujarati</option>
+				<option value="ha">ha - Hausa</option>
+				<option value="haw">haw - Hawaiian</option>
+				<option value="he">he - Hebrew</option>
+				<option value="hi">hi - Hindi</option>
+				<option value="hmn">hmn - Hmong</option>
+				<option value="hr">hr - Croatian</option>
+				<option value="ht">ht - Haitian</option>
+				<option value="hu">hu - Hungarian</option>
+				<option value="hy">hy - Armenian</option>
+				<option value="id">id - Indonesian</option>
+				<option value="ig">ig - Igbo</option>
+				<option value="is">is - Icelandic</option>
+				<option value="it">it - Italian</option>
+				<option value="ja">ja - Japanese</option>
+				<option value="jw">jw - Javanese</option>
+				<option value="ka">ka - Georgian</option>
+				<option value="kk">kk - Kazakh</option>
+				<option value="km">km - Khmer</option>
+				<option value="kn">kn - Kannada</option>
+				<option value="ko">ko - Korean</option>
+				<option value="ku">ku - Kurdish</option>
+				<option value="ky">ky - Kirghiz</option>
+				<option value="la">la - Latin</option>
+				<option value="lb">lb - Luxembourgish</option>
+				<option value="lo">lo - Lao</option>
+				<option value="lt">lt - Lithuanian</option>
+				<option value="lv">lv - Latvian</option>
+				<option value="mg">mg - Malagasy</option>
+				<option value="mi">mi - Maori</option>
+				<option value="mk">mk - Macedonian</option>
+				<option value="ml">ml - Malayalam</option>
+				<option value="mn">mn - Mongolian</option>
+				<option value="mr">mr - Marathi</option>
+				<option value="ms">ms - Malay</option>
+				<option value="mt">mt - Maltese</option>
+				<option value="my">my - Burmese</option>
+				<option value="ne">ne - Nepali</option>
+				<option value="nl">nl - Dutch</option>
+				<option value="no">no - Norwegian</option>
+				<option value="ny">ny - Nyanja</option>
+				<option value="or">or - Oriya</option>
+				<option value="pa">pa - Punjabi</option>
+				<option value="pl">pl - Polish</option>
+				<option value="ps">ps - Pashto</option>
+				<option value="pt">pt - Portuguese</option>
+				<option value="ro">ro - Romanian</option>
+				<option value="ru">ru - Russian</option>
+				<option value="rw">rw - Kinyarwanda</option>
+				<option value="sd">sd - Sindhi</option>
+				<option value="si">si - Singhalese</option>
+				<option value="sk">sk - Slovak</option>
+				<option value="sl">sl - Slovenian</option>
+				<option value="sm">sm - Samoan</option>
+				<option value="sn">sn - Shona</option>
+				<option value="so">so - Somali</option>
+				<option value="sq">sq - Albanian</option>
+				<option value="sr">sr - Serbian</option>
+				<option value="st">st - Southern Sotho</option>
+				<option value="su">su - Sundanese</option>
+				<option value="sv">sv - Swedish</option>
+				<option value="sw">sw - Swahili</option>
+				<option value="ta">ta - Tamil</option>
+				<option value="te">te - Telugu</option>
+				<option value="tg">tg - Tajik</option>
+				<option value="th">th - Thai</option>
+				<option value="tl">tl - Tagalog</option>
+				<option value="tr">tr - Turkish</option>
+				<option value="tt">tt - Tatar</option>
+				<option value="ug">ug - Uyghur</option>
+				<option value="uk">uk - Ukrainian</option>
+				<option value="ur">ur - Urdu</option>
+				<option value="uz">uz - Uzbek</option>
+				<option value="vi">vi - Vietnamese</option>
+				<option value="xh">xh - Xhosa</option>
+				<option value="yi">yi - Yiddish</option>
+				<option value="yo">yo - Yoruba</option>
+				<option value="zh">zh - Chinese</option>
+				<option value="zh-CN">zh-CN - Chinese Simplified</option>
+				<option value="zh-TW">zh-TW - Chinese Traditional</option>
+				<option value="zu">zu - Zulu</option>
+			</select>
+
+
+			<label>loading</label>
+			<select size="1" id="loading">
+				<option value="true" selected="selected">TRUE</option>
+				<option value="false">FALSE</option>
+			</select>
+
+			<label>tokenExpiration</label>
+			<input type="number" min="0" id="tokenExpiration" placeholder="default 120 seconds" value="120" />
+		</fieldset>
+
+		<fieldset>
+			<legend>Methods</legend>
+			<button type="button" id="btnVerify">verify</button>
+		</fieldset>
+
+		<fieldset>
+			<legend>Status</legend>
+			<label id="status"></label>
+		</fieldset>
+
+		<fieldset>
+			<legend>hCaptcha Token</legend>
+			<textarea rows="5" id="token"></textarea>
+		</fieldset>
+
+		<fieldset id="versions">
+			<legend>Versions</legend>
+			<img alt="" class="info" src="img/outline_info_black_36dp.png" />
+			<label id="app_version" class="blue">App version</label>
+			<label id="plugin_version" class="blue">Plugin version</label>
+		</fieldset>
+
+		<fieldset>
+			<legend>App Requirements</legend>
+			<ul>
+				<li>hCaptcha site keys</li>
+				<li>Content-Security-Policy to allow: https://*.hcaptcha.com</li>
+			</ul>
+		</fieldset>
+
+		<fieldset>
+			<legend>About Plugin</legend>
+			<label>Refer to README for more info.</label>
+			<hr />
+			<button type="button" id="btnGitHub">GitHub</button>
+		</fieldset>
+
+		<fieldset>
+			<legend>About Demo App</legend>
+			<label>Visit website for demo app reference.</label>
+			<hr />
+			<button type="button" id="btnWebsite">Website</button>
+			<button type="button" id="btnPluginDemos">Plugin Demos</button>
+		</fieldset>
+
+		<script type="text/javascript" src="cordova.js"></script>
+		<script type="text/javascript" src="js/index.js"></script>
+	</body>
+</html>

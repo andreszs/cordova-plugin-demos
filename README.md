@@ -65,6 +65,12 @@ To build and test a demo app with the provided source code:
 - Library: [Google reCAPTCHA Enterprise](https://cloud.google.com/recaptcha-enterprise/docs/overview)
 - Google reCAPTCHA implementation for retrieving tokens used in risk score assessments.
 
+## com.andreszs.hcaptcha.demo
+<img src="https://github.com/andreszs/cordova-plugin-demos/blob/main/com.andreszs.hcaptcha.demo/res/icons/android/mipmap-mdpi/ic_launcher.png?raw=true" align="right" width="36px" height="36px">
+- Plugin: [cordova-plugin-hcaptcha](https://github.com/andreszs/cordova-plugin-hcaptcha)
+- Library: [hCaptcha SDK](https://github.com/hCaptcha/hcaptcha-android-sdk) and [browser API](https://docs.hcaptcha.com/invisible)
+- The hCaptcha widget can protect your applications from bots, spam, and other forms of automated abuse.
+
 ## com.andreszs.inappupdate.demo
 <img src="https://github.com/andreszs/cordova-plugin-demos/blob/main/com.andreszs.inappupdate.demo/res/icons/android/mipmap-mdpi/ic_launcher.png?raw=true" align="right" width="36px" height="36px">
 
