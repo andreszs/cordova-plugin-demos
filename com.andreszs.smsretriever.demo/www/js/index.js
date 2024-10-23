@@ -46,6 +46,9 @@ var app = {
 
 		// Bind getHashString method
 		$('#getHashString').on('click', app.getHashString);
+		
+		// Bind getPhoneNumber method
+		$('#getPhoneNumber').on('click', app.getPhoneNumber);
 
 		// Bind sample app own methods
 		$('#btnGitHub').on('click', function () {
@@ -61,6 +64,15 @@ var app = {
 			window.open('https://github.com/andreszs/cordova-plugin-demos', '_system');
 		});
 	},
+	getPhoneNumber: function () {
+        var onSuccess = function (strSuccess) {
+            $('#status').html('<span class="success">' + strSuccess + '</span>');
+        };
+        var onFail = function (strError) {
+            $('#status').html('<span class="error">' + strError + '</span>');
+        };
+        cordova.plugins.SMSRetriever.getPhoneNumber(onSuccess, onFail);
+    },
 	startWatch: function () {
 		var onSuccess = function (strSuccess) {
 			$('#status').html('<span class="success">' + strSuccess + '</span>');

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<widget xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0" id="com.andreszs.smsretriever.demo" android-versionCode="122" version="1.2.2">
+<widget xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0" id="com.andreszs.smsretriever.demo" android-versionCode="130" version="1.3.0">
 	<name>SMS Retriever Demo</name>
 	<description>SMS Retriever Cordova plugin demo implementation.</description>
 	<author href="https://www.andreszsogon.com">Andres Zsögön</author>
@@ -13,6 +13,6 @@
 		<icon background="res/icons/android/mipmap-xxhdpi/ic_launcher_background.png" density="xxhdpi" foreground="res/icons/android/mipmap-xxhdpi/ic_launcher_foreground.png" src="res/icons/android/mipmap-xxhdpi/ic_launcher.png" />
 		<icon background="res/icons/android/mipmap-xxxhdpi/ic_launcher_background.png" density="xxxhdpi" foreground="res/icons/android/mipmap-xxxhdpi/ic_launcher_foreground.png" src="res/icons/android/mipmap-xxxhdpi/ic_launcher.png" />
 	</platform>
-	<preference name="android-minSdkVersion" value="19" />
-	<preference name="android-targetSdkVersion" value="30" />
+	<preference name="android-minSdkVersion" value="21" />
+	<preference name="android-targetSdkVersion" value="33" />
 </widget>
