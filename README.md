@@ -17,7 +17,7 @@ To build and test a demo app with the provided source code:
 5. Install the **cordova-plugin-device** plugin (used in some demos that provide both android and browser platform)
 6. Install the relevant plugin from either NPM or GitHub. In general, they are the same versions.
 
-:warning: Some older demos may wrongly include *minSdkVersion* and *targetSdkVersion* variables inside config.xml. Kindly remove them because those values depend on your **cordova-android** platform version. Sorry about that.
+:information_source: Some demos include *minSdkVersion* and *targetSdkVersion* variables inside config.xml. If your compile fails, try setting the same values in your implementation.
 
 # Contributing
 
