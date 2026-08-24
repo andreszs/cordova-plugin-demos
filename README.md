@@ -4,7 +4,7 @@
 
 Source code for the **www** and **res** folders of some plugin demo apps by Andrés Zsögön. Refer to the [individual page for each demo app](https://www.andreszsogon.com/category/plugin-demo-apps/ "individual page for each demo app") for usage reference and compiled APK downloads.
 
-:warning: To shorten the source code, all demos implement jQuery 3.6.0 which is included in the js folder.
+:information_source: Most legacy demos use the bundled jQuery 3.6.0 file. Newer demos may use plain JavaScript when no additional library is required.
 
 # Building demo apps
 
@@ -105,3 +105,9 @@ To build and test a demo app with the provided source code:
 
 - Plugin: [cordova-plugin-native-spinner](https://github.com/greybax/cordova-plugin-native-spinner)
 - Show a platform's native spinner and/or message for preventing user interaction during blocking operations.
+
+## com.andreszs.turnstile.demo
+
+- Plugin: [cordova-plugin-turnstile](https://github.com/andreszs/cordova-plugin-turnstile)
+- Library: [Cloudflare Turnstile](https://developers.cloudflare.com/turnstile/)
+- Run a Turnstile challenge from a developer-hosted HTTPS page and return the token to an Android Cordova application.

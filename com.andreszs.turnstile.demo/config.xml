@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.andreszs.turnstile.demo" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>Turnstile Demo</name>
+    <description>Cloudflare Turnstile Cordova plugin demo</description>
+    <author href="https://www.andreszsogon.com/">Andrés Zsögön</author>
+    <content src="index.html" />
+    <allow-intent href="https://*/*" />
+    <preference name="AndroidXEnabled" value="true" />
+</widget>

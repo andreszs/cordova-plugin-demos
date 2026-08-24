@@ -1,0 +1,199 @@
+/* global cordova */
+
+(function () {
+    'use strict';
+
+    var PLUGIN_URL = 'https://github.com/andreszs/cordova-plugin-turnstile';
+    var DEMOS_URL = 'https://github.com/andreszs/cordova-plugin-demos';
+    var running = false;
+    var elements = {};
+
+    var errorMessages = {
+        already_running: 'Another verification is already running.',
+        cancel: 'Verification was cancelled.',
+        challenge_error: 'Cloudflare could not complete the challenge.',
+        expired: 'The challenge expired. Try again.',
+        invalid_options: 'The verification URL or action is invalid.',
+        invalid_response: 'The hosted page returned an invalid response.',
+        invalid_token: 'The hosted page returned an invalid token.',
+        load_error: 'The verification page could not be loaded.',
+        ssl_error: 'The verification page failed the TLS certificate check.',
+        timeout: 'Verification timed out.'
+    };
+
+    function byId(id) {
+        return document.getElementById(id);
+    }
+
+    function plugin() {
+        return window.cordova && cordova.plugins
+            ? cordova.plugins.turnstile
+            : null;
+    }
+
+    function setStatus(message, kind) {
+        elements.status.textContent = message;
+        elements.status.className = 'status ' + (kind || 'info');
+    }
+
+    function setRunning(value) {
+        running = value;
+        elements.verifyButton.disabled = value;
+        elements.cancelButton.disabled = !value;
+    }
+
+    function readOptions() {
+        var value = elements.verificationUrl.value.trim();
+        var action = elements.action.value.trim();
+        var url;
+
+        if (!/^[A-Za-z0-9_-]{1,32}$/.test(action)) {
+            throw new Error('Action must contain 1-32 letters, numbers, underscores, or hyphens.');
+        }
+
+        try {
+            url = new URL(value);
+        } catch (ignore) {
+            throw new Error('Enter a valid verification URL.');
+        }
+
+        if (url.protocol !== 'https:') {
+            throw new Error('The verification URL must use HTTPS.');
+        }
+
+        if (url.searchParams.get('action') !== action) {
+            throw new Error('The URL action parameter must match the Action field.');
+        }
+
+        return {url: url.href, action: action};
+    }
+
+    function verify() {
+        var turnstile = plugin();
+        var options;
+
+        if (!turnstile || typeof turnstile.verify !== 'function') {
+            setStatus('cordova-plugin-turnstile is not available.', 'error');
+            return;
+        }
+
+        try {
+            options = readOptions();
+        } catch (error) {
+            setStatus(error.message, 'error');
+            return;
+        }
+
+        elements.token.value = '';
+        elements.copyButton.disabled = true;
+        setRunning(true);
+        setStatus('Requesting a Turnstile challenge…', 'info');
+
+        turnstile.verify(options, function (token) {
+            setRunning(false);
+            elements.token.value = token;
+            elements.copyButton.disabled = false;
+            setStatus('Token received. Send it to your backend immediately.', 'success');
+        }, function (code) {
+            setRunning(false);
+            setStatus(errorMessages[code] || ('Verification failed: ' + String(code)), 'error');
+        });
+    }
+
+    function cancel() {
+        var turnstile = plugin();
+        if (turnstile && typeof turnstile.cancel === 'function') {
+            turnstile.cancel(function () {}, function (code) {
+                setStatus('Cancel failed: ' + String(code), 'error');
+            });
+        }
+    }
+
+    function showBadge() {
+        var turnstile = plugin();
+        turnstile.showBadge({
+            label: 'Protected by Turnstile',
+            detail: 'Privacy · Help',
+            position: elements.badgePosition.value
+        }, function () {
+            setStatus('Turnstile badge is visible.', 'success');
+        }, function (code) {
+            setStatus('Could not show the badge: ' + String(code), 'error');
+        });
+    }
+
+    function hideBadge() {
+        var turnstile = plugin();
+        turnstile.hideBadge(function () {
+            setStatus('Turnstile badge hidden.', 'success');
+        }, function (code) {
+            setStatus('Could not hide the badge: ' + String(code), 'error');
+        });
+    }
+
+    function copyToken() {
+        elements.token.select();
+        elements.token.setSelectionRange(0, elements.token.value.length);
+        try {
+            document.execCommand('copy');
+            setStatus('Token copied to the clipboard.', 'success');
+        } catch (error) {
+            setStatus('The token could not be copied.', 'error');
+        }
+    }
+
+    function openExternal(url) {
+        window.open(url, '_system');
+    }
+
+    function getAppVersion() {
+        if (cordova.getAppVersion && typeof cordova.getAppVersion.getVersionNumber === 'function') {
+            cordova.getAppVersion.getVersionNumber(function (version) {
+                elements.appVersion.textContent = 'App version: ' + version;
+            });
+        }
+    }
+
+    function onDeviceReady() {
+        var turnstile = plugin();
+        var available = !!turnstile;
+
+        elements.verifyButton.disabled = !available;
+        elements.showBadgeButton.disabled = !available;
+        elements.hideBadgeButton.disabled = !available;
+
+        if (available) {
+            setStatus('Device ready. Enter your hosted verification URL.', 'success');
+        } else {
+            setStatus('cordova-plugin-turnstile is not installed.', 'error');
+        }
+        getAppVersion();
+    }
+
+    function init() {
+        elements = {
+            action: byId('action'),
+            appVersion: byId('appVersion'),
+            badgePosition: byId('badgePosition'),
+            cancelButton: byId('cancelButton'),
+            copyButton: byId('copyButton'),
+            hideBadgeButton: byId('hideBadgeButton'),
+            showBadgeButton: byId('showBadgeButton'),
+            status: byId('status'),
+            token: byId('token'),
+            verificationUrl: byId('verificationUrl'),
+            verifyButton: byId('verifyButton')
+        };
+
+        elements.verifyButton.addEventListener('click', verify);
+        elements.cancelButton.addEventListener('click', cancel);
+        elements.showBadgeButton.addEventListener('click', showBadge);
+        elements.hideBadgeButton.addEventListener('click', hideBadge);
+        elements.copyButton.addEventListener('click', copyToken);
+        byId('pluginLink').addEventListener('click', function () { openExternal(PLUGIN_URL); });
+        byId('demosLink').addEventListener('click', function () { openExternal(DEMOS_URL); });
+        document.addEventListener('deviceready', onDeviceReady, false);
+    }
+
+    document.addEventListener('DOMContentLoaded', init, false);
+}());

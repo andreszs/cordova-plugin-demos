@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: https://ssl.gstatic.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: content:; media-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'none'">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
+    <meta name="color-scheme" content="light">
+    <link rel="stylesheet" href="css/index.css">
+    <title>Turnstile Demo</title>
+</head>
+<body>
+<main class="app-shell">
+    <header class="app-header">
+        <div class="brand-mark" aria-hidden="true"><span></span></div>
+        <div>
+            <h1>Turnstile Demo</h1>
+            <p>cordova-plugin-turnstile</p>
+        </div>
+    </header>
+
+    <section class="card">
+        <h2>Verification</h2>
+        <label for="verificationUrl">Verification URL</label>
+        <input id="verificationUrl" type="url" inputmode="url" autocomplete="url"
+               placeholder="https://example.com/turnstile.php?action=demo">
+        <p class="hint">Host the PHP page supplied by the plugin on your own HTTPS server.</p>
+
+        <label for="action">Action</label>
+        <input id="action" type="text" value="demo" maxlength="32" autocomplete="off"
+               pattern="[A-Za-z0-9_-]{1,32}">
+
+        <div class="button-row">
+            <button id="verifyButton" class="primary" type="button" disabled>Verify</button>
+            <button id="cancelButton" type="button" disabled>Cancel</button>
+        </div>
+    </section>
+
+    <section class="card">
+        <h2>Badge</h2>
+        <label for="badgePosition">Position</label>
+        <select id="badgePosition">
+            <option value="bottomright">Bottom right</option>
+            <option value="bottomleft">Bottom left</option>
+        </select>
+        <div class="button-row">
+            <button id="showBadgeButton" type="button" disabled>Show badge</button>
+            <button id="hideBadgeButton" type="button" disabled>Hide badge</button>
+        </div>
+    </section>
+
+    <section class="card status-card" aria-live="polite">
+        <h2>Status</h2>
+        <p id="status" class="status info">Waiting for Cordova…</p>
+    </section>
+
+    <section class="card">
+        <div class="token-heading">
+            <h2>Turnstile token</h2>
+            <button id="copyButton" class="small" type="button" disabled>Copy</button>
+        </div>
+        <textarea id="token" rows="5" readonly placeholder="The verification token will appear here."></textarea>
+        <p class="hint">Send successful tokens to your backend immediately. Never validate them only in the app.</p>
+    </section>
+
+    <section class="card metadata">
+        <h2>Versions</h2>
+        <p id="appVersion">App version: 1.0.0</p>
+        <p>Plugin version: 1.2.1</p>
+        <p>Platform: Android</p>
+    </section>
+
+    <nav class="links" aria-label="Project links">
+        <button id="pluginLink" type="button">Plugin on GitHub</button>
+        <button id="demosLink" type="button">Plugin demos</button>
+    </nav>
+</main>
+
+<script src="cordova.js"></script>
+<script src="js/index.js"></script>
+</body>
+</html>
