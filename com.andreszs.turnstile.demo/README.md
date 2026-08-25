@@ -27,6 +27,6 @@ The demo uses cordova-android 14 and the local minified Bootstrap 4 CSS file. It
 ## Screenshots
 
 <p align="center">
-  <img src="screenshots/android/turnstile-001.png" width="320" alt="Turnstile demo showing successful server-side validation">
-  <img src="screenshots/android/turnstile-002.png" width="320" alt="Turnstile demo showing the optional native badge">
+  <img src="screenshots/android/turnstile-001.png" width="320" alt="Turnstile demo showing the Cloudflare challenge">
+  <img src="screenshots/android/turnstile-002.png" width="320" alt="Turnstile demo showing successful server-side validation">
 </p>
