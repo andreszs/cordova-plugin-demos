@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: https://ssl.gstatic.com; style-src 'self'; img-src 'self' data: content:; media-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'none'">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: https://ssl.gstatic.com; connect-src 'self' https:; style-src 'self'; img-src 'self' data: content:; media-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'none'">
     <meta name="format-detection" content="telephone=no">
     <meta name="msapplication-tap-highlight" content="no">
     <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
@@ -22,13 +22,20 @@
 
     <section class="card shadow-sm mb-3">
         <div class="card-body">
+            <h2 class="h5 card-title">Status</h2>
+            <p id="status" class="alert alert-secondary mb-0" role="status">Waiting for Cordova…</p>
+        </div>
+    </section>
+
+    <section class="card shadow-sm mb-3">
+        <div class="card-body">
             <h2 class="h5 card-title">Verification</h2>
 
             <div class="form-group">
                 <label for="verificationUrl">Verification URL</label>
                 <input id="verificationUrl" class="form-control" type="url" inputmode="url"
                        autocomplete="url" placeholder="https://example.com/turnstile.php?action=demo">
-                <small class="form-text text-muted">Host the PHP page supplied by the plugin on your own HTTPS server.</small>
+                <small class="form-text text-muted">Enter your HTTPS endpoint. It must serve the challenge on GET and validate the returned token on POST.</small>
             </div>
 
             <div class="form-group">
@@ -60,13 +67,6 @@
                 <button id="showBadgeButton" class="btn btn-outline-primary mr-2 mb-2" type="button" disabled>Show badge</button>
                 <button id="hideBadgeButton" class="btn btn-outline-secondary mb-2" type="button" disabled>Hide badge</button>
             </div>
-        </div>
-    </section>
-
-    <section class="card shadow-sm mb-3">
-        <div class="card-body">
-            <h2 class="h5 card-title">Status</h2>
-            <p id="status" class="alert alert-secondary mb-0" role="status">Waiting for Cordova…</p>
         </div>
     </section>
 

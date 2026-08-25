@@ -2,7 +2,7 @@
 
 # Apache Cordova plugin demos
 
-Source code for the **www** and **res** folders of some plugin demo apps by Andrés Zsögön. Refer to the [individual page for each demo app](https://www.andreszsogon.com/category/plugin-demo-apps/ "individual page for each demo app") for usage reference and compiled APK downloads.
+Source code for the **www** and **res** folders of some plugin demo apps by Andrés Zsögön. Refer to the [individual page for each demo app](https://www.andreszsogon.com/category/plugin-demo-apps/ "individual page for each demo app") for usage reference and compiled APK downloads. The Turnstile demo also includes a ready-to-install APK in this repository.
 
 :information_source: Most legacy demos use the bundled jQuery 3.6.0 file. Newer demos may use plain JavaScript when no additional library is required.
 
@@ -110,4 +110,7 @@ To build and test a demo app with the provided source code:
 
 - Plugin: [cordova-plugin-turnstile](https://github.com/andreszs/cordova-plugin-turnstile)
 - Library: [Cloudflare Turnstile](https://developers.cloudflare.com/turnstile/)
-- Run a Turnstile challenge from a developer-hosted HTTPS page and return the token to an Android Cordova application.
+- Demo files and instructions: [`com.andreszs.turnstile.demo`](com.andreszs.turnstile.demo/)
+- Precompiled test app: [`com.andreszs.turnstile.demo.apk`](com.andreszs.turnstile.demo/com.andreszs.turnstile.demo.apk)
+- Run a Turnstile challenge from a developer-hosted HTTPS page, return the token to the Cordova application, and validate it with the backend.
+- The precompiled APK uses the public test endpoint. The source intentionally contains no preconfigured verification endpoint URL and requires the developer to enter one.

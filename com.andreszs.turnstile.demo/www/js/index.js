@@ -93,10 +93,33 @@
         setStatus('Requesting a Turnstile challenge…', 'info');
 
         turnstile.verify(options, function (token) {
-            setRunning(false);
             elements.token.value = token;
             elements.copyButton.disabled = false;
-            setStatus('Token received. Send it to your backend immediately.', 'success');
+            elements.verifyButton.disabled = true;
+            elements.cancelButton.disabled = true;
+            setStatus('Token received. Validating it with the demo backend…', 'info');
+
+            fetch(options.url, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    turnstileToken: token,
+                    payload: {source: 'cordova-plugin-turnstile-demo'}
+                })
+            }).then(function (response) {
+                return response.json().then(function (body) {
+                    if (!response.ok || body.ok !== true) {
+                        throw new Error(body.message || 'Backend validation failed.');
+                    }
+                    return body;
+                });
+            }).then(function () {
+                setRunning(false);
+                setStatus('Full Turnstile validation succeeded.', 'success');
+            }).catch(function (error) {
+                setRunning(false);
+                setStatus(error.message || 'Backend validation failed.', 'error');
+            });
         }, function (code) {
             setRunning(false);
             setStatus(errorMessages[code] || ('Verification failed: ' + String(code)), 'error');
