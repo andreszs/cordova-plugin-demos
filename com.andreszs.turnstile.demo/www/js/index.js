@@ -12,7 +12,7 @@
         cancel: 'Verification was cancelled.',
         challenge_error: 'Cloudflare could not complete the challenge.',
         expired: 'The challenge expired. Try again.',
-        invalid_options: 'The verification URL or action is invalid.',
+        invalid_options: 'The challenge URL, backend URL, or action is invalid.',
         invalid_response: 'The hosted page returned an invalid response.',
         invalid_token: 'The hosted page returned an invalid token.',
         load_error: 'The verification page could not be loaded.',
@@ -46,29 +46,44 @@
     }
 
     function readOptions() {
-        var value = elements.verificationUrl.value.trim();
+        var challengeValue = elements.challengeUrl.value.trim();
+        var backendValue = elements.backendUrl.value.trim();
         var action = elements.action.value.trim();
-        var url;
+        var challengeUrl;
+        var backendUrl;
 
         if (!/^[A-Za-z0-9_-]{1,32}$/.test(action)) {
             throw new Error('Action must contain 1-32 letters, numbers, underscores, or hyphens.');
         }
 
         try {
-            url = new URL(value);
+            challengeUrl = new URL(challengeValue);
         } catch (ignore) {
-            throw new Error('Enter a valid verification URL.');
+            throw new Error('Enter a valid Challenge URL.');
         }
 
-        if (url.protocol !== 'https:') {
-            throw new Error('The verification URL must use HTTPS.');
+        if (challengeUrl.protocol !== 'https:' || challengeUrl.pathname === '/') {
+            throw new Error('The Challenge URL must use HTTPS and include a path.');
         }
 
-        if (url.searchParams.get('action') !== action) {
-            throw new Error('The URL action parameter must match the Action field.');
+        if (challengeUrl.searchParams.get('action') !== action) {
+            throw new Error('The Challenge URL action parameter must match the Action field.');
         }
 
-        return {url: url.href, action: action};
+        try {
+            backendUrl = new URL(backendValue);
+        } catch (ignoreBackend) {
+            throw new Error('Enter a valid Backend URL.');
+        }
+
+        if (backendUrl.protocol !== 'https:' || backendUrl.pathname === '/') {
+            throw new Error('The Backend URL must use HTTPS and include a path.');
+        }
+
+        return {
+            challenge: {url: challengeUrl.href, action: action},
+            backendUrl: backendUrl.href
+        };
     }
 
     function verify() {
@@ -92,14 +107,14 @@
         setRunning(true);
         setStatus('Requesting a Turnstile challenge…', 'info');
 
-        turnstile.verify(options, function (token) {
+        turnstile.verify(options.challenge, function (token) {
             elements.token.value = token;
             elements.copyButton.disabled = false;
             elements.verifyButton.disabled = true;
             elements.cancelButton.disabled = true;
             setStatus('Token received. Validating it with the demo backend…', 'info');
 
-            fetch(options.url, {
+            fetch(options.backendUrl, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
@@ -189,7 +204,7 @@
         elements.hideBadgeButton.disabled = !available;
 
         if (available) {
-            setStatus('Device ready. Enter your hosted verification URL.', 'success');
+            setStatus('Device ready. Enter the challenge and backend URLs.', 'success');
         } else {
             setStatus('cordova-plugin-turnstile is not installed.', 'error');
         }
@@ -200,6 +215,7 @@
         elements = {
             action: byId('action'),
             appVersion: byId('appVersion'),
+            backendUrl: byId('backendUrl'),
             badgePosition: byId('badgePosition'),
             cancelButton: byId('cancelButton'),
             copyButton: byId('copyButton'),
@@ -207,7 +223,7 @@
             showBadgeButton: byId('showBadgeButton'),
             status: byId('status'),
             token: byId('token'),
-            verificationUrl: byId('verificationUrl'),
+            challengeUrl: byId('challengeUrl'),
             verifyButton: byId('verifyButton')
         };
 

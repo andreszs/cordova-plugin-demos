@@ -32,16 +32,23 @@
             <h2 class="h5 card-title">Verification</h2>
 
             <div class="form-group">
-                <label for="verificationUrl">Verification URL</label>
-                <input id="verificationUrl" class="form-control" type="url" inputmode="url"
+                <label for="challengeUrl">Challenge URL</label>
+                <input id="challengeUrl" class="form-control" type="url" inputmode="url"
                        autocomplete="url" placeholder="https://example.com/turnstile.php?action=demo">
-                <small class="form-text text-muted">Enter your HTTPS endpoint. It must serve the challenge on GET and validate the returned token on POST.</small>
+                <small class="form-text text-muted">HTTPS page that renders Turnstile with the public site key.</small>
             </div>
 
             <div class="form-group">
                 <label for="action">Action</label>
                 <input id="action" class="form-control" type="text" value="demo" maxlength="32"
                        autocomplete="off" pattern="[A-Za-z0-9_-]{1,32}">
+            </div>
+
+            <div class="form-group">
+                <label for="backendUrl">Backend URL</label>
+                <input id="backendUrl" class="form-control" type="url" inputmode="url"
+                       autocomplete="url" placeholder="https://api.example.com/protected-action">
+                <small class="form-text text-muted">Separate HTTPS endpoint that validates the token and performs the protected operation.</small>
             </div>
 
             <div class="d-flex flex-wrap">

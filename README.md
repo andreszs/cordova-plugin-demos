@@ -112,5 +112,5 @@ To build and test a demo app with the provided source code:
 - Library: [Cloudflare Turnstile](https://developers.cloudflare.com/turnstile/)
 - Demo files and instructions: [`com.andreszs.turnstile.demo`](com.andreszs.turnstile.demo/)
 - Precompiled test app: [`com.andreszs.turnstile.demo.apk`](com.andreszs.turnstile.demo/com.andreszs.turnstile.demo.apk)
-- Run a Turnstile challenge from a developer-hosted HTTPS page, return the token to the Cordova application, and validate it with the backend.
-- The precompiled APK uses the public test endpoint. The source intentionally contains no preconfigured verification endpoint URL and requires the developer to enter one.
+- Run a Turnstile challenge from a developer-hosted HTTPS page, return the token to the Cordova application, and validate it with a separate backend handler.
+- The precompiled APK uses a public demo-only combined service. The source contains no preconfigured endpoint URLs and asks the developer for separate challenge and backend URLs.
