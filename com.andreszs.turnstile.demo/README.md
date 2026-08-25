@@ -23,3 +23,10 @@ adb install -r com.andreszs.turnstile.demo.apk
 The source deliberately contains no preconfigured verification endpoint URL or Turnstile keys. After building and opening the app, enter your own HTTPS endpoint and matching action. The endpoint used by this demo must serve the Turnstile challenge on `GET` and accept the returned token as JSON on `POST` for server-side validation.
 
 The demo uses cordova-android 14 and the local minified Bootstrap 4 CSS file. It does not load Bootstrap from a CDN and does not include Bootstrap JavaScript or custom CSS.
+
+## Screenshots
+
+<p align="center">
+  <img src="screenshots/android/turnstile-001.png" width="320" alt="Turnstile demo showing successful server-side validation">
+  <img src="screenshots/android/turnstile-002.png" width="320" alt="Turnstile demo showing the optional native badge">
+</p>
