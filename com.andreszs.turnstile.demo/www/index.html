@@ -2,78 +2,100 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: https://ssl.gstatic.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: content:; media-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'none'">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: https://ssl.gstatic.com; style-src 'self'; img-src 'self' data: content:; media-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'none'">
     <meta name="format-detection" content="telephone=no">
     <meta name="msapplication-tap-highlight" content="no">
     <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
     <meta name="color-scheme" content="light">
-    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
     <title>Turnstile Demo</title>
 </head>
-<body>
-<main class="app-shell">
-    <header class="app-header">
-        <div class="brand-mark" aria-hidden="true"><span></span></div>
+<body class="bg-light">
+<main class="container py-3">
+    <header class="d-flex align-items-center mb-3">
+        <span class="badge badge-warning p-3 mr-3">CF</span>
         <div>
-            <h1>Turnstile Demo</h1>
-            <p>cordova-plugin-turnstile</p>
+            <h1 class="h3 mb-0">Turnstile Demo</h1>
+            <p class="text-muted mb-0">cordova-plugin-turnstile</p>
         </div>
     </header>
 
-    <section class="card">
-        <h2>Verification</h2>
-        <label for="verificationUrl">Verification URL</label>
-        <input id="verificationUrl" type="url" inputmode="url" autocomplete="url"
-               placeholder="https://example.com/turnstile.php?action=demo">
-        <p class="hint">Host the PHP page supplied by the plugin on your own HTTPS server.</p>
+    <section class="card shadow-sm mb-3">
+        <div class="card-body">
+            <h2 class="h5 card-title">Verification</h2>
 
-        <label for="action">Action</label>
-        <input id="action" type="text" value="demo" maxlength="32" autocomplete="off"
-               pattern="[A-Za-z0-9_-]{1,32}">
+            <div class="form-group">
+                <label for="verificationUrl">Verification URL</label>
+                <input id="verificationUrl" class="form-control" type="url" inputmode="url"
+                       autocomplete="url" placeholder="https://example.com/turnstile.php?action=demo">
+                <small class="form-text text-muted">Host the PHP page supplied by the plugin on your own HTTPS server.</small>
+            </div>
 
-        <div class="button-row">
-            <button id="verifyButton" class="primary" type="button" disabled>Verify</button>
-            <button id="cancelButton" type="button" disabled>Cancel</button>
+            <div class="form-group">
+                <label for="action">Action</label>
+                <input id="action" class="form-control" type="text" value="demo" maxlength="32"
+                       autocomplete="off" pattern="[A-Za-z0-9_-]{1,32}">
+            </div>
+
+            <div class="d-flex flex-wrap">
+                <button id="verifyButton" class="btn btn-primary mr-2 mb-2" type="button" disabled>Verify</button>
+                <button id="cancelButton" class="btn btn-outline-secondary mb-2" type="button" disabled>Cancel</button>
+            </div>
         </div>
     </section>
 
-    <section class="card">
-        <h2>Badge</h2>
-        <label for="badgePosition">Position</label>
-        <select id="badgePosition">
-            <option value="bottomright">Bottom right</option>
-            <option value="bottomleft">Bottom left</option>
-        </select>
-        <div class="button-row">
-            <button id="showBadgeButton" type="button" disabled>Show badge</button>
-            <button id="hideBadgeButton" type="button" disabled>Hide badge</button>
+    <section class="card shadow-sm mb-3">
+        <div class="card-body">
+            <h2 class="h5 card-title">Badge</h2>
+
+            <div class="form-group">
+                <label for="badgePosition">Position</label>
+                <select id="badgePosition" class="custom-select">
+                    <option value="bottomright">Bottom right</option>
+                    <option value="bottomleft">Bottom left</option>
+                </select>
+            </div>
+
+            <div class="d-flex flex-wrap">
+                <button id="showBadgeButton" class="btn btn-outline-primary mr-2 mb-2" type="button" disabled>Show badge</button>
+                <button id="hideBadgeButton" class="btn btn-outline-secondary mb-2" type="button" disabled>Hide badge</button>
+            </div>
         </div>
     </section>
 
-    <section class="card status-card" aria-live="polite">
-        <h2>Status</h2>
-        <p id="status" class="status info">Waiting for Cordova…</p>
-    </section>
-
-    <section class="card">
-        <div class="token-heading">
-            <h2>Turnstile token</h2>
-            <button id="copyButton" class="small" type="button" disabled>Copy</button>
+    <section class="card shadow-sm mb-3">
+        <div class="card-body">
+            <h2 class="h5 card-title">Status</h2>
+            <p id="status" class="alert alert-secondary mb-0" role="status">Waiting for Cordova…</p>
         </div>
-        <textarea id="token" rows="5" readonly placeholder="The verification token will appear here."></textarea>
-        <p class="hint">Send successful tokens to your backend immediately. Never validate them only in the app.</p>
     </section>
 
-    <section class="card metadata">
-        <h2>Versions</h2>
-        <p id="appVersion">App version: 1.0.0</p>
-        <p>Plugin version: 1.2.1</p>
-        <p>Platform: Android</p>
+    <section class="card shadow-sm mb-3">
+        <div class="card-body">
+            <div class="d-flex align-items-center justify-content-between mb-2">
+                <h2 class="h5 card-title mb-0">Turnstile token</h2>
+                <button id="copyButton" class="btn btn-outline-secondary btn-sm" type="button" disabled>Copy</button>
+            </div>
+            <textarea id="token" class="form-control" rows="5" readonly
+                      placeholder="The verification token will appear here."></textarea>
+            <small class="form-text text-muted">Send successful tokens to your backend immediately. Never validate them only in the app.</small>
+        </div>
     </section>
 
-    <nav class="links" aria-label="Project links">
-        <button id="pluginLink" type="button">Plugin on GitHub</button>
-        <button id="demosLink" type="button">Plugin demos</button>
+    <section class="card shadow-sm mb-3">
+        <div class="card-body">
+            <h2 class="h5 card-title">Versions</h2>
+            <ul class="list-unstyled text-muted mb-0">
+                <li id="appVersion">App version: 1.0.0</li>
+                <li>Plugin version: 1.2.1</li>
+                <li>Platform: Android</li>
+            </ul>
+        </div>
+    </section>
+
+    <nav class="d-flex flex-wrap justify-content-center" aria-label="Project links">
+        <button id="pluginLink" class="btn btn-link" type="button">Plugin on GitHub</button>
+        <button id="demosLink" class="btn btn-link" type="button">Plugin demos</button>
     </nav>
 </main>
 

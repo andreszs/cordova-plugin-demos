@@ -5,7 +5,6 @@
 
     var PLUGIN_URL = 'https://github.com/andreszs/cordova-plugin-turnstile';
     var DEMOS_URL = 'https://github.com/andreszs/cordova-plugin-demos';
-    var running = false;
     var elements = {};
 
     var errorMessages = {
@@ -32,12 +31,16 @@
     }
 
     function setStatus(message, kind) {
+        var variants = {
+            error: 'danger',
+            info: 'info',
+            success: 'success'
+        };
         elements.status.textContent = message;
-        elements.status.className = 'status ' + (kind || 'info');
+        elements.status.className = 'alert alert-' + (variants[kind] || 'secondary') + ' mb-0';
     }
 
     function setRunning(value) {
-        running = value;
         elements.verifyButton.disabled = value;
         elements.cancelButton.disabled = !value;
     }
