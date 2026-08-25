@@ -51,7 +51,5 @@ The demo uses the local minified Bootstrap 4 CSS file. It does not load Bootstra
 ## Screenshots
 
 <p align="center">
-  <img src="screenshots/android/turnstile-001.png" width="280" alt="Turnstile demo ready on a Samsung Galaxy S7">
-  <img src="screenshots/android/turnstile-002.png" width="280" alt="Cloudflare Turnstile challenge on a Samsung Galaxy S7">
-  <img src="screenshots/android/turnstile-003.png" width="280" alt="Successful server-side validation on a Samsung Galaxy S7">
+  <img src="screenshots/android/turnstile-collage.png" width="960" alt="Turnstile demo ready, challenge, and successful validation on a Samsung Galaxy S7">
 </p>
