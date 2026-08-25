@@ -107,6 +107,7 @@ To build and test a demo app with the provided source code:
 - Show a platform's native spinner and/or message for preventing user interaction during blocking operations.
 
 ## com.andreszs.turnstile.demo
+<img src="https://github.com/andreszs/cordova-plugin-demos/blob/main/com.andreszs.turnstile.demo/res/icons/android/mipmap-mdpi/ic_launcher.png?raw=true" align="right" width="36px" height="36px">
 
 - Plugin: [cordova-plugin-turnstile](https://github.com/andreszs/cordova-plugin-turnstile)
 - Library: [Cloudflare Turnstile](https://developers.cloudflare.com/turnstile/)
