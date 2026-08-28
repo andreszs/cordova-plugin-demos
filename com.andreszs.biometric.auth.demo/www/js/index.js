@@ -24,7 +24,7 @@ var app = {
 		}
 	},
 	init: function () {
-		$('#status').html('<span class="success">Device is ready</span>');
+		$('#status').html('<span class="text-success">Device is ready</span>');
 
 		// Check if user can authenticate
 		$('#btnIsAvailable').on('click', app.isAvailable);
@@ -45,10 +45,10 @@ var app = {
 	},
 	isAvailable: function () {
 		var onSuccess = function (strSuccess) {
-			$('#status').html('<span class="success">' + strSuccess + '</span>');
+			$('#status').html('<span class="text-success">' + strSuccess + '</span>');
 		};
 		var onError = function (strError) {
-			$('#status').html('<span class="error">' + strError + '</span>');
+			$('#status').html('<span class="text-danger">' + strError + '</span>');
 		};
 		optionalParams = {
 			authenticators: $('#selAuthenticators').val()
@@ -58,10 +58,10 @@ var app = {
 	},
 	authenticate: function () {
 		var onSuccess = function (strSuccess) {
-			$('#status').html('<span class="success">' + strSuccess + '</span>');
+			$('#status').html('<span class="text-success">' + strSuccess + '</span>');
 		};
 		var onError = function (strError) {
-			$('#status').html('<span class="error">' + strError + '</span>');
+			$('#status').html('<span class="text-danger">' + strError + '</span>');
 		};
 
 		var optionalParams = {};

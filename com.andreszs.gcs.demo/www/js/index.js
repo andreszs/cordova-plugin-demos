@@ -17,7 +17,7 @@ var app = {
 		}
 	},
 	init: function () {
-		$('#status').html('<span class="success">Device is ready</span>');
+		$('#status').html('<span class="text-success">Device is ready</span>');
 
 		$('#btnStartScan').on('click', app.startScan);
 		$('#btnGetBarcodeConstant').on('click', app.getBarcodeConstant);
@@ -45,11 +45,11 @@ var app = {
 			var formatName = jsonBarcode.formatName;
 			var formatValue = jsonBarcode.formatValue;
 
-			$('#status').html('<span class="success">formatName: ' + formatName + '</span>');
-			$('#status').append('<br /><span class="success">formatValue: ' + formatValue + '</span>');
+			$('#status').html('<span class="text-success">formatName: ' + formatName + '</span>');
+			$('#status').append('<br /><span class="text-success">formatValue: ' + formatValue + '</span>');
 		};
 		var onError = function (strError) {
-			$('#status').html('<span class="error">' + strError + '</span>');
+			$('#status').html('<span class="text-danger">' + strError + '</span>');
 		};
 
 		var options = {};
@@ -64,16 +64,16 @@ var app = {
 			var formatValue = jsonBarcode.formatValue;
 			var valueType = jsonBarcode.valueType;
 
-			$('#status').html('<span class="success">rawValue: ' + rawValue + '</span>');
-			$('#status').append('<br /><span class="success">formatName: ' + formatName + '</span>');
-			$('#status').append('<br /><span class="success">formatValue: ' + formatValue + '</span>');
-			$('#status').append('<br /><span class="success">valueType: ' + valueType + '</span>');
+			$('#status').html('<span class="text-success">rawValue: ' + rawValue + '</span>');
+			$('#status').append('<br /><span class="text-success">formatName: ' + formatName + '</span>');
+			$('#status').append('<br /><span class="text-success">formatValue: ' + formatValue + '</span>');
+			$('#status').append('<br /><span class="text-success">valueType: ' + valueType + '</span>');
 		};
 		var onError = function (strError) {
 			if (strError == 'Waiting for the Barcode UI module to be downloaded.') {
 				// Downloading barcode UI: consider showing a full-screen spinner, and auto-retry scan in a few seconds.
 			}
-			$('#status').html('<span class="error">' + strError + '</span>');
+			$('#status').html('<span class="text-danger">' + strError + '</span>');
 		};
 
 		var options = {};
@@ -81,7 +81,7 @@ var app = {
 
 		var txtBarcodeFormats = $('#txtBarcodeFormats').val();
 		if (txtBarcodeFormats != '' && isNaN(txtBarcodeFormats)) {
-			$('#status').html('<span class="error">Barcode format must be an integer value.</span>');
+			$('#status').html('<span class="text-danger">Barcode format must be an integer value.</span>');
 		} else if (parseInt(txtBarcodeFormats) > 0) {
 			options.barcodeFormats = txtBarcodeFormats;
 		}

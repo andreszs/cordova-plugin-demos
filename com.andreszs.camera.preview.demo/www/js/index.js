@@ -17,7 +17,7 @@ var app = {
 		}
 	},
 	init: function () {
-		$('#status').html('<span class="success">Device is ready</span>');
+		$('#status').html('<span class="text-success">Device is ready</span>');
 
 		// Set camera preview size
 		$('#txtCameraWidth').val(window.screen.width - 40);
@@ -85,9 +85,9 @@ var app = {
 			// Example: 1600x900 resolution
 			options.width = resolution[1]; // use 900
 			options.height = resolution[0]; // use 1600
-			$('#status').html('<span class="success">Taking ' + options.width + 'x' + options.height + ' photo</span>');
+			$('#status').html('<span class="text-success">Taking ' + options.width + 'x' + options.height + ' photo</span>');
 		} else {
-			$('#status').html('<span class="success">Taking photo with default resolution</span>');
+			$('#status').html('<span class="text-success">Taking photo with default resolution</span>');
 		}
 		var successCallback = function (imgData) {
 			var base64Image = 'data:image/jpeg;base64,' + imgData;
@@ -101,7 +101,7 @@ var app = {
 			});
 		};
 		var errorCallback = function (pluginResult) {
-			$('#status').html('<span class="error">' + pluginResult + '</span>');
+			$('#status').html('<span class="text-danger">' + pluginResult + '</span>');
 		};
 		CameraPreview.takePicture(options, successCallback, errorCallback);
 	},
@@ -114,7 +114,7 @@ var app = {
 			// Show captured image
 			$('#originalPicture').attr('src', base64Image);
 			app.getPictureSize(base64Image, '#originalSize');
-			$('#status').html('<span class="success">Taking snapshot with same size used on startCamera</span>');
+			$('#status').html('<span class="text-success">Taking snapshot with same size used on startCamera</span>');
 
 			// Vertically crop image to arbitrary height (done by demo app, not plugin)
 			app.cropImage(base64Image, function (croppedBase64) {
@@ -122,7 +122,7 @@ var app = {
 			});
 		};
 		var errorCallback = function (pluginResult) {
-			$('#status').html('<span class="error">' + pluginResult + '</span>');
+			$('#status').html('<span class="text-danger">' + pluginResult + '</span>');
 		};
 		CameraPreview.takeSnapshot(options, successCallback, errorCallback);
 	},
@@ -134,20 +134,20 @@ var app = {
 	},
 	switchCamera: function () {
 		var successCallback = function (pluginResult) {
-			$('#status').html('<span class="success">' + pluginResult + '</span>');
+			$('#status').html('<span class="text-success">' + pluginResult + '</span>');
 		};
 		var errorCallback = function (pluginResult) {
-			$('#status').html('<span class="error">' + pluginResult + '</span>');
+			$('#status').html('<span class="text-danger">' + pluginResult + '</span>');
 		};
 		CameraPreview.switchCamera(successCallback, errorCallback);
 	},
 	setColorEffect: function () {
 		var effect = $('#selectColorEffect').val();
 		var successCallback = function (pluginResult) {
-			$('#status').html('<span class="success">' + pluginResult + '</span>');
+			$('#status').html('<span class="text-success">' + pluginResult + '</span>');
 		};
 		var errorCallback = function (pluginResult) {
-			$('#status').html('<span class="error">' + pluginResult + '</span>');
+			$('#status').html('<span class="text-danger">' + pluginResult + '</span>');
 		};
 		CameraPreview.setColorEffect(effect, successCallback, errorCallback);
 	},
@@ -201,10 +201,10 @@ var get = {
 				$('#zoomSlider').append('<option value="' + i + '">Zoom ' + i + '</option>');
 			}
 			$('#zoomSlider').prop('disabled', false);
-			$('#status').html('<span class="success">Max zoom level retrieved is ' + pluginResult + '</span>');
+			$('#status').html('<span class="text-success">Max zoom level retrieved is ' + pluginResult + '</span>');
 		};
 		var errorCallback = function (pluginResult) {
-			$('#status').html('<span class="error">' + pluginResult + '</span>');
+			$('#status').html('<span class="text-danger">' + pluginResult + '</span>');
 		};
 		CameraPreview.getMaxZoom(successCallback, errorCallback);
 	},
@@ -215,10 +215,10 @@ var get = {
 				$('#pictureSizes').append('<option value="' + dimension.width + 'x' + dimension.height + '">' + dimension.width + 'x' + dimension.height + '</option>');
 			});
 			$('#pictureSizes').prop('disabled', false);
-			$('#status').html('<span class="success">Retrieved ' + pluginResult.length + ' picture sizes</span>');
+			$('#status').html('<span class="text-success">Retrieved ' + pluginResult.length + ' picture sizes</span>');
 		};
 		var errorCallback = function (pluginResult) {
-			$('#status').html('<span class="error">' + pluginResult + '</span>');
+			$('#status').html('<span class="text-danger">' + pluginResult + '</span>');
 		};
 		CameraPreview.getSupportedPictureSizes(successCallback, errorCallback);
 	},
@@ -229,10 +229,10 @@ var get = {
 				$('#flashModes').append('<option value="' + flashMode + '">' + flashMode + '</option>');
 			});
 			$('#flashModes').prop('disabled', false);
-			$('#status').html('<span class="success">Retrieved ' + pluginResult.length + ' flash modes</span>');
+			$('#status').html('<span class="text-success">Retrieved ' + pluginResult.length + ' flash modes</span>');
 		};
 		var errorCallback = function (pluginResult) {
-			$('#status').html('<span class="error">' + pluginResult + '</span>');
+			$('#status').html('<span class="text-danger">' + pluginResult + '</span>');
 		};
 		CameraPreview.getSupportedFlashModes(successCallback, errorCallback);
 	},
@@ -243,10 +243,10 @@ var get = {
 				$('#focusModes').append('<option value="' + flashMode + '">' + flashMode + '</option>');
 			});
 			$('#focusModes').prop('disabled', false);
-			$('#status').html('<span class="success">Retrieved ' + pluginResult.length + ' focus modes</span>');
+			$('#status').html('<span class="text-success">Retrieved ' + pluginResult.length + ' focus modes</span>');
 		};
 		var errorCallback = function (pluginResult) {
-			$('#status').html('<span class="error">' + pluginResult + '</span>');
+			$('#status').html('<span class="text-danger">' + pluginResult + '</span>');
 		};
 		CameraPreview.getSupportedFocusModes(successCallback, errorCallback);
 	},
@@ -257,10 +257,10 @@ var get = {
 				$('#colorEffects').append('<option value="' + flashMode + '">' + flashMode + '</option>');
 			});
 			$('#colorEffects').prop('disabled', false);
-			$('#status').html('<span class="success">Retrieved ' + $('#colorEffects').children().length + ' color effects</span>');
+			$('#status').html('<span class="text-success">Retrieved ' + $('#colorEffects').children().length + ' color effects</span>');
 		};
 		var errorCallback = function (pluginResult) {
-			$('#status').html('<span class="error">' + pluginResult + '</span>');
+			$('#status').html('<span class="text-danger">' + pluginResult + '</span>');
 		};
 		CameraPreview.getSupportedColorEffects(successCallback, errorCallback);
 	}
@@ -270,30 +270,30 @@ var set = {
 	colorEffect: function () {
 		var effect = $('#colorEffects').val();
 		var successCallback = function (pluginResult) {
-			$('#status').html('<span class="success">' + pluginResult + '</span>');
+			$('#status').html('<span class="text-success">' + pluginResult + '</span>');
 		};
 		var errorCallback = function (pluginResult) {
-			$('#status').html('<span class="error">' + pluginResult + '</span>');
+			$('#status').html('<span class="text-danger">' + pluginResult + '</span>');
 		};
 		CameraPreview.setColorEffect(effect, successCallback, errorCallback);
 	},
 	flashMode: function () {
 		var mode = $('#flashModes').val();
 		var successCallback = function (pluginResult) {
-			$('#status').html('<span class="success">' + pluginResult + '</span>');
+			$('#status').html('<span class="text-success">' + pluginResult + '</span>');
 		};
 		var errorCallback = function (pluginResult) {
-			$('#status').html('<span class="error">' + pluginResult + '</span>');
+			$('#status').html('<span class="text-danger">' + pluginResult + '</span>');
 		};
 		CameraPreview.setFlashMode(mode, successCallback, errorCallback);
 	},
 	focusMode: function () {
 		var mode = $('#focusModes').val();
 		var successCallback = function (pluginResult) {
-			$('#status').html('<span class="success">' + pluginResult + '</span>');
+			$('#status').html('<span class="text-success">' + pluginResult + '</span>');
 		};
 		var errorCallback = function (pluginResult) {
-			$('#status').html('<span class="error">' + pluginResult + '</span>');
+			$('#status').html('<span class="text-danger">' + pluginResult + '</span>');
 		};
 		CameraPreview.setFocusMode(mode, successCallback, errorCallback);
 	},
@@ -301,10 +301,10 @@ var set = {
 		var zoom = $('#zoomSlider').val();
 		$('#zoomValue').html('Zoom: ' + zoom);
 		var successCallback = function (pluginResult) {
-			$('#status').html('<span class="success">Zoom: ' + pluginResult + '</span>');
+			$('#status').html('<span class="text-success">Zoom: ' + pluginResult + '</span>');
 		};
 		var errorCallback = function (pluginResult) {
-			$('#status').html('<span class="error">' + pluginResult + '</span>');
+			$('#status').html('<span class="text-danger">' + pluginResult + '</span>');
 		};
 		CameraPreview.setZoom(zoom, successCallback, errorCallback);
 	},
@@ -312,10 +312,10 @@ var set = {
 		var cpsWidth = $('#cpsWidth').val();
 		var cpsHeight = $('#cpsHeight').val();
 		var successCallback = function (pluginResult) {
-			$('#status').html('<span class="success">' + pluginResult + '</span>');
+			$('#status').html('<span class="text-success">' + pluginResult + '</span>');
 		};
 		var errorCallback = function (pluginResult) {
-			$('#status').html('<span class="error">' + pluginResult + '</span>');
+			$('#status').html('<span class="text-danger">' + pluginResult + '</span>');
 		};
 		console.log(cpsWidth);
 		console.log(cpsHeight);

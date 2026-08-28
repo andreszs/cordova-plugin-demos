@@ -17,7 +17,7 @@ var app = {
 		}
 	},
 	init: function () {
-		$('#status').html('<span class="success">Device is ready</span>');
+		$('#status').html('<span class="text-success">Device is ready</span>');
 
 		$('#btnShow').on('click', app.show);
 		$('#btnHide').on('click', app.hide);
@@ -43,10 +43,10 @@ var app = {
 	show: function () {
 		// Plugin's method does not have success nor error callbacks, a PR to add them would be great.
 //		var successCallback = function (strSuccess) {
-//			$('#status').html('<span class="success">' + strSuccess + '</span>');
+//			$('#status').html('<span class="text-success">' + strSuccess + '</span>');
 //		};
 //		var errorCallback = function (strError) {
-//			$('#status').html('<span class="error">' + strError + '</span>');
+//			$('#status').html('<span class="text-danger">' + strError + '</span>');
 //		};
 		var title = $('#txtTitle').val();
 		if(title == '') title = null;

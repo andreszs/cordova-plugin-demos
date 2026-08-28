@@ -21,7 +21,7 @@ var app = {
 		$('#userAgent').val(navigator.userAgent);
 	},
 	init: function () {
-		$('#status').html('<span class="success">Device is ready</span>');
+		$('#status').html('<span class="text-success">Device is ready</span>');
 
 		$('#btnVerify').on('click', app.verify);
 
@@ -39,11 +39,11 @@ var app = {
 	verify: function () {
 		var onSuccess = function (token) {
 			$('#token').html(token);
-			$('#status').html('<span class="success">You have 2 minutes to create an assessment with this token</span>');
+			$('#status').html('<span class="text-success">You have 2 minutes to create an assessment with this token</span>');
 		};
 
 		var onFailure = function (strError) {
-			$('#status').html('<span class="error">' + strError + '</span>');
+			$('#status').html('<span class="text-danger">' + strError + '</span>');
 		};
 
 		var args = {
@@ -52,7 +52,7 @@ var app = {
 		};
 
 		$('#token').empty();
-		$('#status').html('<span class="info">Requesting reCAPTCHA challenge...</span>');
+		$('#status').html('<span class="text-info">Requesting reCAPTCHA challenge...</span>');
 
 		cordova.plugins.Recaptcha.verify(onSuccess, onFailure, args);
 	}

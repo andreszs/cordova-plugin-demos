@@ -17,7 +17,7 @@ var app = {
 		}
 	},
 	init: function () {
-		$('#status').html('<span class="success">Device is ready</span>');
+		$('#status').html('<span class="text-success">Device is ready</span>');
 
 		$('#btnVerify').on('click', app.verify);
 
@@ -34,11 +34,11 @@ var app = {
 	verify: function () {
 		var onSuccess = function (strToken) {
 			$('#token').html(strToken);
-			$('#status').html('<span class="success">You have to verify the response token as explained in Verify the User Response Server Side</span>');
+			$('#status').html('<span class="text-success">You have to verify the response token as explained in Verify the User Response Server Side</span>');
 		};
 
 		var onError = function (strError) {
-			$('#status').html('<span class="error">' + strError + '</span>');
+			$('#status').html('<span class="text-danger">' + strError + '</span>');
 		};
 
 		var args = {
@@ -48,7 +48,7 @@ var app = {
 			tokenExpiration: parseInt($('#tokenExpiration').val())
 		};
 		$('#token').empty();
-		$('#status').html('<span class="info">Requesting hCaptcha challenge...</span>');
+		$('#status').html('<span class="text-info">Requesting hCaptcha challenge...</span>');
 
 		cordova.plugins.Hcaptcha.verify(onSuccess, onError, args);
 	}

@@ -17,7 +17,7 @@ var app = {
 		}
 	},
 	init: function () {
-		$('#status').html('<span class="success">Device is ready</span>');
+		$('#status').html('<span class="text-success">Device is ready</span>');
 
 		$('#btnVerify').on('click', app.verify);
 
@@ -34,11 +34,11 @@ var app = {
 	verify: function () {
 		var onSuccess = function (strToken) {
 			$('#token').html(strToken);
-			$('#status').html('<span class="success">You have 2 minutes to validate this token as shown in reCAPTCHA &gt; Server Side Validation &gt; Verify the User\'s Response.</span>');
+			$('#status').html('<span class="text-success">You have 2 minutes to validate this token as shown in reCAPTCHA &gt; Server Side Validation &gt; Verify the User\'s Response.</span>');
 		};
 
 		var onFailure = function (strError) {
-			$('#status').html('<span class="error">' + strError + '</span>');
+			$('#status').html('<span class="text-danger">' + strError + '</span>');
 		};
 
 		var args = {};
@@ -46,7 +46,7 @@ var app = {
 		args.siteKeyWeb = $('#siteKeyWeb').val();
 
 		$('#token').empty();
-		$('#status').html('<span class="info">Requesting reCAPTCHA challenge...</span>');
+		$('#status').html('<span class="text-info">Requesting reCAPTCHA challenge...</span>');
 
 		cordova.plugins.Recaptcha.verify(onSuccess, onFailure, args);
 	}

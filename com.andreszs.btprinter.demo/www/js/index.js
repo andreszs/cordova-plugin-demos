@@ -23,11 +23,11 @@ var app = {
 			var strPrinter = $('#btpPrinter option:selected').attr('data-name');
 			BTPrinter.connect(function (data) {
 				window.plugins.toast.showLongBottom(data);
-				$('#status').html('<span class="success">' + data + '</span>');
+				$('#status').html('<span class="text-success">' + data + '</span>');
 				$('#btnConnect').prop('disabled', false);
 			}, function (err) {
 				window.plugins.toast.showLongBottom(err);
-				$('#status').html('<span class="error">' + err + '</span>');
+				$('#status').html('<span class="text-danger">' + err + '</span>');
 				$('#btnConnect').prop('disabled', false);
 			}, strPrinter);
 		}, 100);
@@ -35,19 +35,19 @@ var app = {
 	connected: function () {
 		BTPrinter.connected(function (data) {
 			window.plugins.toast.showLongBottom(data);
-			$('#status').html('<span class="success">' + data + '</span>');
+			$('#status').html('<span class="text-success">' + data + '</span>');
 		}, function (err) {
 			window.plugins.toast.showLongBottom(err);
-			$('#status').html('<span class="error">' + err + '</span>');
+			$('#status').html('<span class="text-danger">' + err + '</span>');
 		});
 	},
 	disconnect: function () {
 		BTPrinter.disconnect(function (data) {
 			window.plugins.toast.showLongBottom(data);
-			$('#status').html('<span class="success">' + data + '</span>');
+			$('#status').html('<span class="text-success">' + data + '</span>');
 		}, function (err) {
 			window.plugins.toast.showLongBottom(err);
-			$('#status').html('<span class="error">' + err + '</span>');
+			$('#status').html('<span class="text-danger">' + err + '</span>');
 		});
 	},
 	fontDemo: function () {
@@ -119,7 +119,7 @@ var app = {
 		}
 	},
 	init: function () {
-		$('#status').html('<span class="success">Device ready. Use <strong>list</strong> to retrieve paired BT devices</span>');
+		$('#status').html('<span class="text-success">Device ready. Use <strong>list</strong> to retrieve paired BT devices</span>');
 
 		$('#btnList').on('click', app.list);
 		$('#btnStatus').on('click', app.status);
@@ -178,10 +178,10 @@ var app = {
 					$('#btpPrinter').append('<option value="' + idx + '" data-name="' + data[idx] + '">' + data[idx] + ' (' + data[idx + 1] + ')</option>');
 				}
 			});
-			$('#status').html('<span class="success">Select a paired printer and click <strong>connect</strong></span>');
+			$('#status').html('<span class="text-success">Select a paired printer and click <strong>connect</strong></span>');
 		}, function (err) {
 			window.plugins.toast.showLongBottom(err);
-			$('#status').html('<span class="error">' + err + '</span>');
+			$('#status').html('<span class="text-danger">' + err + '</span>');
 			$('#btpPrinter').empty().prop('disabled', true);
 		});
 	},
@@ -194,10 +194,10 @@ var app = {
 		var height = $('#optBCHeight').val();
 		BTPrinter.printBarcode(function (data) {
 			window.plugins.toast.showLongBottom(data);
-			$('#status').html('<span class="success">' + data + '</span>');
+			$('#status').html('<span class="text-success">' + data + '</span>');
 		}, function (err) {
 			window.plugins.toast.showLongBottom(err);
-			$('#status').html('<span class="error">' + err + '</span>');
+			$('#status').html('<span class="text-danger">' + err + '</span>');
 		}, system, data, align, position, font, height);
 		$('#btnLineFeed').click();
 	},
@@ -206,10 +206,10 @@ var app = {
 		var strAlign = $('#optAlign option:selected').val();
 		BTPrinter.printBase64(function (data) {
 			window.plugins.toast.showLongBottom(data);
-			$('#status').html('<span class="success">' + data + '</span>');
+			$('#status').html('<span class="text-success">' + data + '</span>');
 		}, function (err) {
 			window.plugins.toast.showLongBottom(err);
-			$('#status').html('<span class="error">' + err + '</span>');
+			$('#status').html('<span class="text-danger">' + err + '</span>');
 		}, printBase64, strAlign);
 		// Print extras
 		$('#txtSample').val('>>> Sent POS:FEED+BEEP');
@@ -238,10 +238,10 @@ var app = {
 		var printPOS = $('#txtPOS').val();
 		BTPrinter.printPOSCommand(function (data) {
 			window.plugins.toast.showLongBottom(data);
-			$('#status').html('<span class="success">' + data + '</span>');
+			$('#status').html('<span class="text-success">' + data + '</span>');
 		}, function (err) {
 			window.plugins.toast.showLongBottom(err);
-			$('#status').html('<span class="error">' + err + '</span>');
+			$('#status').html('<span class="text-danger">' + err + '</span>');
 		}, printPOS);
 	},
 	printQRCode: function () {
@@ -252,10 +252,10 @@ var app = {
 		var eclevel = $('#optQREclevel').val();
 		BTPrinter.printQRCode(function (data) {
 			window.plugins.toast.showLongBottom(data);
-			$('#status').html('<span class="success">' + data + '</span>');
+			$('#status').html('<span class="text-success">' + data + '</span>');
 		}, function (err) {
 			window.plugins.toast.showLongBottom(err);
-			$('#status').html('<span class="error">' + err + '</span>');
+			$('#status').html('<span class="text-danger">' + err + '</span>');
 		}, data, align, model, size, eclevel);
 		$('#btnLineFeed').click();
 	},
@@ -263,10 +263,10 @@ var app = {
 		var strText = $('#txtSample').val() + "\n";
 		BTPrinter.printText(function (data) {
 			window.plugins.toast.showLongBottom(data);
-			$('#status').html('<span class="success">' + data + '</span>');
+			$('#status').html('<span class="text-success">' + data + '</span>');
 		}, function (err) {
 			window.plugins.toast.showLongBottom(err);
-			$('#status').html('<span class="error">' + err + '</span>');
+			$('#status').html('<span class="text-danger">' + err + '</span>');
 		}, strText);
 	},
 	printTextSizeAlign: function () {
@@ -275,10 +275,10 @@ var app = {
 		var strAlign = $('#optAlign option:selected').val();
 		BTPrinter.printTextSizeAlign(function (data) {
 			window.plugins.toast.showLongBottom(data);
-			$('#status').html('<span class="success">' + data + '</span>');
+			$('#status').html('<span class="text-success">' + data + '</span>');
 		}, function (err) {
 			window.plugins.toast.showLongBottom(err);
-			$('#status').html('<span class="error">' + err + '</span>');
+			$('#status').html('<span class="text-danger">' + err + '</span>');
 		}, strText, strSize, strAlign);
 	},
 	printTitle: function () {
@@ -287,10 +287,10 @@ var app = {
 		var strAlign = $('#optAlign option:selected').val();
 		BTPrinter.printTitle(function (data) {
 			window.plugins.toast.showLongBottom(data);
-			$('#status').html('<span class="success">' + data + '</span>');
+			$('#status').html('<span class="text-success">' + data + '</span>');
 		}, function (err) {
 			window.plugins.toast.showLongBottom(err);
-			$('#status').html('<span class="error">' + err + '</span>');
+			$('#status').html('<span class="text-danger">' + err + '</span>');
 		}, strText, strSize, strAlign);
 	},
 	reset: function () {
@@ -344,10 +344,10 @@ var app = {
 		var strEncoding = $('#txtEncoding').val();
 		BTPrinter.setEncoding(function (data) {
 			window.plugins.toast.showLongBottom(data);
-			$('#status').html('<span class="success">' + data + '</span>');
+			$('#status').html('<span class="text-success">' + data + '</span>');
 		}, function (err) {
 			window.plugins.toast.showLongBottom(err);
-			$('#status').html('<span class="error">' + err + '</span>');
+			$('#status').html('<span class="text-danger">' + err + '</span>');
 		}, strEncoding);
 	},
 	setInvertedOff: function () {
@@ -377,10 +377,10 @@ var app = {
 	status: function () {
 		BTPrinter.status(function (data) {
 			window.plugins.toast.showLongBottom(data);
-			$('#status').html('<span class="success">' + data + '</span>');
+			$('#status').html('<span class="text-success">' + data + '</span>');
 		}, function (err) {
 			window.plugins.toast.showLongBottom(err);
-			$('#status').html('<span class="error">' + err + '</span>');
+			$('#status').html('<span class="text-danger">' + err + '</span>');
 		});
 	},
 	testCP: function (table) {

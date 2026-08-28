@@ -17,7 +17,7 @@ var app = {
 		}
 	},
 	init: function () {
-		$('#status').html('<span class="success">Device is ready</span>');
+		$('#status').html('<span class="text-success">Device is ready</span>');
 
 		// Initialize incoming SMS event listener
 		document.addEventListener('onSMSArrive', app.onSMSArrive);
@@ -44,16 +44,16 @@ var app = {
 	},
 	startWatch: function () {
 		cordova.plugins.SMSReceive.startWatch(function (strSuccess) {
-			$('#status').html('<span class="success">' + strSuccess + '</span>');
+			$('#status').html('<span class="text-success">' + strSuccess + '</span>');
 		}, function (strError) {
-			$('#status').html('<span class="error">' + strError + '</span>');
+			$('#status').html('<span class="text-danger">' + strError + '</span>');
 		});
 	},
 	stopWatch: function () {
 		cordova.plugins.SMSReceive.stopWatch(function (strSuccess) {
-			$('#status').html('<span class="success">' + strSuccess + '</span>');
+			$('#status').html('<span class="text-success">' + strSuccess + '</span>');
 		}, function (strError) {
-			$('#status').html('<span class="error">' + strError + '</span>');
+			$('#status').html('<span class="text-danger">' + strError + '</span>');
 		});
 	}
 };

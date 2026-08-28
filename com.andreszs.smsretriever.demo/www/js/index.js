@@ -9,12 +9,12 @@ var app = {
 			$('#status').html('Blocked action: You must NOT call this method after a retriever is started, otherwise the SMS will be ignored!');
 		} else {
 			var onSuccess = function (strSuccess) {
-				$('#status').html('<span class="success">' + strSuccess + '</span>');
+				$('#status').html('<span class="text-success">' + strSuccess + '</span>');
 				$('#txtMessage').val('AZC123 is your code for andreszsogon.com SMS Retriever Demo App. ' + strSuccess);
 				app.RETRIEVER_STARTED = false;
 			};
 			var onFail = function (strError) {
-				$('#status').html('<span class="error">' + strError + '</span>');
+				$('#status').html('<span class="text-danger">' + strError + '</span>');
 				app.RETRIEVER_STARTED = false;
 			};
 			cordova.plugins.SMSRetriever.getHashString(onSuccess, onFail);
@@ -34,7 +34,7 @@ var app = {
 		}
 	},
 	init: function () {
-		$('#status').html('<span class="success">Device is ready</span>');
+		$('#status').html('<span class="text-success">Device is ready</span>');
 
 		// Initialize incoming SMS event listener
 		document.addEventListener('onSMSArrive', function (args) {
@@ -66,16 +66,16 @@ var app = {
 	},
 	getPhoneNumber: function () {
         var onSuccess = function (strSuccess) {
-            $('#status').html('<span class="success">' + strSuccess + '</span>');
+            $('#status').html('<span class="text-success">' + strSuccess + '</span>');
         };
         var onFail = function (strError) {
-            $('#status').html('<span class="error">' + strError + '</span>');
+            $('#status').html('<span class="text-danger">' + strError + '</span>');
         };
         cordova.plugins.SMSRetriever.getPhoneNumber(onSuccess, onFail);
     },
 	startWatch: function () {
 		var onSuccess = function (strSuccess) {
-			$('#status').html('<span class="success">' + strSuccess + '</span>');
+			$('#status').html('<span class="text-success">' + strSuccess + '</span>');
 			if (strSuccess == 'SMS_RETRIEVER_DONE') {
 				app.RETRIEVER_STARTED = false;
 			} else {
@@ -83,7 +83,7 @@ var app = {
 			}
 		};
 		var onFail = function (strError) {
-			$('#status').html('<span class="error">' + strError + '</span>');
+			$('#status').html('<span class="text-danger">' + strError + '</span>');
 			app.RETRIEVER_STARTED = false;
 		};
 		cordova.plugins.SMSRetriever.startWatch(onSuccess, onFail);

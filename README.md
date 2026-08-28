@@ -1,117 +1,166 @@
-![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/andreszs/cordova-plugin-demos) ![GitHub top language](https://img.shields.io/github/languages/top/andreszs/cordova-plugin-demos) ![GitHub](https://img.shields.io/github/license/andreszs/cordova-plugin-demos) ![GitHub last commit](https://img.shields.io/github/last-commit/andreszs/cordova-plugin-demos)
-
 # Apache Cordova plugin demos
 
-Source code for the **www** and **res** folders of some plugin demo apps by Andrés Zsögön. Refer to the [individual page for each demo app](https://www.andreszsogon.com/category/plugin-demo-apps/ "individual page for each demo app") for usage reference and compiled APK downloads. The Turnstile demo also includes a ready-to-install APK in this repository.
+![GitHub code size](https://img.shields.io/github/languages/code-size/andreszs/cordova-plugin-demos) ![GitHub top language](https://img.shields.io/github/languages/top/andreszs/cordova-plugin-demos) ![GitHub license](https://img.shields.io/github/license/andreszs/cordova-plugin-demos) ![GitHub last commit](https://img.shields.io/github/last-commit/andreszs/cordova-plugin-demos)
 
-:information_source: Most legacy demos use the bundled jQuery 3.6.0 file. Newer demos may use plain JavaScript when no additional library is required.
+A collection of source code for Apache Cordova plugin demo apps by Andrés Zsögön. Most directories provide the app's `www` and `res` folders, along with a `config.xml` file when required.
 
-# Building demo apps
+Visit the [Cordova plugin demo apps](https://www.andreszsogon.com/category/plugin-demo-apps/) page for usage guides and compiled APK downloads. The Turnstile demo also includes a ready-to-install APK in this repository.
 
-To build and test a demo app with the provided source code:
+> [!NOTE]
+> Most legacy demos bundle jQuery 3.6.0. Newer demos use plain JavaScript when no additional library is required.
 
-1. [Create a new Cordova project](https://cordova.apache.org/docs/en/dev/reference/cordova-cli/index.html#cordova-create-command "Create a new Cordova project") using the provided package name (com.andreszs.[...].demo)
-2. Add the **www** folder provided
-3. Add the **res** folder and **config.xml** if you want to include the demo app icons.
-4. Install the **cordova-plugin-app-version** plugin (used to retrieve app's version)
-5. Install the **cordova-plugin-device** plugin (used in some demos that provide both android and browser platform)
-6. Install the relevant plugin from either NPM or GitHub. In general, they are the same versions.
+## Contents
 
-:information_source: Some demos include *minSdkVersion* and *targetSdkVersion* variables inside config.xml. If your compile fails, try setting the same values in your implementation.
+- [Building a demo app](#building-a-demo-app)
+- [Included demo apps](#included-demo-apps)
+- [Contribute](#contribute)
+- [Changes Log](#changes-log)
 
-# Contributing
+## Building a demo app
 
-:information_source: To keep apps simple, certain demos do not include all of the plugin's functions. To add missing features or fix errors, kindly sent a PR and it will be merged asap.
+To build and test a demo using the provided source code:
 
-# Demo apps included
+1. [Create a Cordova project](https://cordova.apache.org/docs/en/dev/reference/cordova-cli/index.html#cordova-create-command) with the package name shown in the demo directory, such as `com.andreszs.gcs.demo`.
+2. Replace the generated `www` directory with the demo's `www` directory.
+3. Copy the provided `res` directory and `config.xml` file when available.
+4. Install [`cordova-plugin-app-version`](https://www.npmjs.com/package/cordova-plugin-app-version), which the demos use to display the application version.
+5. Install [`cordova-plugin-device`](https://www.npmjs.com/package/cordova-plugin-device) if the selected demo supports both Android and browser platforms.
+6. Install the plugin demonstrated by the app from npm or GitHub.
+7. Add the desired Cordova platform, then build or run the project.
 
-## com.andreszs.biometric.auth.demo
-<img src="https://github.com/andreszs/cordova-plugin-demos/blob/main/com.andreszs.biometric.auth.demo/res/icons/android/mipmap-mdpi/ic_launcher.png?raw=true" align="right" width="36px" height="36px">
+> [!NOTE]
+> Some demos define `minSdkVersion` and `targetSdkVersion` preferences in `config.xml`. If compilation fails because of an SDK mismatch, use the same values in your project.
 
-- Plugin: [cordova-plugin-biometric-auth](https://github.com/andreszs/cordova-plugin-biometric-auth)
-- Library: [KeyguardManager](https://developer.android.com/reference/android/app/KeyguardManager) & [BiometricManager](https://developer.android.com/reference/android/hardware/biometrics/BiometricManager)
-- Authenticate device users with biometrics or fallback PIN, pattern or password.
+## Included demo apps
 
-## com.andreszs.btprinter.demo
-<img src="https://github.com/andreszs/cordova-plugin-demos/blob/main/com.andreszs.btprinter.demo/res/icons/android/mipmap-mdpi/ic_launcher.png?raw=true" align="right" width="36px" height="36px">
+### [`com.andreszs.biometric.auth.demo`](com.andreszs.biometric.auth.demo/)
 
-- Plugin: [cordova-plugin-btprinter](https://github.com/CesarBalzer/Cordova-Plugin-BTPrinter)
-- Bluetooth printer implementation to print text, images, barcodes and QR codes to any bluetooth-paired printer.
+<img src="com.andreszs.biometric.auth.demo/res/icons/android/mipmap-mdpi/ic_launcher.png" alt="Biometric authentication demo icon" align="right" width="36" height="36">
 
-## com.andreszs.camera.preview.demo
-<img src="https://github.com/andreszs/cordova-plugin-demos/blob/main/com.andreszs.camera.preview.demo/res/icons/android/mipmap-mdpi/ic_launcher.png?raw=true" align="right" width="36px" height="36px">
+- **Plugin:** [cordova-plugin-biometric-auth](https://github.com/andreszs/cordova-plugin-biometric-auth)
+- **Libraries:** [KeyguardManager](https://developer.android.com/reference/android/app/KeyguardManager) and [BiometricManager](https://developer.android.com/reference/android/hardware/biometrics/BiometricManager)
+- **Purpose:** Authenticate users with biometrics or a fallback PIN, pattern, or password.
 
-- Plugin: [cordova-plugin-camera-preview](https://github.com/cordova-plugin-camera-preview/cordova-plugin-camera-preview) 
-- Direct camera interaction from Javascript and HTML.
+### [`com.andreszs.btprinter.demo`](com.andreszs.btprinter.demo/)
 
-## com.andreszs.fingerprint.demo
-<img src="https://github.com/andreszs/cordova-plugin-demos/blob/main/com.andreszs.fingerprint.demo/res/icons/android/mipmap-mdpi/ic_launcher.png?raw=true" align="right" width="36px" height="36px">
+<img src="com.andreszs.btprinter.demo/res/icons/android/mipmap-mdpi/ic_launcher.png" alt="Bluetooth printer demo icon" align="right" width="36" height="36">
 
-- Plugin: [cordova-plugin-fingerprint-aio](https://github.com/NiklasMerz/cordova-plugin-fingerprint-aio)
-- Library: [FingerprintManager](https://developer.android.com/reference/android/hardware/fingerprint/FingerprintManager) (deprecated)
-- Authenticate users with biometric validation.
+- **Plugin:** [cordova-plugin-btprinter](https://github.com/CesarBalzer/Cordova-Plugin-BTPrinter)
+- **Purpose:** Print text, images, barcodes, and QR codes using a paired Bluetooth printer.
 
-## com.andreszs.gcs.demo
-<img src="https://github.com/andreszs/cordova-plugin-demos/blob/main/com.andreszs.gcs.demo/res/icons/android/mipmap-mdpi/ic_launcher.png?raw=true" align="right" width="36px" height="36px">
+### [`com.andreszs.camera.preview.demo`](com.andreszs.camera.preview.demo/)
 
-- Plugin: [cordova-plugin-google-code-scanner](https://github.com/andreszs/cordova-plugin-google-code-scanner)
-- Library: [Google code scanner](https://developers.google.com/ml-kit/vision/barcode-scanning/code-scanner)
-- Complete solution for scanning code without requiring your app to request camera permission, while preserving user privacy.
+<img src="com.andreszs.camera.preview.demo/res/icons/android/mipmap-mdpi/ic_launcher.png" alt="Camera Preview demo icon" align="right" width="36" height="36">
 
-## com.andreszs.grecaptcha.demo
-<img src="https://github.com/andreszs/cordova-plugin-demos/blob/main/com.andreszs.grecaptcha.demo/res/icons/android/mipmap-mdpi/ic_launcher.png?raw=true" align="right" width="36px" height="36px">
+- **Plugin:** [cordova-plugin-camera-preview](https://github.com/cordova-plugin-camera-preview/cordova-plugin-camera-preview)
+- **Purpose:** Interact directly with the camera from JavaScript and HTML.
 
-- Plugin: [cordova-plugin-recaptcha-enterprise](https://github.com/andreszs/cordova-plugin-recaptcha-enterprise)
-- Library: [Google reCAPTCHA Enterprise](https://cloud.google.com/recaptcha-enterprise/docs/overview)
-- Google reCAPTCHA implementation for retrieving tokens used in risk score assessments.
+### [`com.andreszs.fingerprint.demo`](com.andreszs.fingerprint.demo/)
 
-## com.andreszs.hcaptcha.demo
-<img src="https://github.com/andreszs/cordova-plugin-demos/blob/main/com.andreszs.hcaptcha.demo/res/icons/android/mipmap-mdpi/ic_launcher.png?raw=true" align="right" width="36px" height="36px">
+<img src="com.andreszs.fingerprint.demo/res/icons/android/mipmap-mdpi/ic_launcher.png" alt="Fingerprint demo icon" align="right" width="36" height="36">
 
-- Plugin: [cordova-plugin-hcaptcha](https://github.com/andreszs/cordova-plugin-hcaptcha)
-- Library: [hcaptcha-android-sdk](https://github.com/hCaptcha/hcaptcha-android-sdk) and [browser API](https://docs.hcaptcha.com/invisible)
-- The hCaptcha widget can protect your applications from bots, spam, and other forms of automated abuse.
+- **Plugin:** [cordova-plugin-fingerprint-aio](https://github.com/NiklasMerz/cordova-plugin-fingerprint-aio)
+- **Library:** [FingerprintManager](https://developer.android.com/reference/android/hardware/fingerprint/FingerprintManager) (deprecated)
+- **Purpose:** Authenticate users with fingerprint validation.
 
-## com.andreszs.inappupdate.demo
-<img src="https://github.com/andreszs/cordova-plugin-demos/blob/main/com.andreszs.inappupdate.demo/res/icons/android/mipmap-mdpi/ic_launcher.png?raw=true" align="right" width="36px" height="36px">
+### [`com.andreszs.gcs.demo`](com.andreszs.gcs.demo/)
 
-- Plugin: [cordova-plugin-in-app-updates](https://github.com/andreszs/cordova-plugin-in-app-updates)
-- Library: [In-app updates](https://developer.android.com/guide/playcore/in-app-updates)
-- A Google Play Core libraries feature that prompts active users to update your app.
+<img src="com.andreszs.gcs.demo/res/icons/android/mipmap-mdpi/ic_launcher.png" alt="Google Code Scanner demo icon" align="right" width="36" height="36">
 
-## com.andreszs.recaptcha.v2.demo
-<img src="https://github.com/andreszs/cordova-plugin-demos/blob/main/com.andreszs.recaptcha.v2.demo/res/icons/android/mipmap-mdpi/ic_launcher.png?raw=true" align="right" width="36px" height="36px">
+- **Plugin:** [cordova-plugin-google-code-scanner](https://github.com/andreszs/cordova-plugin-google-code-scanner)
+- **Library:** [Google Code Scanner](https://developers.google.com/ml-kit/vision/barcode-scanning/code-scanner)
+- **Purpose:** Scan codes without requesting camera permission while preserving user privacy.
 
-- Plugin: [cordova-plugin-recaptcha-v2](https://github.com/andreszs/cordova-plugin-recaptcha-v2)
-- Library: [SafetyNet reCAPTCHA](https://developer.android.com/privacy-and-security/safetynet/recaptcha)
-- The SafetyNet service includes a reCAPTCHA API that you can use to protect your app from malicious traffic.
+### [`com.andreszs.grecaptcha.demo`](com.andreszs.grecaptcha.demo/)
 
-## com.andreszs.smsreceive.demo
-<img src="https://github.com/andreszs/cordova-plugin-demos/blob/main/com.andreszs.smsreceive.demo/res/icons/android/mipmap-mdpi/ic_launcher.png?raw=true" align="right" width="36px" height="36px">
+<img src="com.andreszs.grecaptcha.demo/res/icons/android/mipmap-mdpi/ic_launcher.png" alt="reCAPTCHA Enterprise demo icon" align="right" width="36" height="36">
 
-- Plugin: [cordova-plugin-sms-receive](https://github.com/andreszs/cordova-plugin-sms-receive)
-- Library: [Telephony](https://developer.android.com/reference/android/provider/Telephony)
-- Receive and read SMS messages using the Telephony API provided by Android.
+- **Plugin:** [cordova-plugin-recaptcha-enterprise](https://github.com/andreszs/cordova-plugin-recaptcha-enterprise)
+- **Library:** [Google reCAPTCHA Enterprise](https://cloud.google.com/recaptcha-enterprise/docs/overview)
+- **Purpose:** Retrieve tokens for reCAPTCHA Enterprise risk assessments.
 
-## com.andreszs.smsretriever.demo
-<img src="https://github.com/andreszs/cordova-plugin-demos/blob/main/com.andreszs.smsretriever.demo/res/icons/android/mipmap-mdpi/ic_launcher.png?raw=true" align="right" width="36px" height="36px">
+### [`com.andreszs.hcaptcha.demo`](com.andreszs.hcaptcha.demo/)
 
-- Plugin: [cordova-plugin-sms-retriever](https://github.com/andreszs/cordova-plugin-sms-retriever)
-- Library: [SMS Retriever](https://developers.google.com/identity/sms-retriever/overview)
-- Receive and read SMS verification messages without requesting SMS permissions.
+<img src="com.andreszs.hcaptcha.demo/res/icons/android/mipmap-mdpi/ic_launcher.png" alt="hCaptcha demo icon" align="right" width="36" height="36">
 
-## com.andreszs.spinner.demo
-<img src="https://github.com/andreszs/cordova-plugin-demos/blob/main/com.andreszs.spinner.demo/res/icons/android/mipmap-mdpi/ic_launcher.png?raw=true" align="right" width="36px" height="36px">
+- **Plugin:** [cordova-plugin-hcaptcha](https://github.com/andreszs/cordova-plugin-hcaptcha)
+- **Libraries:** [hCaptcha Android SDK](https://github.com/hCaptcha/hcaptcha-android-sdk) and [browser API](https://docs.hcaptcha.com/invisible)
+- **Purpose:** Protect applications from bots, spam, and other forms of automated abuse.
 
-- Plugin: [cordova-plugin-native-spinner](https://github.com/greybax/cordova-plugin-native-spinner)
-- Show a platform's native spinner and/or message for preventing user interaction during blocking operations.
+### [`com.andreszs.inappupdate.demo`](com.andreszs.inappupdate.demo/)
 
-## com.andreszs.turnstile.demo
-<img src="https://github.com/andreszs/cordova-plugin-demos/blob/main/com.andreszs.turnstile.demo/res/icons/android/mipmap-mdpi/ic_launcher.png?raw=true" align="right" width="36px" height="36px">
+<img src="com.andreszs.inappupdate.demo/res/icons/android/mipmap-mdpi/ic_launcher.png" alt="In-app updates demo icon" align="right" width="36" height="36">
 
-- Plugin: [cordova-plugin-turnstile](https://github.com/andreszs/cordova-plugin-turnstile)
-- Library: [Cloudflare Turnstile](https://developers.cloudflare.com/turnstile/)
-- Demo files and instructions: [`com.andreszs.turnstile.demo`](com.andreszs.turnstile.demo/)
-- Precompiled test app: [`com.andreszs.turnstile.demo.apk`](com.andreszs.turnstile.demo/com.andreszs.turnstile.demo.apk)
-- Run a Turnstile challenge from a developer-hosted HTTPS page, return the token to the Cordova application, and validate it with a separate backend handler.
-- The precompiled APK uses a public demo-only combined service. The source contains no preconfigured endpoint URLs and asks the developer for separate challenge and backend URLs.
+- **Plugin:** [cordova-plugin-in-app-updates](https://github.com/andreszs/cordova-plugin-in-app-updates)
+- **Library:** [Google Play In-App Updates](https://developer.android.com/guide/playcore/in-app-updates)
+- **Purpose:** Prompt active users to update an Android app through Google Play.
+
+### [`com.andreszs.recaptcha.v2.demo`](com.andreszs.recaptcha.v2.demo/)
+
+<img src="com.andreszs.recaptcha.v2.demo/res/icons/android/mipmap-mdpi/ic_launcher.png" alt="SafetyNet reCAPTCHA demo icon" align="right" width="36" height="36">
+
+- **Plugin:** [cordova-plugin-recaptcha-v2](https://github.com/andreszs/cordova-plugin-recaptcha-v2)
+- **Library:** [SafetyNet reCAPTCHA](https://developer.android.com/privacy-and-security/safetynet/recaptcha)
+- **Purpose:** Protect applications from malicious traffic with the SafetyNet reCAPTCHA API.
+
+### [`com.andreszs.smsreceive.demo`](com.andreszs.smsreceive.demo/)
+
+<img src="com.andreszs.smsreceive.demo/res/icons/android/mipmap-mdpi/ic_launcher.png" alt="SMS Receive demo icon" align="right" width="36" height="36">
+
+- **Plugin:** [cordova-plugin-sms-receive](https://github.com/andreszs/cordova-plugin-sms-receive)
+- **Library:** [Telephony](https://developer.android.com/reference/android/provider/Telephony)
+- **Purpose:** Receive and read SMS messages using the Android Telephony API.
+
+### [`com.andreszs.smsretriever.demo`](com.andreszs.smsretriever.demo/)
+
+<img src="com.andreszs.smsretriever.demo/res/icons/android/mipmap-mdpi/ic_launcher.png" alt="SMS Retriever demo icon" align="right" width="36" height="36">
+
+- **Plugin:** [cordova-plugin-sms-retriever](https://github.com/andreszs/cordova-plugin-sms-retriever)
+- **Library:** [SMS Retriever](https://developers.google.com/identity/sms-retriever/overview)
+- **Purpose:** Receive and read SMS verification messages without requesting SMS permissions.
+
+### [`com.andreszs.spinner.demo`](com.andreszs.spinner.demo/)
+
+<img src="com.andreszs.spinner.demo/res/icons/android/mipmap-mdpi/ic_launcher.png" alt="Native Spinner demo icon" align="right" width="36" height="36">
+
+- **Plugin:** [cordova-plugin-native-spinner](https://github.com/greybax/cordova-plugin-native-spinner)
+- **Purpose:** Display a platform-native spinner or message during blocking operations.
+
+### [`com.andreszs.turnstile.demo`](com.andreszs.turnstile.demo/)
+
+<img src="com.andreszs.turnstile.demo/res/icons/android/mipmap-mdpi/ic_launcher.png" alt="Cloudflare Turnstile demo icon" align="right" width="36" height="36">
+
+- **Plugin:** [cordova-plugin-turnstile](https://github.com/andreszs/cordova-plugin-turnstile)
+- **Library:** [Cloudflare Turnstile](https://developers.cloudflare.com/turnstile/)
+- **Documentation:** [Demo files and setup instructions](com.andreszs.turnstile.demo/)
+- **Download:** [Precompiled test APK](com.andreszs.turnstile.demo/com.andreszs.turnstile.demo.apk)
+- **Purpose:** Run a Turnstile challenge from a developer-hosted HTTPS page, return its token to the Cordova application, and validate it with a separate backend handler.
+
+> [!IMPORTANT]
+> The precompiled APK uses a public, demo-only combined service. The source contains no preconfigured endpoint URLs and asks the developer for separate challenge and backend URLs.
+
+## Contribute
+
+> [!NOTE]
+> To keep the apps simple, some demos do not implement every function exposed by their plugins.
+
+Contributions are always welcome. If you find a bug, want to add a missing feature, or have an improvement in mind, please [open an issue](https://github.com/andreszs/cordova-plugin-demos/issues) or [submit a pull request](https://github.com/andreszs/cordova-plugin-demos/pulls). Every bit of feedback helps keep the demo apps useful and reliable.
+
+💙 If these demo apps save you time, you can support their continued development and maintenance through PayPal.
+
+[Support the project via PayPal](https://www.paypal.com/ncp/payment/GEEM324PDD9NC)
+
+⭐ If financial support is not an option, [star this repository](https://github.com/andreszs/cordova-plugin-demos) or share it with other Cordova developers—both make a difference.
+
+## Changes Log
+
+### 2026-08-27
+
+- Refreshed the legacy demo app interfaces with Bootstrap 4.6.2 styling.
+- Replaced the custom `index.css` files with local `bootstrap.min.css` files.
+- Updated the HTML markup and JavaScript-generated elements for consistent, responsive layouts.
+- Improved the repository documentation, navigation, and build instructions.
+
+### 2026-08-26
+
+- Added the `cordova-plugin-turnstile` demo app, including its source files, setup instructions, and precompiled test APK.

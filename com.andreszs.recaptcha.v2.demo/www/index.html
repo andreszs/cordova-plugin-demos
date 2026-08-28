@@ -7,64 +7,66 @@
 		<meta name="msapplication-tap-highlight" content="no">
 		<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height" />
 		<link rel="icon" href="favicon.ico">
-		<link rel="stylesheet" type="text/css" href="css/index.css">
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 		<script src="js/jquery-3.6.0.min.js"></script>
 		<title>Recaptcha v2 Demo</title>
 	</head>
-	<body>
-		<h1>cordova-plugin-recaptcha-v2 demo</h1>
-		<fieldset>
-			<legend>reCAPTCHA v2 keys</legend>
-			<label>android site key</label>
-			<input type="text" id="siteKeyAndroid" value="6LfxC1gUAAAAADtXwE1kZ8ngRYq_xSBMp6XOBTtq" />
-			<label>browser site key</label>
-			<input type="text" id="siteKeyWeb" value="6Lf02PgpAAAAAM5a_wRX6yMf9ER8MjkGdfJ1eo_z" />
+	<body class="bg-light">
+		<main class="container py-3">
+<h1 class="h3 mb-3">cordova-plugin-recaptcha-v2 demo</h1>
+<fieldset class="border rounded bg-white shadow-sm mb-3 p-3">
+			<legend class="h5 card-title">Status</legend>
+			<label class="d-block mb-0 alert alert-secondary text-break" id="status" role="status"></label>
+		</fieldset>
+		<fieldset class="border rounded bg-white shadow-sm mb-3 p-3">
+			<legend class="h5 card-title">reCAPTCHA v2 keys</legend>
+			<label class="d-block mb-1">android site key</label>
+			<input class="form-control mb-2" type="text" id="siteKeyAndroid" value="6LfxC1gUAAAAADtXwE1kZ8ngRYq_xSBMp6XOBTtq" />
+			<label class="d-block mb-1">browser site key</label>
+			<input class="form-control mb-2" type="text" id="siteKeyWeb" value="6Lf02PgpAAAAAM5a_wRX6yMf9ER8MjkGdfJ1eo_z" />
 		</fieldset>
 
-		<fieldset>
-			<legend>Methods</legend>
-			<button type="button" id="btnVerify">verify</button>
+		<fieldset class="border rounded bg-white shadow-sm mb-3 p-3">
+			<legend class="h5 card-title">Methods</legend>
+			<button class="btn btn-primary mr-2 mb-2" type="button" id="btnVerify">verify</button>
 		</fieldset>
 
-		<fieldset>
-			<legend>Status</legend>
-			<label id="status"></label>
+<fieldset class="border rounded bg-white shadow-sm mb-3 p-3">
+			<legend class="h5 card-title">reCAPTCHA Token</legend>
+			<textarea class="form-control mb-2" rows="5" id="token"></textarea>
 		</fieldset>
 
-		<fieldset>
-			<legend>reCAPTCHA Token</legend>
-			<textarea rows="5" id="token"></textarea>
+		<fieldset class="border rounded bg-white shadow-sm mb-3 p-3" id="versions">
+			<legend class="h5 card-title">Versions</legend>
+			<img alt="" class="float-right" src="img/outline_info_black_36dp.png" />
+			<label id="app_version" class="text-primary d-block mb-1">App version</label>
+			<label id="plugin_version" class="text-primary d-block mb-1">Plugin version</label>
 		</fieldset>
 
-		<fieldset id="versions">
-			<legend>Versions</legend>
-			<img alt="" class="info" src="img/outline_info_black_36dp.png" />
-			<label id="app_version" class="blue">App version</label>
-			<label id="plugin_version" class="blue">Plugin version</label>
-		</fieldset>
-
-		<fieldset>
-			<legend>App Requirements</legend>
+		<fieldset class="border rounded bg-white shadow-sm mb-3 p-3">
+			<legend class="h5 card-title">App Requirements</legend>
 			<ul>
 				<li>Legacy reCAPTCHA v2 site keys</li>
 				<li>Content-Security-Policy to allow: https://www.google.com, https://www.gstatic.com</li>
 			</ul>
 		</fieldset>
 
-		<fieldset>
-			<legend>About Plugin</legend>
-			<label>Refer to README for more info.</label>
+		<fieldset class="border rounded bg-white shadow-sm mb-3 p-3">
+			<legend class="h5 card-title">About Plugin</legend>
+			<label class="d-block mb-1">Refer to README for more info.</label>
 			<hr />
-			<button type="button" id="btnGitHub">GitHub</button>
+			<button class="btn btn-outline-secondary mr-2 mb-2" type="button" id="btnGitHub">GitHub</button>
 		</fieldset>
 
-		<fieldset>
-			<legend>About Demo App</legend>
-			<label>Visit website for demo app reference.</label>
+		<fieldset class="border rounded bg-white shadow-sm mb-3 p-3">
+			<legend class="h5 card-title">About Demo App</legend>
+			<label class="d-block mb-1">Visit website for demo app reference.</label>
 			<hr />
-			<button type="button" id="btnWebsite">Website</button>
-			<button type="button" id="btnPluginDemos">Plugin Demos</button>
+			<button class="btn btn-outline-secondary mr-2 mb-2" type="button" id="btnWebsite">Website</button>
+			<button class="btn btn-outline-secondary mr-2 mb-2" type="button" id="btnPluginDemos">Plugin Demos</button>
 		</fieldset>
+
+		</main>
 
 		<script type="text/javascript" src="cordova.js"></script>
 		<script type="text/javascript" src="js/index.js"></script>

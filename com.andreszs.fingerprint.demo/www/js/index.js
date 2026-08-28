@@ -24,7 +24,7 @@ var app = {
 		}
 	},
 	init: function () {
-		$('#status').html('<span class="success">Device is ready</span>');
+		$('#status').html('<span class="text-success">Device is ready</span>');
 
 		$('#btnIsAvailable').on('click', app.isAvailable);
 		$('#btnShow').on('click', app.show);
@@ -47,23 +47,23 @@ var app = {
 			 *  iPhone X will return 'face'
 			 *  other Android or iOS devices will return 'finger'
 			 *  Android P+ will return 'biometric' */
-			$('#status').html('<span class="success">' + result + '</span>');
+			$('#status').html('<span class="text-success">' + result + '</span>');
 		};
 		var isAvailableError = function (error) {
 			/* 'error' will be an object with an error code and message */
-			$('#status').html('<span class="error">' + error.message + '</span>');
+			$('#status').html('<span class="text-danger">' + error.message + '</span>');
 		};
 		var optionalParams = {allowBackup: true};
 		Fingerprint.isAvailable(isAvailableSuccess, isAvailableError, optionalParams);
 	},
 	show: function () {
 		var successCallback = function (str) {
-			$('#status').html('<span class="success">' + str + '</span>');
-			//$('#status').html('<span class="success">Authentication successful</span>');
+			$('#status').html('<span class="text-success">' + str + '</span>');
+			//$('#status').html('<span class="text-success">Authentication successful</span>');
 		};
 		var errorCallback = function (error) {
 			console.log(error);
-			$('#status').html('<span class="error">' + error.message + '</span>');
+			$('#status').html('<span class="text-danger">' + error.message + '</span>');
 		};
 
 		var options = {};
