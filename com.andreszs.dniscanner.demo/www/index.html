@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Security-Policy"
+          content="default-src 'self' data: file: https://ssl.gstatic.com; connect-src 'self'; style-src 'self'; img-src 'self' data: content: file:; media-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'none'">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
+    <meta name="color-scheme" content="light">
+    <link rel="icon" href="img/logo.png">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <title>DNI Scanner Demo</title>
+</head>
+<body class="bg-light">
+<main class="container py-3">
+    <header class="d-flex align-items-center mb-3">
+        <span class="badge badge-primary p-3 mr-3">DNI</span>
+        <div>
+            <h1 class="h3 mb-0">DNI Scanner Demo</h1>
+            <p class="text-muted mb-0">cordova-plugin-dni-scanner</p>
+        </div>
+    </header>
+
+    <section class="card shadow-sm mb-3">
+        <div class="card-body">
+            <h2 class="h5 card-title">Estado</h2>
+            <p id="device-status" class="alert alert-secondary mb-0" role="status">Esperando a Cordova…</p>
+        </div>
+    </section>
+
+    <section class="card shadow-sm mb-3">
+        <div class="card-body">
+            <h2 class="h5 card-title">Nueva captura</h2>
+
+            <fieldset class="form-group">
+                <legend class="col-form-label pt-0">Cara solicitada</legend>
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input id="side-front" class="custom-control-input" type="radio"
+                           name="side" value="front" checked>
+                    <label class="custom-control-label" for="side-front">Frente</label>
+                </div>
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input id="side-back" class="custom-control-input" type="radio"
+                           name="side" value="back">
+                    <label class="custom-control-label" for="side-back">Dorso</label>
+                </div>
+            </fieldset>
+
+            <div class="form-row">
+                <div class="form-group col-12 col-sm-6">
+                    <label for="flash-mode">Flash inicial</label>
+                    <select id="flash-mode" class="custom-select">
+                        <option value="off">Apagado</option>
+                        <option value="auto">Automático</option>
+                        <option value="on">Encendido</option>
+                    </select>
+                </div>
+                <div class="form-group col-12 col-sm-6">
+                    <label for="scan-orientation">Orientación del scanner</label>
+                    <select id="scan-orientation" class="custom-select">
+                        <option value="portrait">Vertical</option>
+                        <option value="landscape">Horizontal</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="max-output-long-edge">Lado máximo de la imagen (px)</label>
+                <input id="max-output-long-edge" class="form-control" type="number"
+                       min="640" max="2048" step="1" value="1280" inputmode="numeric">
+                <small class="form-text text-muted">
+                    Límite del lado más largo del JPEG corregido (640–2048 px).
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label for="guide-margin-percent">Margen externo del detector (%)</label>
+                <input id="guide-margin-percent" class="form-control" type="number"
+                       min="0" max="20" step="0.5" value="3" inputmode="decimal">
+                <small class="form-text text-muted">
+                    Permite que las esquinas sobresalgan levemente del marco punteado.
+                </small>
+            </div>
+
+            <fieldset class="form-group">
+                <legend class="col-form-label pt-0">Controles nativos</legend>
+                <div class="custom-control custom-checkbox mb-2">
+                    <input id="show-close-button" class="custom-control-input" type="checkbox" checked>
+                    <label class="custom-control-label" for="show-close-button">Mostrar botón Cerrar</label>
+                </div>
+                <div class="custom-control custom-checkbox">
+                    <input id="show-flash-button" class="custom-control-input" type="checkbox" checked>
+                    <label class="custom-control-label" for="show-flash-button">Mostrar botón de flash</label>
+                </div>
+                <div class="custom-control custom-checkbox mt-2">
+                    <input id="debug-mode" class="custom-control-input" type="checkbox" checked>
+                    <label class="custom-control-label" for="debug-mode">Mostrar métricas de depuración</label>
+                </div>
+            </fieldset>
+        </div>
+    </section>
+
+    <section class="card shadow-sm mb-3">
+        <div class="card-body">
+            <h2 class="h5 card-title">Controles de calidad</h2>
+            <p class="text-muted small">Desactivá solamente las validaciones que la integración pueda omitir.</p>
+
+            <div class="row">
+                <div class="col-12 col-sm-6">
+                    <div class="custom-control custom-checkbox mb-2">
+                        <input id="check-document-size" class="custom-control-input" type="checkbox" checked>
+                        <label class="custom-control-label" for="check-document-size">Tamaño del documento</label>
+                    </div>
+                    <div class="custom-control custom-checkbox mb-2">
+                        <input id="check-centering" class="custom-control-input" type="checkbox" checked>
+                        <label class="custom-control-label" for="check-centering">Centrado</label>
+                    </div>
+                    <div class="custom-control custom-checkbox mb-2">
+                        <input id="check-perspective" class="custom-control-input" type="checkbox" checked>
+                        <label class="custom-control-label" for="check-perspective">Perspectiva</label>
+                    </div>
+                    <div class="custom-control custom-checkbox mb-2">
+                        <input id="check-stability" class="custom-control-input" type="checkbox" checked>
+                        <label class="custom-control-label" for="check-stability">Estabilidad</label>
+                    </div>
+                    <div class="custom-control custom-checkbox mb-2">
+                        <input id="check-sharpness" class="custom-control-input" type="checkbox" checked>
+                        <label class="custom-control-label" for="check-sharpness">Enfoque y nitidez</label>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="custom-control custom-checkbox mb-2">
+                        <input id="check-brightness" class="custom-control-input" type="checkbox" checked>
+                        <label class="custom-control-label" for="check-brightness">Brillo y exposición</label>
+                    </div>
+                    <div class="custom-control custom-checkbox mb-2">
+                        <input id="check-glare" class="custom-control-input" type="checkbox" checked>
+                        <label class="custom-control-label" for="check-glare">Reflejos</label>
+                    </div>
+                    <div class="custom-control custom-checkbox mb-2">
+                        <input id="check-shadows" class="custom-control-input" type="checkbox" checked>
+                        <label class="custom-control-label" for="check-shadows">Sombras e iluminación uniforme</label>
+                    </div>
+                    <div class="custom-control custom-checkbox mb-2">
+                        <input id="check-edge-occlusion" class="custom-control-input" type="checkbox" checked>
+                        <label class="custom-control-label" for="check-edge-occlusion">Dedos y bordes obstruidos</label>
+                    </div>
+                    <div class="custom-control custom-checkbox mb-2">
+                        <input id="check-moire" class="custom-control-input" type="checkbox">
+                        <label class="custom-control-label" for="check-moire">Moiré de pantalla</label>
+                    </div>
+                    <div class="custom-control custom-checkbox mb-2">
+                        <input id="check-requested-side" class="custom-control-input" type="checkbox" checked>
+                        <label class="custom-control-label" for="check-requested-side">Confirmar frente o dorso</label>
+                    </div>
+                </div>
+            </div>
+
+            <button id="scan-button" class="btn btn-primary btn-block mt-2" type="button" disabled>
+                <span id="scan-label">Abrir scanner</span>
+            </button>
+            <small class="form-text text-muted text-center">
+                No hay botón de disparo: mantené el DNI estable dentro del marco.
+            </small>
+        </div>
+    </section>
+
+    <section id="result-card" class="card shadow-sm mb-3 d-none" aria-labelledby="result-title">
+        <div class="card-body">
+            <h2 id="result-title" class="h5 card-title">Resultado</h2>
+            <p id="result-status" class="alert alert-secondary" role="status">Sin captura</p>
+            <div id="preview-wrap" class="text-center mb-3 d-none">
+                <img id="result-image" class="img-fluid rounded border"
+                     alt="DNI capturado y corregido">
+            </div>
+            <p id="result-summary"></p>
+            <details>
+                <summary class="text-primary">Ver metadatos</summary>
+                <pre id="result-json" class="bg-light border rounded p-2 mt-2 small overflow-auto"></pre>
+            </details>
+        </div>
+    </section>
+
+    <section class="card shadow-sm mb-3" aria-labelledby="about-title">
+        <div class="card-body">
+            <h2 id="about-title" class="h5 card-title">About</h2>
+
+            <h3 class="h6 mt-3">About Plugin</h3>
+            <p class="text-muted">
+                <strong class="text-body">cordova-plugin-dni-scanner</strong> captura automáticamente
+                el frente y dorso del DNI argentino, corrige su perspectiva y procesa todo localmente
+                en el dispositivo.
+            </p>
+
+            <h3 class="h6 mt-3">About Demo App</h3>
+            <p class="text-muted">
+                Aplicación Cordova mínima para probar la detección geométrica, autocaptura,
+                controles nativos y metadatos entregados por el plugin.
+            </p>
+
+            <h3 class="h6 mt-3">Versions</h3>
+            <ul class="list-unstyled text-muted mb-0">
+                <li>Plugin version: <span id="plugin-version">0.1.1</span></li>
+                <li>App version: <span id="app-version">1.0.1</span></li>
+                <li>Cordova Android: <span id="platform-version">Detectando…</span></li>
+            </ul>
+        </div>
+    </section>
+
+    <p class="text-center text-muted small mb-0">Sin red · Sin ML Kit</p>
+</main>
+
+<script src="cordova.js"></script>
+<script src="js/index.js"></script>
+</body>
+</html>

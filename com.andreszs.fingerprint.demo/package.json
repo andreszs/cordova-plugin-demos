@@ -1,0 +1,27 @@
+{
+  "name": "com.andreszs.fingerprint.demo",
+  "displayName": "Fingerprint Demo",
+  "version": "1.0.4",
+  "description": "Cordova Android demo for cordova-plugin-fingerprint-aio.",
+  "scripts": {
+    "build:android": "cordova build android --debug",
+    "run:android": "cordova run android --device --debug"
+  },
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "cordova-android": "15.0.0",
+    "cordova-plugin-app-version": "0.1.14",
+    "cordova-plugin-fingerprint-aio": "6.0.1",
+    "cordova-plugin-inappbrowser": "7.0.0"
+  },
+  "cordova": {
+    "platforms": [
+      "android"
+    ],
+    "plugins": {
+      "cordova-plugin-app-version": {},
+      "cordova-plugin-fingerprint-aio": {},
+      "cordova-plugin-inappbrowser": {}
+    }
+  }
+}

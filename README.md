@@ -2,9 +2,9 @@
 
 ![GitHub code size](https://img.shields.io/github/languages/code-size/andreszs/cordova-plugin-demos) ![GitHub top language](https://img.shields.io/github/languages/top/andreszs/cordova-plugin-demos) ![GitHub license](https://img.shields.io/github/license/andreszs/cordova-plugin-demos) ![GitHub last commit](https://img.shields.io/github/last-commit/andreszs/cordova-plugin-demos)
 
-A collection of source code for Apache Cordova plugin demo apps by Andrés Zsögön. Most directories provide the app's `www` and `res` folders, along with a `config.xml` file when required.
+A collection of reproducible Apache Cordova plugin demo apps by Andrés Zsögön. Every demo directory is a self-contained project with its source, configuration, and pinned npm dependencies.
 
-Visit the [Cordova plugin demo apps](https://www.andreszsogon.com/category/plugin-demo-apps/) page for usage guides and compiled APK downloads. The Turnstile demo also includes a ready-to-install APK in this repository.
+Visit the [Cordova plugin demo apps](https://www.andreszsogon.com/category/plugin-demo-apps/) page for usage guides and compiled APK downloads.
 
 > [!NOTE]
 > Most legacy demos bundle jQuery 3.6.0. Newer demos use plain JavaScript when no additional library is required.
@@ -18,18 +18,45 @@ Visit the [Cordova plugin demo apps](https://www.andreszsogon.com/category/plugi
 
 ## Building a demo app
 
-To build and test a demo using the provided source code:
+Each demo directory is a complete Cordova project. You do not need to create another project, copy its `www` directory, or install its plugins individually.
 
-1. [Create a Cordova project](https://cordova.apache.org/docs/en/dev/reference/cordova-cli/index.html#cordova-create-command) with the package name shown in the demo directory, such as `com.andreszs.gcs.demo`.
-2. Replace the generated `www` directory with the demo's `www` directory.
-3. Copy the provided `res` directory and `config.xml` file when available.
-4. Install [`cordova-plugin-app-version`](https://www.npmjs.com/package/cordova-plugin-app-version), which the demos use to display the application version.
-5. Install [`cordova-plugin-device`](https://www.npmjs.com/package/cordova-plugin-device) if the selected demo supports both Android and browser platforms.
-6. Install the plugin demonstrated by the app from npm or GitHub.
-7. Add the desired Cordova platform, then build or run the project.
+Before building, install Node.js, the Cordova CLI, the Android SDK, and the JDK and Gradle versions required by the `cordova-android` version declared in the selected demo's `package.json`.
 
-> [!NOTE]
-> Some demos define `minSdkVersion` and `targetSdkVersion` preferences in `config.xml`. If compilation fails because of an SDK mismatch, use the same values in your project.
+Open a terminal in the demo directory and restore its exact npm dependencies:
+
+```shell
+npm ci
+```
+
+On the first build after cloning the repository, add the generated Android platform:
+
+```shell
+cordova platform add android
+```
+
+Cordova reads `package.json` and automatically restores the declared Android version, demonstrated plugin, auxiliary plugins, and installation variables.
+
+Before compiling, you can verify that the required JDK, Android SDK, target SDK, and Gradle installation are available:
+
+```shell
+cordova requirements android
+```
+
+Then build the debug APK with:
+
+```shell
+cordova build android --debug
+```
+
+To build and deploy directly, connect an Android device with USB debugging enabled or start an emulator, then run:
+
+```shell
+cordova run android --device --debug
+# or
+cordova run android --emulator --debug
+```
+
+The build and device-deployment commands are also available through `npm run build:android` and `npm run run:android`. Some demos may still require runtime input such as a service URL, site key, paired peripheral, or supported device capability; those values are not build dependencies and are never stored as repository secrets.
 
 ## Included demo apps
 
@@ -54,6 +81,14 @@ To build and test a demo using the provided source code:
 
 - **Plugin:** [cordova-plugin-camera-preview](https://github.com/cordova-plugin-camera-preview/cordova-plugin-camera-preview)
 - **Purpose:** Interact directly with the camera from JavaScript and HTML.
+
+### [`com.andreszs.dniscanner.demo`](com.andreszs.dniscanner.demo/)
+
+<img src="com.andreszs.dniscanner.demo/www/img/logo.png" alt="DNI Scanner demo icon" align="right" width="36" height="36">
+
+- **Plugin:** [cordova-plugin-dni-scanner](https://github.com/andreszs/cordova-plugin-dni-scanner)
+- **Documentation:** [Demo files and setup instructions](com.andreszs.dniscanner.demo/)
+- **Purpose:** Automatically capture, validate, crop, and correct Argentine DNI images entirely on-device.
 
 ### [`com.andreszs.fingerprint.demo`](com.andreszs.fingerprint.demo/)
 
@@ -133,11 +168,7 @@ To build and test a demo using the provided source code:
 - **Plugin:** [cordova-plugin-turnstile](https://github.com/andreszs/cordova-plugin-turnstile)
 - **Library:** [Cloudflare Turnstile](https://developers.cloudflare.com/turnstile/)
 - **Documentation:** [Demo files and setup instructions](com.andreszs.turnstile.demo/)
-- **Download:** [Precompiled test APK](com.andreszs.turnstile.demo/com.andreszs.turnstile.demo.apk)
 - **Purpose:** Run a Turnstile challenge from a developer-hosted HTTPS page, return its token to the Cordova application, and validate it with a separate backend handler.
-
-> [!IMPORTANT]
-> The precompiled APK uses a public, demo-only combined service. The source contains no preconfigured endpoint URLs and asks the developer for separate challenge and backend URLs.
 
 ## Contribute
 
@@ -154,6 +185,13 @@ Contributions are always welcome. If you find a bug, want to add a missing featu
 
 ## Changes Log
 
+### 2026-10-13
+
+- Added the `cordova-plugin-dni-scanner` Android demo app with configurable capture and quality controls.
+- Converted every demo directory into a reproducible Cordova project with pinned npm dependencies.
+- Added repository-wide exclusions for generated Cordova, npm, Android, and Gradle files.
+- Removed precompiled APK artifacts from the source repository.
+
 ### 2026-08-27
 
 - Refreshed the legacy demo app interfaces with Bootstrap 4.6.2 styling.
@@ -163,4 +201,4 @@ Contributions are always welcome. If you find a bug, want to add a missing featu
 
 ### 2026-08-26
 
-- Added the `cordova-plugin-turnstile` demo app, including its source files, setup instructions, and precompiled test APK.
+- Added the `cordova-plugin-turnstile` demo app, including its source files and setup instructions.

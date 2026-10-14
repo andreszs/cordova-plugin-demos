@@ -1,0 +1,30 @@
+{
+  "name": "com.andreszs.smsretriever.demo",
+  "displayName": "SMS Retriever Demo",
+  "version": "1.3.0",
+  "description": "Cordova Android demo for cordova-plugin-sms-retriever.",
+  "scripts": {
+    "build:android": "cordova build android --debug",
+    "run:android": "cordova run android --device --debug"
+  },
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "cordova-android": "15.0.0",
+    "cordova-plugin-app-version": "0.1.14",
+    "cordova-plugin-inappbrowser": "7.0.0",
+    "cordova-plugin-sms-retriever": "4.0.4"
+  },
+  "cordova": {
+    "platforms": [
+      "android"
+    ],
+    "plugins": {
+      "cordova-plugin-app-version": {},
+      "cordova-plugin-inappbrowser": {},
+      "cordova-plugin-sms-retriever": {
+        "PLAY_SERVICES_AUTH_VERSION": "21.2.0",
+        "PLAY_SERVICES_AUTH_API_PHONE_VERSION": "18.1.0"
+      }
+    }
+  }
+}

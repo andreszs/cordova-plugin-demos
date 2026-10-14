@@ -13,9 +13,9 @@
 		<icon background="res/icons/android/mipmap-xxhdpi/ic_launcher_background.png" density="xxhdpi" foreground="res/icons/android/mipmap-xxhdpi/ic_launcher_foreground.png" src="res/icons/android/mipmap-xxhdpi/ic_launcher.png" />
 		<icon background="res/icons/android/mipmap-xxxhdpi/ic_launcher_background.png" density="xxxhdpi" foreground="res/icons/android/mipmap-xxxhdpi/ic_launcher_foreground.png" src="res/icons/android/mipmap-xxxhdpi/ic_launcher.png" />
 	</platform>
-	<preference name="android-minSdkVersion" value="21" />
-	<preference name="android-targetSdkVersion" value="33" />
-	<preference name="android-compileSdkVersion" value="32" />
+	<preference name="android-minSdkVersion" value="24" />
+	<preference name="android-targetSdkVersion" value="36" />
+	<preference name="android-compileSdkVersion" value="36" />
 	<preference name="GradlePluginKotlinEnabled" value="true" />
-	<preference name="GradlePluginKotlinVersion" value="1.7.10" />
+	<preference name="GradlePluginKotlinVersion" value="1.8.22" />
 </widget>
