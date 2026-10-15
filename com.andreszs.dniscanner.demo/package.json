@@ -1,12 +1,14 @@
 {
   "name": "com.andreszs.dniscanner.demo",
   "displayName": "DNI Scanner Demo",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Minimal Cordova demo for cordova-plugin-dni-scanner.",
   "main": "index.js",
   "scripts": {
     "build:android": "cordova build android --debug",
-    "run:android": "cordova run android --device --debug"
+    "run:android": "cordova run android --device --debug",
+    "build:ios": "cordova build ios --debug",
+    "run:ios": "cordova run ios --device --debug"
   },
   "keywords": [
     "ecosystem:cordova"
@@ -15,11 +17,13 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "cordova-android": "15.0.0",
-    "cordova-plugin-dni-scanner": "0.1.1"
+    "cordova-ios": "8.1.0",
+    "cordova-plugin-dni-scanner": "https://github.com/andreszs/cordova-plugin-dni-scanner/archive/9858aa1.tar.gz"
   },
   "cordova": {
     "platforms": [
-      "android"
+      "android",
+      "ios"
     ],
     "plugins": {
       "cordova-plugin-dni-scanner": {}

@@ -88,6 +88,7 @@ The build and device-deployment commands are also available through `npm run bui
 
 - **Plugin:** [cordova-plugin-dni-scanner](https://github.com/andreszs/cordova-plugin-dni-scanner)
 - **Documentation:** [Demo files and setup instructions](com.andreszs.dniscanner.demo/)
+- **Platforms:** Android and iOS
 - **Purpose:** Automatically capture, validate, crop, and correct Argentine DNI images entirely on-device.
 
 ### [`com.andreszs.fingerprint.demo`](com.andreszs.fingerprint.demo/)
@@ -184,6 +185,10 @@ Contributions are always welcome. If you find a bug, want to add a missing featu
 ⭐ If financial support is not an option, [star this repository](https://github.com/andreszs/cordova-plugin-demos) or share it with other Cordova developers—both make a difference.
 
 ## Changes Log
+
+### 2026-10-15
+
+- Updated the DNI Scanner demo to version 1.0.2 with Android and iOS metadata, plugin 0.2.0, and automatic orientation controls.
 
 ### 2026-10-13
 
