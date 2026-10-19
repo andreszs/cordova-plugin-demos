@@ -99,10 +99,10 @@ async function scan() {
             maxOutputLongEdge: maxOutputLongEdge,
             checks: checks,
             instructionText: generic
-                ? 'Frame the card inside the guide'
+                ? 'Ubicá la tarjeta dentro del recuadro'
                 : side === 'back'
-                    ? 'Frame the back of the DNI'
-                    : 'Frame the front of the DNI',
+                    ? 'Ubicá el dorso del DNI dentro del recuadro'
+                    : 'Ubicá el frente del DNI dentro del recuadro',
             timeoutMs: 60000
         });
 
