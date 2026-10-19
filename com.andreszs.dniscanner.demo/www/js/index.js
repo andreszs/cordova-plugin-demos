@@ -9,22 +9,46 @@ var resultSummary = document.getElementById('result-summary');
 var resultJson = document.getElementById('result-json');
 var previewWrap = document.getElementById('preview-wrap');
 var resultImage = document.getElementById('result-image');
+var scanProfile = document.getElementById('scan-profile');
 
 document.addEventListener('deviceready', function () {
     populateVersions();
     setDeviceStatus('Dispositivo listo. Configurá la captura y abrí el scanner.', 'success');
     scanButton.disabled = false;
     scanButton.addEventListener('click', scan);
+    scanProfile.addEventListener('change', updateProfileOptions);
+    updateProfileOptions();
 }, false);
 
+function updateProfileOptions() {
+    var generic = scanProfile.value === 'genericCard';
+    document.getElementById('dni-side-options').disabled = generic;
+    document.getElementById('side-validation').disabled = generic;
+    document.getElementById('side-validation-group').classList.toggle('text-muted', generic);
+}
+
 function populateVersions() {
+    var platformName = document.getElementById('platform-name');
     var platformVersion = document.getElementById('platform-version');
-    platformVersion.textContent = cordova.platformVersion || 'No disponible';
+    var platformId = cordova.platformId || '';
+
+    if (platformId === 'android') {
+        platformName.textContent = 'cordova-android';
+    } else if (platformId === 'ios') {
+        platformName.textContent = 'cordova-ios';
+    } else {
+        platformName.textContent = platformId ? 'Cordova ' + platformId : 'Cordova platform';
+    }
+
+    platformVersion.textContent = cordova.platformVersion || cordova.version || 'No disponible';
 }
 
 async function scan() {
+    var profile = scanProfile.value;
+    var generic = profile === 'genericCard';
     var sideInput = document.querySelector('input[name="side"]:checked');
-    var side = sideInput ? sideInput.value : 'front';
+    var side = generic ? 'any' : (sideInput ? sideInput.value : 'front');
+    var sideValidation = generic ? 'off' : document.getElementById('side-validation').value;
     var flashMode = document.getElementById('flash-mode').value;
     var orientation = document.getElementById('scan-orientation').value;
     var maxOutputLongEdge = parseInt(
@@ -33,6 +57,9 @@ async function scan() {
     );
     var guideMarginPercent = parseFloat(
         document.getElementById('guide-margin-percent').value
+    );
+    var cropPaddingPercent = parseFloat(
+        document.getElementById('crop-padding-percent').value
     );
     var showCloseButton = document.getElementById('show-close-button').checked;
     var showFlashButton = document.getElementById('show-flash-button').checked;
@@ -46,9 +73,7 @@ async function scan() {
         brightness: document.getElementById('check-brightness').checked,
         glare: document.getElementById('check-glare').checked,
         shadows: document.getElementById('check-shadows').checked,
-        edgeOcclusion: document.getElementById('check-edge-occlusion').checked,
-        moire: document.getElementById('check-moire').checked,
-        requestedSide: document.getElementById('check-requested-side').checked
+        edgeOcclusion: document.getElementById('check-edge-occlusion').checked
     };
 
 
@@ -59,7 +84,9 @@ async function scan() {
 
     try {
         var result = await DniScanner.scan({
+            profile: profile,
             side: side,
+            sideValidation: sideValidation,
             autoCapture: true,
             flashMode: flashMode,
             orientation: orientation,
@@ -68,10 +95,13 @@ async function scan() {
             debugMode: debugMode,
             maxOutputLongEdge: maxOutputLongEdge,
             guideMarginPercent: guideMarginPercent,
+            cropPaddingPercent: cropPaddingPercent,
             checks: checks,
-            instructionText: side === 'back'
-                ? 'Enmarcá el dorso del DNI'
-                : 'Enmarcá el frente del DNI',
+            instructionText: generic
+                ? 'Enmarcá la tarjeta dentro del recuadro'
+                : side === 'back'
+                    ? 'Enmarcá el dorso del DNI'
+                    : 'Enmarcá el frente del DNI',
             timeoutMs: 60000
         });
 
@@ -80,19 +110,30 @@ async function scan() {
             return;
         }
 
-        var variant = result.variant === null ? 'no determinada' : String(result.variant);
-        var detectedSide = labelForSide(result.detectedSide);
-        var confidence = result.confidence && result.confidence.overall;
+        var confidence = result.confidence && result.confidence.document;
         var confidenceText = typeof confidence === 'number'
             ? Math.round(confidence * 100) + '%'
             : 'sin dato';
+        var summaryParts = [
+            result.documentCandidate
+                ? (result.profile === 'genericCard' ? 'Tarjeta capturada' : 'Documento capturado')
+                : 'Captura completada',
+            'confianza geométrica ' + confidenceText,
+            result.usableForOcr ? 'apto para OCR' : 'revisar antes del OCR',
+            result.width + '×' + result.height + ' px'
+        ];
+        if (result.detectedSide && result.detectedSide !== 'unknown') {
+            summaryParts.splice(1, 0, labelForSide(result.detectedSide));
+        }
+        if (Array.isArray(result.qualityWarnings) && result.qualityWarnings.length > 0) {
+            summaryParts.push('avisos: ' + result.qualityWarnings.map(labelForWarning).join(', '));
+        }
 
         resultImage.src = result.imageUri;
         previewWrap.classList.remove('d-none');
         showMessage(
             'Correcto',
-            detectedSide + ' · variante ' + variant + ' · confianza ' + confidenceText
-                + ' · ' + result.width + '×' + result.height + ' px',
+            summaryParts.join(' · '),
             result,
             true
         );
@@ -146,6 +187,18 @@ function labelForSide(side) {
         return 'Dorso detectado';
     }
     return 'Cara no determinada';
+}
+
+function labelForWarning(warning) {
+    var labels = {
+        low_sharpness: 'nitidez baja',
+        low_light: 'poca luz',
+        high_light: 'exceso de luz',
+        glare: 'reflejos',
+        uneven_lighting: 'iluminación desigual',
+        edge_obstruction: 'bordes obstruidos'
+    };
+    return labels[warning] || warning;
 }
 
 function normalizeError(error) {

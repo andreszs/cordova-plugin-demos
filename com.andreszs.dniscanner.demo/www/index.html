@@ -33,7 +33,18 @@
         <div class="card-body">
             <h2 class="h5 card-title">Nueva captura</h2>
 
-            <fieldset class="form-group">
+            <div class="form-group">
+                <label for="scan-profile">Tipo de tarjeta</label>
+                <select id="scan-profile" class="custom-select">
+                    <option value="dni" selected>DNI argentino</option>
+                    <option value="genericCard">Tarjeta genérica</option>
+                </select>
+                <small class="form-text text-muted">
+                    El modo genérico sirve para tarjetas bancarias, licencias y documentos con formato de tarjeta.
+                </small>
+            </div>
+
+            <fieldset id="dni-side-options" class="form-group">
                 <legend class="col-form-label pt-0">Cara solicitada</legend>
                 <div class="custom-control custom-radio custom-control-inline">
                     <input id="side-front" class="custom-control-input" type="radio"
@@ -46,6 +57,15 @@
                     <label class="custom-control-label" for="side-back">Dorso</label>
                 </div>
             </fieldset>
+
+            <div id="side-validation-group" class="form-group">
+                <label for="side-validation">Validación de frente o dorso</label>
+                <select id="side-validation" class="custom-select">
+                    <option value="off" selected>Desactivada</option>
+                    <option value="advisory">Informativa</option>
+                    <option value="strict">Estricta</option>
+                </select>
+            </div>
 
             <div class="form-row">
                 <div class="form-group col-12 col-sm-6">
@@ -81,6 +101,15 @@
                        min="0" max="20" step="0.5" value="3" inputmode="decimal">
                 <small class="form-text text-muted">
                     Permite que las esquinas sobresalgan levemente del marco punteado.
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label for="crop-padding-percent">Margen de seguridad del recorte (%)</label>
+                <input id="crop-padding-percent" class="form-control" type="number"
+                       min="0" max="10" step="0.5" value="3" inputmode="decimal">
+                <small class="form-text text-muted">
+                    Conserva un margen exterior para evitar cortar partes del DNI.
                 </small>
             </div>
 
@@ -147,14 +176,6 @@
                         <input id="check-edge-occlusion" class="custom-control-input" type="checkbox" checked>
                         <label class="custom-control-label" for="check-edge-occlusion">Dedos y bordes obstruidos</label>
                     </div>
-                    <div class="custom-control custom-checkbox mb-2">
-                        <input id="check-moire" class="custom-control-input" type="checkbox">
-                        <label class="custom-control-label" for="check-moire">Moiré de pantalla</label>
-                    </div>
-                    <div class="custom-control custom-checkbox mb-2">
-                        <input id="check-requested-side" class="custom-control-input" type="checkbox" checked>
-                        <label class="custom-control-label" for="check-requested-side">Confirmar frente o dorso</label>
-                    </div>
                 </div>
             </div>
 
@@ -162,7 +183,7 @@
                 <span id="scan-label">Abrir scanner</span>
             </button>
             <small class="form-text text-muted text-center">
-                No hay botón de disparo: mantené el DNI estable dentro del marco.
+                No hay botón de disparo: mantené la tarjeta estable dentro del marco.
             </small>
         </div>
     </section>
@@ -173,7 +194,7 @@
             <p id="result-status" class="alert alert-secondary" role="status">Sin captura</p>
             <div id="preview-wrap" class="text-center mb-3 d-none">
                 <img id="result-image" class="img-fluid rounded border"
-                     alt="DNI capturado y corregido">
+                     alt="Tarjeta capturada y corregida">
             </div>
             <p id="result-summary"></p>
             <details>
@@ -183,33 +204,40 @@
         </div>
     </section>
 
-    <section class="card shadow-sm mb-3" aria-labelledby="about-title">
+
+    <section class="card shadow-sm mb-0" aria-labelledby="about-title">
         <div class="card-body">
             <h2 id="about-title" class="h5 card-title">About</h2>
 
-            <h3 class="h6 mt-3">About Plugin</h3>
             <p class="text-muted">
-                <strong class="text-body">cordova-plugin-dni-scanner</strong> captura automáticamente
-                el frente y dorso del DNI argentino, corrige su perspectiva y procesa todo localmente
-                en el dispositivo.
-            </p>
-
-            <h3 class="h6 mt-3">About Demo App</h3>
-            <p class="text-muted">
-                Aplicación Cordova mínima para probar la detección geométrica, autocaptura,
-                controles nativos y metadatos entregados por el plugin.
+                Demo Cordova mínima de <strong class="text-body">cordova-plugin-dni-scanner</strong>
+                para probar la captura automática y local de DNI y tarjetas, su corrección de
+                perspectiva y los metadatos resultantes.
             </p>
 
             <h3 class="h6 mt-3">Versions</h3>
             <ul class="list-unstyled text-muted mb-0">
-                <li>Plugin version: <span id="plugin-version">0.2.0</span></li>
-                <li>App version: <span id="app-version">1.0.2</span></li>
-                <li>Cordova platform: <span id="platform-version">Detectando…</span></li>
+                <li>Plugin version: <span id="plugin-version">0.2.1</span></li>
+                <li>App version: <span id="app-version">1.0.3</span></li>
+                <li><span id="platform-name">Cordova platform</span>: <span id="platform-version">Detectando…</span></li>
+            </ul>
+
+            <h3 class="h6 mt-3">Links</h3>
+            <ul class="mb-0 pl-3">
+                <li>
+                    <a href="https://github.com/andreszs/cordova-plugin-dni-scanner#readme">
+                        Plugin README
+                    </a>
+                </li>
+                <li>
+                    <a href="https://github.com/andreszs/cordova-plugin-demos">
+                        Cordova plugin demo apps
+                    </a>
+                </li>
             </ul>
         </div>
     </section>
 
-    <p class="text-center text-muted small mb-0">Sin red · Sin ML Kit</p>
 </main>
 
 <script src="cordova.js"></script>
