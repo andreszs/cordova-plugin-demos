@@ -28,8 +28,8 @@ npm run build:ios
 npm run run:ios
 ```
 
-The project uses Cordova Android 15 and Cordova iOS 8.1. The scanner plugin is pinned to the public GitHub commit for version 0.2.1, so a fresh checkout does not require a local plugin repository.
+The project uses Cordova Android 15 and Cordova iOS 8.1. The scanner plugin is pinned to version 0.2.1 from npm, so a fresh checkout does not require a local plugin repository.
 
 ## Demo features
 
-The app can scan either side of a DNI or a generic credit/debit, license, or ID-1-style card in portrait, landscape, or automatic orientation. It exposes the scanner controls and quality checks, including output size, guide margin, focus, brightness, glare, shadows, edge occlusion, and the `off`, `advisory`, and `strict` DNI side-validation policies. A successful scan displays the corrected JPEG, geometric confidence, OCR usability, non-blocking quality warnings, dimensions, and the complete metadata response.
+The app can scan either side of a DNI or a generic credit/debit, license, or ID-1-style card in portrait, landscape, or automatic orientation. It exposes the scanner controls and quality checks, including output size, focus, brightness, glare, shadows, edge occlusion, and the `off`, `advisory`, and `strict` DNI side-validation policies. A successful scan displays the corrected JPEG, geometric confidence, OCR usability, non-blocking quality warnings, dimensions, and the complete metadata response.

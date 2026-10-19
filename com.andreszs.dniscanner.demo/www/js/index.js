@@ -10,13 +10,21 @@ var resultJson = document.getElementById('result-json');
 var previewWrap = document.getElementById('preview-wrap');
 var resultImage = document.getElementById('result-image');
 var scanProfile = document.getElementById('scan-profile');
+var copyImageButton = document.getElementById('copy-image-button');
+var copyMetadataButton = document.getElementById('copy-metadata-button');
+var copyFeedback = document.getElementById('copy-feedback');
+var clipboardImageBlob = null;
+var currentImageReference = '';
 
 document.addEventListener('deviceready', function () {
     populateVersions();
-    setDeviceStatus('Dispositivo listo. Configurá la captura y abrí el scanner.', 'success');
+    setDeviceStatus('Device ready. Configure the scan and open the scanner.', 'success');
     scanButton.disabled = false;
     scanButton.addEventListener('click', scan);
     scanProfile.addEventListener('change', updateProfileOptions);
+    copyImageButton.addEventListener('click', copyCapturedImage);
+    copyMetadataButton.addEventListener('click', copyMetadata);
+    resultImage.addEventListener('load', prepareClipboardImage);
     updateProfileOptions();
 }, false);
 
@@ -40,7 +48,7 @@ function populateVersions() {
         platformName.textContent = platformId ? 'Cordova ' + platformId : 'Cordova platform';
     }
 
-    platformVersion.textContent = cordova.platformVersion || cordova.version || 'No disponible';
+    platformVersion.textContent = cordova.platformVersion || cordova.version || 'Unavailable';
 }
 
 async function scan() {
@@ -54,12 +62,6 @@ async function scan() {
     var maxOutputLongEdge = parseInt(
         document.getElementById('max-output-long-edge').value,
         10
-    );
-    var guideMarginPercent = parseFloat(
-        document.getElementById('guide-margin-percent').value
-    );
-    var cropPaddingPercent = parseFloat(
-        document.getElementById('crop-padding-percent').value
     );
     var showCloseButton = document.getElementById('show-close-button').checked;
     var showFlashButton = document.getElementById('show-flash-button').checked;
@@ -81,6 +83,7 @@ async function scan() {
     resultCard.classList.add('d-none');
     previewWrap.classList.add('d-none');
     resultImage.removeAttribute('src');
+    resetCopyActions();
 
     try {
         var result = await DniScanner.scan({
@@ -94,19 +97,17 @@ async function scan() {
             showFlashButton: showFlashButton,
             debugMode: debugMode,
             maxOutputLongEdge: maxOutputLongEdge,
-            guideMarginPercent: guideMarginPercent,
-            cropPaddingPercent: cropPaddingPercent,
             checks: checks,
             instructionText: generic
-                ? 'Enmarcá la tarjeta dentro del recuadro'
+                ? 'Frame the card inside the guide'
                 : side === 'back'
-                    ? 'Enmarcá el dorso del DNI'
-                    : 'Enmarcá el frente del DNI',
+                    ? 'Frame the back of the DNI'
+                    : 'Frame the front of the DNI',
             timeoutMs: 60000
         });
 
         if (result.status === 'cancelled') {
-            showMessage('Cancelado', 'La captura fue cancelada por el usuario.', result, false);
+            showMessage('Cancelled', 'The scan was cancelled by the user.', result, false);
             return;
         }
 
@@ -116,23 +117,24 @@ async function scan() {
             : 'sin dato';
         var summaryParts = [
             result.documentCandidate
-                ? (result.profile === 'genericCard' ? 'Tarjeta capturada' : 'Documento capturado')
-                : 'Captura completada',
-            'confianza geométrica ' + confidenceText,
-            result.usableForOcr ? 'apto para OCR' : 'revisar antes del OCR',
+                ? (result.profile === 'genericCard' ? 'Card captured' : 'Document captured')
+                : 'Scan completed',
+            'geometric confidence ' + confidenceText,
+            result.usableForOcr ? 'suitable for OCR' : 'review before OCR',
             result.width + '×' + result.height + ' px'
         ];
         if (result.detectedSide && result.detectedSide !== 'unknown') {
             summaryParts.splice(1, 0, labelForSide(result.detectedSide));
         }
         if (Array.isArray(result.qualityWarnings) && result.qualityWarnings.length > 0) {
-            summaryParts.push('avisos: ' + result.qualityWarnings.map(labelForWarning).join(', '));
+            summaryParts.push('warnings: ' + result.qualityWarnings.map(labelForWarning).join(', '));
         }
 
+        currentImageReference = result.imageUri || result.imagePath || '';
         resultImage.src = result.imageUri;
         previewWrap.classList.remove('d-none');
         showMessage(
-            'Correcto',
+            'Success',
             summaryParts.join(' · '),
             result,
             true
@@ -141,7 +143,7 @@ async function scan() {
         var normalized = normalizeError(error);
         showMessage(
             normalized.code || 'ERROR',
-            normalized.message || 'No fue posible completar la captura.',
+            normalized.message || 'The scan could not be completed.',
             normalized,
             false,
             true
@@ -153,10 +155,10 @@ async function scan() {
 
 function setBusy(busy) {
     scanButton.disabled = busy;
-    scanLabel.textContent = busy ? 'Scanner abierto…' : 'Abrir scanner';
+    scanLabel.textContent = busy ? 'Scanner open…' : 'Open scanner';
     setDeviceStatus(
-        busy ? 'Scanner abierto. Seguí las indicaciones en pantalla.'
-            : 'Dispositivo listo. Configurá la captura y abrí el scanner.',
+        busy ? 'Scanner open. Follow the on-screen instructions.'
+            : 'Device ready. Configure the scan and open the scanner.',
         busy ? 'info' : 'success'
     );
 }
@@ -168,10 +170,144 @@ function showMessage(title, summary, payload, success, error) {
         : success ? 'success' : 'warning');
     resultSummary.textContent = summary;
     resultJson.textContent = JSON.stringify(payload, null, 2);
+    copyMetadataButton.disabled = false;
     resultCard.classList.remove('d-none');
     window.setTimeout(function () {
         resultCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 80);
+}
+
+function resetCopyActions() {
+    clipboardImageBlob = null;
+    currentImageReference = '';
+    copyImageButton.disabled = true;
+    copyMetadataButton.disabled = true;
+    copyFeedback.textContent = '';
+    copyFeedback.className = 'small text-muted text-right mt-2 mb-0';
+}
+
+function prepareClipboardImage() {
+    copyImageButton.disabled = false;
+    createPngBlob(resultImage).then(function (blob) {
+        clipboardImageBlob = blob;
+    }).catch(function () {
+        clipboardImageBlob = null;
+    });
+}
+
+async function copyCapturedImage() {
+    try {
+        var blob = clipboardImageBlob || await createPngBlob(resultImage);
+        if (!navigator.clipboard || typeof navigator.clipboard.write !== 'function'
+                || typeof window.ClipboardItem !== 'function') {
+            await copyText(currentImageReference);
+            setCopyFeedback(
+                'This WebView cannot place images on the clipboard; the image reference was copied instead.',
+                false
+            );
+            return;
+        }
+
+        var item = new window.ClipboardItem({ 'image/png': blob });
+        await navigator.clipboard.write([item]);
+        setCopyFeedback('Image copied.', true);
+    } catch (error) {
+        if (currentImageReference) {
+            try {
+                await copyText(currentImageReference);
+                setCopyFeedback(
+                    'The bitmap could not be copied; its image reference was copied instead.',
+                    false
+                );
+                return;
+            } catch (fallbackError) {
+                // Report the original image-copy failure below.
+            }
+        }
+        setCopyFeedback('The image could not be copied on this device.', false);
+    }
+}
+
+async function copyMetadata() {
+    try {
+        await copyText(resultJson.textContent);
+        setCopyFeedback('Metadata copied.', true);
+    } catch (error) {
+        setCopyFeedback('The metadata could not be copied.', false);
+    }
+}
+
+function createPngBlob(image) {
+    return new Promise(function (resolve, reject) {
+        if (!image.complete || !image.naturalWidth || !image.naturalHeight) {
+            reject(new Error('The image is not available yet.'));
+            return;
+        }
+
+        var canvas = document.createElement('canvas');
+        canvas.width = image.naturalWidth;
+        canvas.height = image.naturalHeight;
+        var context = canvas.getContext('2d');
+        if (!context) {
+            reject(new Error('Canvas is unavailable.'));
+            return;
+        }
+
+        try {
+            context.drawImage(image, 0, 0);
+            canvas.toBlob(function (blob) {
+                canvas.width = 0;
+                canvas.height = 0;
+                if (blob) {
+                    resolve(blob);
+                } else {
+                    reject(new Error('The image could not be converted.'));
+                }
+            }, 'image/png');
+        } catch (error) {
+            reject(error);
+        }
+    });
+}
+
+function copyText(text) {
+    if (!text) {
+        return Promise.reject(new Error('There is no content to copy.'));
+    }
+
+    if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+        return navigator.clipboard.writeText(text).catch(function () {
+            legacyCopyText(text);
+        });
+    }
+
+    try {
+        legacyCopyText(text);
+        return Promise.resolve();
+    } catch (error) {
+        return Promise.reject(error);
+    }
+}
+
+function legacyCopyText(text) {
+    var textArea = document.createElement('textarea');
+    textArea.value = text;
+    textArea.setAttribute('readonly', 'readonly');
+    textArea.className = 'sr-only';
+    document.body.appendChild(textArea);
+    textArea.select();
+    textArea.setSelectionRange(0, textArea.value.length);
+    var copied = document.execCommand('copy');
+    document.body.removeChild(textArea);
+    if (!copied) {
+        throw new Error('The clipboard is unavailable.');
+    }
+}
+
+function setCopyFeedback(message, success) {
+    copyFeedback.textContent = message;
+    copyFeedback.className = 'small text-' + (success ? 'success' : 'muted')
+        + ' text-right mt-2 mb-0';
 }
 
 function setDeviceStatus(message, kind) {
@@ -181,22 +317,22 @@ function setDeviceStatus(message, kind) {
 
 function labelForSide(side) {
     if (side === 'front') {
-        return 'Frente detectado';
+        return 'Front detected';
     }
     if (side === 'back') {
-        return 'Dorso detectado';
+        return 'Back detected';
     }
-    return 'Cara no determinada';
+    return 'Side not determined';
 }
 
 function labelForWarning(warning) {
     var labels = {
-        low_sharpness: 'nitidez baja',
-        low_light: 'poca luz',
-        high_light: 'exceso de luz',
-        glare: 'reflejos',
-        uneven_lighting: 'iluminación desigual',
-        edge_obstruction: 'bordes obstruidos'
+        low_sharpness: 'low sharpness',
+        low_light: 'low light',
+        high_light: 'excessive light',
+        glare: 'glare',
+        uneven_lighting: 'uneven lighting',
+        edge_obstruction: 'obstructed edges'
     };
     return labels[warning] || warning;
 }
@@ -205,5 +341,5 @@ function normalizeError(error) {
     if (error && typeof error === 'object') {
         return error;
     }
-    return { code: 'UNKNOWN', message: String(error || 'Error desconocido') };
+    return { code: 'UNKNOWN', message: String(error || 'Unknown error') };
 }

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.andreszs.dniscanner.demo" version="1.0.3" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>DNI Scanner Demo</name>
-    <description>Aplicación mínima para probar cordova-plugin-dni-scanner.</description>
+    <description>Minimal application for testing cordova-plugin-dni-scanner.</description>
     <author>Andreszs</author>
     <content src="index.html" />
     <preference name="Orientation" value="default" />

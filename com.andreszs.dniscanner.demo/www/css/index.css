@@ -1,0 +1,21 @@
+.icon-copy-button {
+    align-items: center;
+    display: inline-flex;
+    flex: 0 0 auto;
+    height: 2.25rem;
+    justify-content: center;
+    padding: 0;
+    width: 2.25rem;
+}
+
+.image-copy-button {
+    background-color: rgba(255, 255, 255, 0.9);
+    position: absolute;
+    right: 0.5rem;
+    top: 0.5rem;
+    z-index: 1;
+}
+
+.metadata-summary {
+    line-height: 2.25rem;
+}

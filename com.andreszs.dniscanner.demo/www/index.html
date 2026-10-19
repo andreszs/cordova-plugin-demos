@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Security-Policy"
@@ -10,6 +10,7 @@
     <meta name="color-scheme" content="light">
     <link rel="icon" href="img/logo.png">
     <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/index.css">
     <title>DNI Scanner Demo</title>
 </head>
 <body class="bg-light">
@@ -24,108 +25,90 @@
 
     <section class="card shadow-sm mb-3">
         <div class="card-body">
-            <h2 class="h5 card-title">Estado</h2>
-            <p id="device-status" class="alert alert-secondary mb-0" role="status">Esperando a Cordova…</p>
+            <h2 class="h5 card-title">Status</h2>
+            <p id="device-status" class="alert alert-secondary mb-0" role="status">Waiting for Cordova…</p>
         </div>
     </section>
 
     <section class="card shadow-sm mb-3">
         <div class="card-body">
-            <h2 class="h5 card-title">Nueva captura</h2>
+            <h2 class="h5 card-title">New scan</h2>
 
             <div class="form-group">
-                <label for="scan-profile">Tipo de tarjeta</label>
+                <label for="scan-profile"><code>profile</code></label>
                 <select id="scan-profile" class="custom-select">
-                    <option value="dni" selected>DNI argentino</option>
-                    <option value="genericCard">Tarjeta genérica</option>
+                    <option value="dni" selected>dni</option>
+                    <option value="genericCard">genericCard</option>
                 </select>
                 <small class="form-text text-muted">
-                    El modo genérico sirve para tarjetas bancarias, licencias y documentos con formato de tarjeta.
+                    Generic mode supports bank cards, driver's licenses, and other card-format documents.
                 </small>
             </div>
 
             <fieldset id="dni-side-options" class="form-group">
-                <legend class="col-form-label pt-0">Cara solicitada</legend>
+                <legend class="col-form-label pt-0"><code>side</code></legend>
                 <div class="custom-control custom-radio custom-control-inline">
                     <input id="side-front" class="custom-control-input" type="radio"
                            name="side" value="front" checked>
-                    <label class="custom-control-label" for="side-front">Frente</label>
+                    <label class="custom-control-label" for="side-front">front</label>
                 </div>
                 <div class="custom-control custom-radio custom-control-inline">
                     <input id="side-back" class="custom-control-input" type="radio"
                            name="side" value="back">
-                    <label class="custom-control-label" for="side-back">Dorso</label>
+                    <label class="custom-control-label" for="side-back">back</label>
                 </div>
             </fieldset>
 
             <div id="side-validation-group" class="form-group">
-                <label for="side-validation">Validación de frente o dorso</label>
+                <label for="side-validation"><code>sideValidation</code></label>
                 <select id="side-validation" class="custom-select">
-                    <option value="off" selected>Desactivada</option>
-                    <option value="advisory">Informativa</option>
-                    <option value="strict">Estricta</option>
+                    <option value="off" selected>off</option>
+                    <option value="advisory">advisory</option>
+                    <option value="strict">strict</option>
                 </select>
             </div>
 
             <div class="form-row">
                 <div class="form-group col-12 col-sm-6">
-                    <label for="flash-mode">Flash inicial</label>
+                    <label for="flash-mode"><code>flashMode</code></label>
                     <select id="flash-mode" class="custom-select">
-                        <option value="off">Apagado</option>
-                        <option value="auto">Automático</option>
-                        <option value="on">Encendido</option>
+                        <option value="off">off</option>
+                        <option value="auto">auto</option>
+                        <option value="on">on</option>
                     </select>
                 </div>
                 <div class="form-group col-12 col-sm-6">
-                    <label for="scan-orientation">Orientación del scanner</label>
+                    <label for="scan-orientation"><code>orientation</code></label>
                     <select id="scan-orientation" class="custom-select">
-                        <option value="auto" selected>Auto-rotación</option>
-                        <option value="portrait">Vertical</option>
-                        <option value="landscape">Horizontal</option>
+                        <option value="auto" selected>auto</option>
+                        <option value="portrait">portrait</option>
+                        <option value="landscape">landscape</option>
                     </select>
                 </div>
             </div>
 
             <div class="form-group">
-                <label for="max-output-long-edge">Lado máximo de la imagen (px)</label>
+                <label for="max-output-long-edge"><code>maxOutputLongEdge</code></label>
                 <input id="max-output-long-edge" class="form-control" type="number"
                        min="640" max="2048" step="1" value="1280" inputmode="numeric">
                 <small class="form-text text-muted">
-                    Límite del lado más largo del JPEG corregido (640–2048 px).
-                </small>
-            </div>
-
-            <div class="form-group">
-                <label for="guide-margin-percent">Margen externo del detector (%)</label>
-                <input id="guide-margin-percent" class="form-control" type="number"
-                       min="0" max="20" step="0.5" value="3" inputmode="decimal">
-                <small class="form-text text-muted">
-                    Permite que las esquinas sobresalgan levemente del marco punteado.
-                </small>
-            </div>
-
-            <div class="form-group">
-                <label for="crop-padding-percent">Margen de seguridad del recorte (%)</label>
-                <input id="crop-padding-percent" class="form-control" type="number"
-                       min="0" max="10" step="0.5" value="3" inputmode="decimal">
-                <small class="form-text text-muted">
-                    Conserva un margen exterior para evitar cortar partes del DNI.
+                    Maximum long edge of the corrected JPEG (640–2048 px).
                 </small>
             </div>
 
             <fieldset class="form-group">
-                <legend class="col-form-label pt-0">Controles nativos</legend>
+                <legend class="col-form-label pt-0">Native controls</legend>
                 <div class="custom-control custom-checkbox mb-2">
                     <input id="show-close-button" class="custom-control-input" type="checkbox" checked>
-                    <label class="custom-control-label" for="show-close-button">Mostrar botón Cerrar</label>
+                    <label class="custom-control-label" for="show-close-button"><code>showCloseButton</code></label>
                 </div>
                 <div class="custom-control custom-checkbox">
                     <input id="show-flash-button" class="custom-control-input" type="checkbox" checked>
-                    <label class="custom-control-label" for="show-flash-button">Mostrar botón de flash</label>
+                    <label class="custom-control-label" for="show-flash-button"><code>showFlashButton</code></label>
                 </div>
                 <div class="custom-control custom-checkbox mt-2">
                     <input id="debug-mode" class="custom-control-input" type="checkbox" checked>
-                    <label class="custom-control-label" for="debug-mode">Mostrar métricas de depuración</label>
+                    <label class="custom-control-label" for="debug-mode"><code>debugMode</code></label>
                 </div>
             </fieldset>
         </div>
@@ -133,74 +116,100 @@
 
     <section class="card shadow-sm mb-3">
         <div class="card-body">
-            <h2 class="h5 card-title">Controles de calidad</h2>
-            <p class="text-muted small">Desactivá solamente las validaciones que la integración pueda omitir.</p>
+            <h2 class="h5 card-title">Quality checks</h2>
+            <p class="text-muted small">Disable only the checks your integration can safely omit.</p>
 
             <div class="row">
                 <div class="col-12 col-sm-6">
                     <div class="custom-control custom-checkbox mb-2">
                         <input id="check-document-size" class="custom-control-input" type="checkbox" checked>
-                        <label class="custom-control-label" for="check-document-size">Tamaño del documento</label>
+                        <label class="custom-control-label" for="check-document-size"><code>documentSize</code></label>
                     </div>
                     <div class="custom-control custom-checkbox mb-2">
                         <input id="check-centering" class="custom-control-input" type="checkbox" checked>
-                        <label class="custom-control-label" for="check-centering">Centrado</label>
+                        <label class="custom-control-label" for="check-centering"><code>centering</code></label>
                     </div>
                     <div class="custom-control custom-checkbox mb-2">
                         <input id="check-perspective" class="custom-control-input" type="checkbox" checked>
-                        <label class="custom-control-label" for="check-perspective">Perspectiva</label>
+                        <label class="custom-control-label" for="check-perspective"><code>perspective</code></label>
                     </div>
                     <div class="custom-control custom-checkbox mb-2">
                         <input id="check-stability" class="custom-control-input" type="checkbox" checked>
-                        <label class="custom-control-label" for="check-stability">Estabilidad</label>
+                        <label class="custom-control-label" for="check-stability"><code>stability</code></label>
                     </div>
                     <div class="custom-control custom-checkbox mb-2">
                         <input id="check-sharpness" class="custom-control-input" type="checkbox" checked>
-                        <label class="custom-control-label" for="check-sharpness">Enfoque y nitidez</label>
+                        <label class="custom-control-label" for="check-sharpness"><code>sharpness</code></label>
                     </div>
                 </div>
                 <div class="col-12 col-sm-6">
                     <div class="custom-control custom-checkbox mb-2">
                         <input id="check-brightness" class="custom-control-input" type="checkbox" checked>
-                        <label class="custom-control-label" for="check-brightness">Brillo y exposición</label>
+                        <label class="custom-control-label" for="check-brightness"><code>brightness</code></label>
                     </div>
                     <div class="custom-control custom-checkbox mb-2">
                         <input id="check-glare" class="custom-control-input" type="checkbox" checked>
-                        <label class="custom-control-label" for="check-glare">Reflejos</label>
+                        <label class="custom-control-label" for="check-glare"><code>glare</code></label>
                     </div>
                     <div class="custom-control custom-checkbox mb-2">
                         <input id="check-shadows" class="custom-control-input" type="checkbox" checked>
-                        <label class="custom-control-label" for="check-shadows">Sombras e iluminación uniforme</label>
+                        <label class="custom-control-label" for="check-shadows"><code>shadows</code></label>
                     </div>
                     <div class="custom-control custom-checkbox mb-2">
                         <input id="check-edge-occlusion" class="custom-control-input" type="checkbox" checked>
-                        <label class="custom-control-label" for="check-edge-occlusion">Dedos y bordes obstruidos</label>
+                        <label class="custom-control-label" for="check-edge-occlusion"><code>edgeOcclusion</code></label>
                     </div>
                 </div>
             </div>
 
             <button id="scan-button" class="btn btn-primary btn-block mt-2" type="button" disabled>
-                <span id="scan-label">Abrir scanner</span>
+                <span id="scan-label">Open scanner</span>
             </button>
             <small class="form-text text-muted text-center">
-                No hay botón de disparo: mantené la tarjeta estable dentro del marco.
+                There is no shutter button: keep the card steady inside the guide.
             </small>
         </div>
     </section>
 
     <section id="result-card" class="card shadow-sm mb-3 d-none" aria-labelledby="result-title">
         <div class="card-body">
-            <h2 id="result-title" class="h5 card-title">Resultado</h2>
-            <p id="result-status" class="alert alert-secondary" role="status">Sin captura</p>
-            <div id="preview-wrap" class="text-center mb-3 d-none">
+            <h2 id="result-title" class="h5 card-title">Result</h2>
+            <p id="result-status" class="alert alert-secondary" role="status">No scan yet</p>
+            <div id="preview-wrap" class="position-relative text-center mb-3 d-none">
                 <img id="result-image" class="img-fluid rounded border"
-                     alt="Tarjeta capturada y corregida">
+                     alt="Captured and corrected card">
+                <button id="copy-image-button"
+                        class="btn btn-light border shadow-sm icon-copy-button image-copy-button"
+                        type="button" aria-label="Copy image" title="Copy image" disabled>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                         stroke-linejoin="round" aria-hidden="true" focusable="false">
+                        <rect x="9" y="9" width="13" height="13" rx="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                    <span class="sr-only">Copy image</span>
+                </button>
             </div>
             <p id="result-summary"></p>
-            <details>
-                <summary class="text-primary">Ver metadatos</summary>
-                <pre id="result-json" class="bg-light border rounded p-2 mt-2 small overflow-auto"></pre>
-            </details>
+            <div class="d-flex align-items-start">
+                <details class="flex-grow-1 mr-2">
+                    <summary class="text-primary metadata-summary">View metadata</summary>
+                    <pre id="result-json" class="bg-light border rounded p-2 mt-2 small overflow-auto"></pre>
+                </details>
+                <button id="copy-metadata-button"
+                        class="btn btn-sm btn-outline-secondary icon-copy-button"
+                        type="button" aria-label="Copy metadata" title="Copy metadata" disabled>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                         stroke-linejoin="round" aria-hidden="true" focusable="false">
+                        <rect x="9" y="9" width="13" height="13" rx="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                    <span class="sr-only">Copy metadata</span>
+                </button>
+            </div>
+            <p id="copy-feedback" class="small text-muted text-right mt-2 mb-0"
+               role="status" aria-live="polite"></p>
         </div>
     </section>
 
@@ -210,9 +219,9 @@
             <h2 id="about-title" class="h5 card-title">About</h2>
 
             <p class="text-muted">
-                Demo Cordova mínima de <strong class="text-body">cordova-plugin-dni-scanner</strong>
-                para probar la captura automática y local de DNI y tarjetas, su corrección de
-                perspectiva y los metadatos resultantes.
+                Minimal Cordova demo for <strong class="text-body">cordova-plugin-dni-scanner</strong>
+                that exercises local automatic capture of DNI documents and cards, perspective
+                correction, and the resulting metadata.
             </p>
 
             <h3 class="h6 mt-3">Versions</h3>
