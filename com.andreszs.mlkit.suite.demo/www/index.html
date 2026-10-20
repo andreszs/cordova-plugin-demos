@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: https://localhost; img-src 'self' data: blob: content: file: cdvfile: https://localhost; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
+    <title>ML Kit Suite Demo</title>
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+    <header class="app-header">
+        <div class="eyebrow">CORDOVA PLUGIN DEMO</div>
+        <h1>ML Kit Suite</h1>
+        <p>Documents, OCR, barcodes, and face capture.</p>
+        <div id="device-status" class="status waiting">Waiting for Cordova…</div>
+    </header>
+
+    <main>
+        <section class="card">
+            <div class="section-heading">
+                <div>
+                    <span class="step">01</span>
+                    <h2>Document scanner</h2>
+                </div>
+            </div>
+            <div class="form-grid compact">
+                <label>Page limit
+                    <input id="document-page-limit" type="number" min="1" max="100" value="2">
+                </label>
+                <label>Scanner mode
+                    <select id="document-mode">
+                        <option value="FULL" selected>Full</option>
+                        <option value="BASE_WITH_FILTER">Base + filters</option>
+                        <option value="BASE">Base</option>
+                    </select>
+                </label>
+            </div>
+            <div class="switches two-columns">
+                <label><input id="document-gallery" type="checkbox" checked> Gallery import</label>
+                <label><input id="document-jpeg" type="checkbox" checked> JPEG pages</label>
+                <label><input id="document-pdf" type="checkbox" checked> PDF document</label>
+            </div>
+
+            <button id="document-button" class="button primary" disabled>Scan document</button>
+            <div id="document-previews" class="document-previews"></div>
+            <div class="output-container">
+                <button class="copy-output" type="button" data-copy-target="document-output" disabled>COPY</button>
+                <pre id="document-output" class="output">—</pre>
+            </div>
+        </section>
+
+        <section class="card">
+            <div class="section-heading">
+                <div>
+                    <span class="step">02</span>
+                    <h2>Process an image</h2>
+                </div>
+            </div>
+            <label>Image
+                <input id="image-path" type="text" placeholder="Choose an image or use the last scan" readonly>
+            </label>
+            <div class="source-actions">
+                <button id="gallery-image-button" class="text-button" type="button" disabled>Gallery</button>
+                <button id="ocr-document-button" class="text-button" type="button" disabled>OCR last scan</button>
+            </div>
+            <img id="selected-image-preview" class="selected-image-preview hidden" alt="Selected image preview">
+            <div class="button-row">
+                <button id="text-button" class="button secondary" disabled>Recognize text</button>
+                <button id="image-barcode-button" class="button secondary" disabled>Scan barcodes</button>
+            </div>
+            <h3>Recognized text</h3>
+            <div class="output-container">
+                <button class="copy-output" type="button" data-copy-target="text-output" disabled>COPY</button>
+                <pre id="text-output" class="output">—</pre>
+            </div>
+            <h3>Detected barcodes</h3>
+            <div class="output-container">
+                <button class="copy-output" type="button" data-copy-target="image-barcode-output" disabled>COPY</button>
+                <pre id="image-barcode-output" class="output">—</pre>
+            </div>
+        </section>
+
+        <section class="card">
+            <div class="section-heading">
+                <div>
+                    <span class="step">03</span>
+                    <h2>Face capture</h2>
+                </div>
+            </div>
+            <div class="form-grid compact">
+                <label>Width
+                    <input id="face-width" type="number" min="320" max="2048" value="600">
+                </label>
+                <label>Height
+                    <input id="face-height" type="number" min="320" max="2048" value="720">
+                </label>
+                <label>Quality
+                    <input id="face-quality" type="number" min="50" max="100" value="95">
+                </label>
+                <label>Timeout (ms)
+                    <input id="face-timeout" type="number" min="0" max="600000" value="45000">
+                </label>
+            </div>
+
+            <label>Instruction
+                <input id="face-instruction" type="text" value="Place your face inside the oval">
+            </label>
+
+            <div class="switches two-columns">
+                <label><input id="face-close" type="checkbox" checked> Close</label>
+                <label><input id="face-debug" type="checkbox" checked> Debug</label>
+            </div>
+
+            <h3>Quality checks</h3>
+            <div id="face-checks" class="switches two-columns">
+                <label><input data-check="singleFace" type="checkbox" checked> Single face</label>
+                <label><input data-check="faceSize" type="checkbox" checked> Face size</label>
+                <label><input data-check="centering" type="checkbox" checked> Centering</label>
+                <label><input data-check="pose" type="checkbox" checked> Head pose</label>
+                <label><input data-check="eyesOpen" type="checkbox" checked> Eyes open</label>
+                <label><input data-check="neutralExpression" type="checkbox" checked> Neutral expression</label>
+                <label><input data-check="stability" type="checkbox" checked> Stability</label>
+                <label><input data-check="sharpness" type="checkbox" checked> Sharpness</label>
+                <label><input data-check="brightness" type="checkbox" checked> Brightness</label>
+            </div>
+
+            <button id="face-button" class="button primary" disabled>Capture face</button>
+            <img id="face-preview" class="face-preview hidden" alt="Captured face">
+            <div class="output-container">
+                <button class="copy-output" type="button" data-copy-target="face-output" disabled>COPY</button>
+                <pre id="face-output" class="output">—</pre>
+            </div>
+        </section>
+
+        <section class="card">
+            <div class="section-heading">
+                <div>
+                    <span class="step">04</span>
+                    <h2>Barcode scanner</h2>
+                </div>
+            </div>
+            <div class="format-actions">
+                <h3>Formats</h3>
+                <div>
+                    <button id="formats-all" class="text-button" type="button">All</button>
+                    <button id="formats-none" class="text-button" type="button">None</button>
+                </div>
+            </div>
+            <div id="barcode-formats" class="format-grid"></div>
+
+            <label>Instruction
+                <input id="barcode-instruction" type="text" value="Place a barcode inside the frame">
+            </label>
+            <label>Timeout (ms)
+                <input id="barcode-timeout" type="number" min="0" max="600000" value="45000">
+            </label>
+            <div class="switches two-columns">
+                <label><input id="barcode-close" type="checkbox" checked> Close</label>
+                <label><input id="barcode-torch" type="checkbox" checked> Torch</label>
+            </div>
+
+            <button id="barcode-button" class="button primary" disabled>Scan barcode</button>
+            <div id="barcode-summary" class="scan-result hidden">
+                <span id="barcode-format" class="format-pill"></span>
+                <div id="barcode-text" class="decoded-text"></div>
+            </div>
+            <div class="output-container">
+                <button class="copy-output" type="button" data-copy-target="barcode-output" disabled>COPY</button>
+                <pre id="barcode-output" class="output">—</pre>
+            </div>
+        </section>
+
+        <section class="card" aria-labelledby="capabilities-title">
+            <div class="section-heading">
+                <div>
+                    <span class="step">05</span>
+                    <h2 id="capabilities-title">Capabilities</h2>
+                </div>
+                <button id="capabilities-button" class="button secondary" disabled>Refresh</button>
+            </div>
+            <p class="help">Configured mode and readiness.</p>
+            <div id="capabilities-summary" class="capabilities-summary" aria-live="polite">
+                <div class="capability-item">Waiting for Cordova…</div>
+            </div>
+            <details class="capabilities-details">
+                <summary>Details</summary>
+                <div class="output-container">
+                    <button class="copy-output" type="button" data-copy-target="capabilities-output" disabled>COPY</button>
+                    <pre id="capabilities-output" class="output">—</pre>
+                </div>
+            </details>
+        </section>
+
+        <section class="card about-card" aria-labelledby="about-title">
+            <div class="section-heading">
+                <div>
+                    <span class="step">06</span>
+                    <h2 id="about-title">About</h2>
+                </div>
+            </div>
+            <div class="about-content">
+                <div>
+                    <h3>Versions</h3>
+                    <dl class="version-list">
+                        <div><dt>Plugin</dt><dd id="about-plugin-version">0.1.0</dd></div>
+                        <div><dt>Demo app</dt><dd id="about-app-version">1.0.0</dd></div>
+                        <div><dt id="about-platform-name">Cordova platform</dt><dd id="about-platform-version">Waiting for Cordova…</dd></div>
+                    </dl>
+                </div>
+                <div>
+                    <h3>Links</h3>
+                    <ul class="about-links">
+                        <li><a href="https://github.com/andreszs/cordova-plugin-mlkit-suite#readme">Plugin README</a></li>
+                        <li><a href="https://github.com/andreszs/cordova-plugin-demos">Cordova plugin demo apps</a></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="cordova.js"></script>
+    <script src="js/index.js"></script>
+</body>
+</html>

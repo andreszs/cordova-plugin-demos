@@ -131,6 +131,15 @@ The build and device-deployment commands are also available through `npm run bui
 - **Library:** [Google Play In-App Updates](https://developer.android.com/guide/playcore/in-app-updates)
 - **Purpose:** Prompt active users to update an Android app through Google Play.
 
+### [`com.andreszs.mlkit.suite.demo`](com.andreszs.mlkit.suite.demo/)
+
+<img src="com.andreszs.mlkit.suite.demo/res/icons/android/mipmap-mdpi/ic_launcher.png" alt="ML Kit Suite demo icon" align="right" width="36" height="36">
+
+- **Plugin:** [cordova-plugin-mlkit-suite](https://github.com/andreszs/cordova-plugin-mlkit-suite)
+- **Documentation:** [Demo files and setup instructions](com.andreszs.mlkit.suite.demo/)
+- **Platform:** Android
+- **Purpose:** Test document scanning, OCR, barcode scanning, guided face capture, and ML Kit delivery modes.
+
 ### [`com.andreszs.recaptcha.v2.demo`](com.andreszs.recaptcha.v2.demo/)
 
 <img src="com.andreszs.recaptcha.v2.demo/res/icons/android/mipmap-mdpi/ic_launcher.png" alt="SafetyNet reCAPTCHA demo icon" align="right" width="36" height="36">
@@ -185,6 +194,10 @@ Contributions are always welcome. If you find a bug, want to add a missing featu
 ⭐ If financial support is not an option, [star this repository](https://github.com/andreszs/cordova-plugin-demos) or share it with other Cordova developers—both make a difference.
 
 ## Changes Log
+
+### 2026-10-20
+
+- Added the `cordova-plugin-mlkit-suite` Android demo for document scanning, OCR, barcode scanning, and guided face capture.
 
 ### 2026-10-15
 
