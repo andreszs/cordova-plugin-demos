@@ -138,7 +138,7 @@ The build and device-deployment commands are also available through `npm run bui
 - **Plugin:** [cordova-plugin-mlkit-suite](https://github.com/andreszs/cordova-plugin-mlkit-suite)
 - **Documentation:** [Demo files and setup instructions](com.andreszs.mlkit.suite.demo/)
 - **Platform:** Android
-- **Purpose:** Test document scanning, OCR, barcode scanning, guided face capture, and ML Kit delivery modes.
+- **Purpose:** Test Barcode scanning, Document scanner, Face detection, Text recognition v2, and ML Kit delivery modes.
 
 ### [`com.andreszs.recaptcha.v2.demo`](com.andreszs.recaptcha.v2.demo/)
 
@@ -197,7 +197,7 @@ Contributions are always welcome. If you find a bug, want to add a missing featu
 
 ### 2026-10-20
 
-- Added the `cordova-plugin-mlkit-suite` Android demo for document scanning, OCR, barcode scanning, and guided face capture.
+- Added the `cordova-plugin-mlkit-suite` Android demo for Barcode scanning, Document scanner, Face detection, and Text recognition v2.
 
 ### 2026-10-15
 

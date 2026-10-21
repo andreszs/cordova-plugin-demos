@@ -5,6 +5,8 @@ Android demo for [`cordova-plugin-mlkit-suite`](https://github.com/andreszs/cord
 > [!WARNING]
 > The plugin and this demo are in active development. APIs and native behavior may change before a stable release.
 
+Bootstrap 4.6.2 and jQuery 3.6.0 are bundled locally so the demo UI works without an internet connection.
+
 ## Requirements
 
 - Node.js 20 and Cordova CLI 12.
@@ -34,11 +36,11 @@ npm run run:android
 - Opens the native document scanner with configurable page count, import, output, and editing mode.
 - Checks and prepares the on-demand scanner module, showing a native spinner only when preparation takes longer than a brief availability check.
 - Previews scanned JPEG pages and displays PDF metadata.
-- Selects and previews a gallery image for OCR or static-image barcode detection.
-- Runs Latin text recognition against a captured local image.
-- Detects all matching barcodes in a captured local image.
+- Demonstrates Text recognition v2 with gallery images or the last scanned document page.
+- Demonstrates Barcode scanning from either the live camera or a gallery image.
+- Lets you test automatic, English, and Spanish native plugin localization at runtime.
 - Exercises every public face-capture option and quality-check switch.
 - Displays the captured JPEG and complete native result.
-- Exercises barcode scanning with all 13 formats supported by ML Kit.
+- Exercises all 13 barcode formats supported by ML Kit.
 - Allows selecting any subset of barcode formats and configuring the native instruction, close button, torch button, and timeout.
 - Displays the exact decoded `text`, `format`, cancellation, and structured errors.

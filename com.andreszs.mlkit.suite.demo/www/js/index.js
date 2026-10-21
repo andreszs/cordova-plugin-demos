@@ -9,9 +9,12 @@
 
     function element(id) { return document.getElementById(id); }
     function integerValue(id) { return Number(element(id).value); }
+    function pluginLocale() { return element('plugin-locale').value || 'auto'; }
 
     function renderOutput(id, value, isError) {
         var output = element(id);
+        var resultBlock = document.querySelector('[data-result-for="' + id + '"]');
+        if (resultBlock) resultBlock.classList.remove('hidden');
         output.textContent = typeof value === 'string' ? value : JSON.stringify(value, null, 2);
         output.classList.toggle('error', Boolean(isError));
         var copyButton = document.querySelector('[data-copy-target="' + id + '"]');
@@ -121,10 +124,10 @@
     function renderCapabilitiesSummary(result) {
         var summary = element('capabilities-summary');
         var modules = [
-            { name: 'Face detection', value: result.face },
             { name: 'Barcode scanning', value: result.barcode },
-            { name: 'Text recognition', value: result.text },
-            { name: 'Document scanner', value: result.document }
+            { name: 'Document scanner', value: result.document },
+            { name: 'Face detection', value: result.face },
+            { name: 'Text recognition v2', value: result.text }
         ];
         summary.textContent = '';
         modules.forEach(function (entry) {
@@ -167,7 +170,8 @@
             pageLimit: integerValue('document-page-limit'),
             galleryImportAllowed: element('document-gallery').checked,
             resultFormats: resultFormats,
-            scannerMode: element('document-mode').value
+            scannerMode: element('document-mode').value,
+            locale: pluginLocale()
         };
     }
 
@@ -183,10 +187,10 @@
         });
     }
 
-    function selectImage(imagePath, previewUri) {
-        element('image-path').value = imagePath;
-        element('selected-image-preview').src = previewUri || imagePath;
-        element('selected-image-preview').classList.remove('hidden');
+    function selectImage(pathInputId, previewId, imagePath, previewUri) {
+        if (pathInputId) element(pathInputId).value = imagePath;
+        element(previewId).src = previewUri || imagePath;
+        element(previewId).classList.remove('hidden');
     }
 
     function webViewImageUri(imageUri) {
@@ -194,8 +198,8 @@
         return imageUri;
     }
 
-    function loadGalleryPreview(imageUri, previewUri, onSuccess, onError) {
-        var preview = element('selected-image-preview');
+    function loadGalleryPreview(imageUri, previewUri, pathInputId, previewId, onSuccess, onError) {
+        var preview = element(previewId);
         preview.onload = function () {
             preview.onload = null;
             preview.onerror = null;
@@ -204,29 +208,142 @@
         preview.onerror = function () {
             preview.onload = null;
             preview.onerror = null;
+            preview.classList.add('hidden');
+            preview.removeAttribute('src');
             onError(new Error('Unable to load the selected image preview.'));
         };
-        selectImage(imageUri, previewUri);
+        selectImage(pathInputId, previewId, imageUri, previewUri);
     }
 
-    function selectGalleryImage(imageUri, onSuccess, onError) {
+    function galleryCacheExtension(file) {
+        var name = file && file.name ? String(file.name) : '';
+        var match = name.match(/\.[a-z0-9]{1,5}$/i);
+        if (match) return match[0].toLowerCase();
+        var extensions = {
+            'image/bmp': '.bmp',
+            'image/gif': '.gif',
+            'image/jpeg': '.jpg',
+            'image/png': '.png',
+            'image/webp': '.webp'
+        };
+        return extensions[file && file.type] || '.jpg';
+    }
+
+    function cacheGalleryFile(file, fallbackUri, onReady) {
+        if (!window.cordova || !cordova.file || !cordova.file.cacheDirectory
+                || typeof window.resolveLocalFileSystemURL !== 'function') {
+            onReady(fallbackUri);
+            return;
+        }
+        window.resolveLocalFileSystemURL(cordova.file.cacheDirectory, function (directory) {
+            var name = 'mlkit-gallery-' + Date.now() + galleryCacheExtension(file);
+            directory.getFile(name, { create: true, exclusive: false }, function (entry) {
+                entry.createWriter(function (writer) {
+                    writer.onwriteend = function () {
+                        onReady(entry.nativeURL || entry.toURL());
+                    };
+                    writer.onerror = function () { onReady(fallbackUri); };
+                    writer.write(file);
+                }, function () { onReady(fallbackUri); });
+            }, function () { onReady(fallbackUri); });
+        }, function () { onReady(fallbackUri); });
+    }
+
+    function galleryDataBlob(imageData) {
+        var raw = String(imageData || '');
+        var dataUri = raw.indexOf('data:') === 0
+            ? raw
+            : 'data:image/jpeg;base64,' + raw;
+        var parts = dataUri.split(',', 2);
+        if (parts.length !== 2) throw new Error('The gallery did not return valid image data.');
+        var mimeMatch = parts[0].match(/^data:([^;]+)/i);
+        var bytes = window.atob(parts[1]);
+        var values = new Uint8Array(bytes.length);
+        for (var index = 0; index < bytes.length; index += 1) {
+            values[index] = bytes.charCodeAt(index);
+        }
+        return {
+            blob: new Blob([values], { type: mimeMatch ? mimeMatch[1] : 'image/jpeg' }),
+            previewUri: dataUri
+        };
+    }
+
+    function selectGalleryData(imageData, pathInputId, previewId, onSuccess, onError) {
+        var image;
+        try {
+            image = galleryDataBlob(imageData);
+        } catch (error) {
+            onError(error, '');
+            return;
+        }
+        cacheGalleryFile(image.blob, '', function (scanUri) {
+            if (!scanUri) {
+                onError(new Error('Unable to cache the selected image.'), '');
+                return;
+            }
+            loadGalleryPreview(scanUri, image.previewUri, pathInputId, previewId, function () {
+                onSuccess(scanUri);
+            }, function (error) {
+                onError(error, scanUri);
+            });
+        });
+    }
+
+    function selectGalleryImage(imageUri, pathInputId, previewId, onSuccess, onError) {
         var fallbackUri = webViewImageUri(imageUri);
 
+        function loadPreview(scanUri, previewUri) {
+            loadGalleryPreview(scanUri, previewUri, pathInputId, previewId, function () {
+                onSuccess(scanUri);
+            }, function (error) {
+                onError(error, scanUri);
+            });
+        }
+
+        function loadUriFallback(scanUri, resolvedUri) {
+            loadGalleryPreview(scanUri, resolvedUri, pathInputId, previewId, function () {
+                onSuccess(scanUri);
+            }, function () {
+                if (resolvedUri === fallbackUri) {
+                    onError(new Error('Unable to load the selected image preview.'), scanUri);
+                    return;
+                }
+                loadGalleryPreview(scanUri, fallbackUri, pathInputId, previewId, function () {
+                    onSuccess(scanUri);
+                }, function (error) {
+                    onError(error, scanUri);
+                });
+            });
+        }
+
         if (typeof window.resolveLocalFileSystemURL !== 'function') {
-            loadGalleryPreview(imageUri, fallbackUri, onSuccess, onError);
+            loadUriFallback(imageUri, fallbackUri);
             return;
         }
         window.resolveLocalFileSystemURL(imageUri, function (entry) {
             var resolvedUri = entry.toURL();
-            loadGalleryPreview(imageUri, resolvedUri, onSuccess, function () {
-                if (resolvedUri === fallbackUri) {
-                    onError(new Error('Unable to load the selected image preview.'));
-                    return;
-                }
-                loadGalleryPreview(imageUri, fallbackUri, onSuccess, onError);
+            if (typeof entry.file !== 'function' || typeof window.FileReader !== 'function') {
+                loadUriFallback(imageUri, resolvedUri);
+                return;
+            }
+            entry.file(function (file) {
+                var reader = new FileReader();
+                reader.onload = function () {
+                    cacheGalleryFile(file, imageUri, function (scanUri) {
+                        loadPreview(scanUri, String(reader.result));
+                    });
+                };
+                reader.onerror = function () {
+                    cacheGalleryFile(file, imageUri, function (scanUri) {
+                        loadUriFallback(scanUri, resolvedUri);
+                    });
+                };
+                reader.readAsDataURL(file);
+            }, function () {
+                loadUriFallback(imageUri, resolvedUri);
             });
         }, function () {
-            loadGalleryPreview(imageUri, fallbackUri, onSuccess, onError);
+            loadUriFallback(imageUri, fallbackUri);
         });
     }
 
@@ -251,7 +368,7 @@
             }
         }
 
-        return MlKit.prepareDocumentScanner().then(function (result) {
+        return MlKit.prepareDocumentScanner({ locale: pluginLocale() }).then(function (result) {
             finishPreparation();
             return result;
         }, function (error) {
@@ -282,9 +399,11 @@
                     previewUri: result.pages[0].imageUri || result.pages[0].imagePath
                 };
                 element('ocr-document-button').disabled = false;
+                element('ocr-document-button').removeAttribute('title');
             } else if (result.status === 'success') {
                 lastDocumentImage = null;
                 element('ocr-document-button').disabled = true;
+                element('ocr-document-button').title = 'Scan a document with JPEG pages first';
             }
         }).catch(function (error) {
             renderOutput('document-output', errorPayload(error), true);
@@ -293,8 +412,8 @@
         });
     }
 
-    function requireImagePath(outputId) {
-        var value = element('image-path').value.trim();
+    function requireImagePath(pathInputId, outputId) {
+        var value = element(pathInputId).value.trim();
         if (!value) {
             renderOutput(outputId, errorPayload(new Error('Select an image first.')), true);
             return '';
@@ -302,24 +421,46 @@
         return value;
     }
 
-    function chooseImageFromGallery() {
+    function galleryDestinationType() {
+        if (window.cordova && cordova.platformId === 'android'
+                && Camera.DestinationType.DATA_URL !== undefined) {
+            return Camera.DestinationType.DATA_URL;
+        }
+        return Camera.DestinationType.FILE_URI;
+    }
+
+    function chooseTextImageFromGallery() {
         if (!navigator.camera || !window.Camera) {
             renderOutput('text-output', errorPayload(new Error('Camera gallery picker is unavailable.')), true);
             return;
         }
 
-        setBusy('gallery-image-button', true, 'Gallery', 'Opening…');
-        navigator.camera.getPicture(function (imageUri) {
-            selectGalleryImage(imageUri, function () {
+        setBusy('text-gallery-button', true, 'Gallery', 'Opening…');
+        var destinationType = galleryDestinationType();
+        navigator.camera.getPicture(function (imageValue) {
+            var select = destinationType === Camera.DestinationType.DATA_URL
+                ? selectGalleryData
+                : selectGalleryImage;
+            select(imageValue, 'text-image-path', 'text-image-preview', function () {
                 renderOutput('text-output', 'Image selected.');
-                setBusy('gallery-image-button', false, 'Gallery', 'Opening…');
-            }, function (error) {
-                renderOutput('text-output', errorPayload({
-                    code: 'IMAGE_PREVIEW_FAILED',
-                    message: error.message,
-                    recoverable: true
-                }), true);
-                setBusy('gallery-image-button', false, 'Gallery', 'Opening…');
+                element('text-button').disabled = false;
+                element('text-button').removeAttribute('title');
+                setBusy('text-gallery-button', false, 'Gallery', 'Opening…');
+            }, function (error, scanUri) {
+                if (!scanUri) {
+                    renderOutput('text-output', errorPayload({
+                        code: 'IMAGE_CACHE_FAILED',
+                        message: error.message,
+                        recoverable: true
+                    }), true);
+                    setBusy('text-gallery-button', false, 'Gallery', 'Opening…');
+                    return;
+                }
+                element('text-image-path').value = scanUri;
+                element('text-button').disabled = false;
+                element('text-button').removeAttribute('title');
+                renderOutput('text-output', 'Image selected; preview unavailable.');
+                setBusy('text-gallery-button', false, 'Gallery', 'Opening…');
             });
         }, function (message) {
             if (message && message !== 'No Image Selected') {
@@ -329,10 +470,11 @@
                     recoverable: true
                 }), true);
             }
-            setBusy('gallery-image-button', false, 'Gallery', 'Opening…');
+            setBusy('text-gallery-button', false, 'Gallery', 'Opening…');
         }, {
             quality: 100,
-            destinationType: Camera.DestinationType.FILE_URI,
+            destinationType: destinationType,
+            encodingType: Camera.EncodingType.JPEG,
             sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
             mediaType: Camera.MediaType.PICTURE,
             allowEdit: false,
@@ -341,11 +483,11 @@
     }
 
     function recognizeText() {
-        var imagePath = requireImagePath('text-output');
+        var imagePath = requireImagePath('text-image-path', 'text-output');
         if (!imagePath) return;
         setBusy('text-button', true, 'Recognize text', 'Processing…');
         renderOutput('text-output', 'Recognizing…');
-        MlKit.recognizeText(imagePath).then(function (text) {
+        MlKit.recognizeText(imagePath, { locale: pluginLocale() }).then(function (text) {
             renderOutput('text-output', text || '(No text found)');
         }).catch(function (error) {
             renderOutput('text-output', errorPayload(error), true);
@@ -363,23 +505,89 @@
             }), true);
             return;
         }
-        selectImage(lastDocumentImage.path, lastDocumentImage.previewUri);
+        selectImage(
+            'text-image-path',
+            'text-image-preview',
+            lastDocumentImage.path,
+            lastDocumentImage.previewUri
+        );
+        element('text-button').disabled = false;
+        element('text-button').removeAttribute('title');
         recognizeText();
     }
 
-    function scanImageBarcodes() {
-        var imagePath = requireImagePath('image-barcode-output');
-        if (!imagePath) return;
+    function scanImageBarcodes(imagePath) {
         var formats = selectedFormats();
-        var options = formats.length ? { formats: formats } : {};
-        setBusy('image-barcode-button', true, 'Scan barcodes', 'Processing…');
+        if (!formats.length) {
+            renderOutput(
+                'image-barcode-output',
+                errorPayload(new Error('Select at least one barcode format.')),
+                true
+            );
+            setBusy('barcode-image-button', false, 'Scan image', 'Processing…');
+            return;
+        }
+        setBusy('barcode-image-button', true, 'Scan image', 'Processing…');
         renderOutput('image-barcode-output', 'Scanning…');
-        MlKit.scanBarcodes(imagePath, options).then(function (results) {
+        MlKit.scanBarcodes(imagePath, {
+            formats: formats,
+            locale: pluginLocale()
+        }).then(function (results) {
             renderOutput('image-barcode-output', results);
         }).catch(function (error) {
             renderOutput('image-barcode-output', errorPayload(error), true);
         }).then(function () {
-            setBusy('image-barcode-button', false, 'Scan barcodes', 'Processing…');
+            setBusy('barcode-image-button', false, 'Scan image', 'Processing…');
+        });
+    }
+
+    function chooseBarcodeImage() {
+        if (!navigator.camera || !window.Camera) {
+            renderOutput(
+                'image-barcode-output',
+                errorPayload(new Error('Camera gallery picker is unavailable.')),
+                true
+            );
+            return;
+        }
+
+        setBusy('barcode-image-button', true, 'Scan image', 'Opening…');
+        var destinationType = galleryDestinationType();
+        navigator.camera.getPicture(function (imageValue) {
+            var select = destinationType === Camera.DestinationType.DATA_URL
+                ? selectGalleryData
+                : selectGalleryImage;
+            select(imageValue, null, 'barcode-image-preview', function (scanUri) {
+                scanImageBarcodes(scanUri);
+            }, function (error, scanUri) {
+                if (!scanUri) {
+                    renderOutput('image-barcode-output', errorPayload({
+                        code: 'IMAGE_CACHE_FAILED',
+                        message: error.message,
+                        recoverable: true
+                    }), true);
+                    setBusy('barcode-image-button', false, 'Scan image', 'Opening…');
+                    return;
+                }
+                scanImageBarcodes(scanUri);
+            });
+        }, function (message) {
+            if (message && message !== 'No Image Selected') {
+                renderOutput('image-barcode-output', errorPayload({
+                    code: 'IMAGE_PICK_FAILED',
+                    message: String(message),
+                    recoverable: true
+                }), true);
+            }
+            setBusy('barcode-image-button', false, 'Scan image', 'Opening…');
+        }, {
+            quality: 100,
+            destinationType: destinationType,
+            encodingType: Camera.EncodingType.JPEG,
+            sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+            mediaType: Camera.MediaType.PICTURE,
+            allowEdit: false,
+            correctOrientation: false
         });
     }
 
@@ -388,16 +596,19 @@
         Array.prototype.forEach.call(document.querySelectorAll('#face-checks [data-check]'), function (input) {
             checks[input.getAttribute('data-check')] = input.checked;
         });
-        return {
+        var options = {
             outputWidth: integerValue('face-width'),
             outputHeight: integerValue('face-height'),
             jpegQuality: integerValue('face-quality'),
             showCloseButton: element('face-close').checked,
             debugMode: element('face-debug').checked,
-            instructionText: element('face-instruction').value,
             timeoutMs: integerValue('face-timeout'),
+            locale: pluginLocale(),
             checks: checks
         };
+        var instruction = element('face-instruction').value.trim();
+        if (instruction) options.instructionText = instruction;
+        return options;
     }
 
     function captureFace() {
@@ -419,13 +630,16 @@
     function barcodeOptions() {
         var formats = selectedFormats();
         if (!formats.length) throw new Error('Select at least one barcode format.');
-        return {
+        var options = {
             formats: formats,
             showCloseButton: element('barcode-close').checked,
             showTorchButton: element('barcode-torch').checked,
-            instructionText: element('barcode-instruction').value,
-            timeoutMs: integerValue('barcode-timeout')
+            timeoutMs: integerValue('barcode-timeout'),
+            locale: pluginLocale()
         };
+        var instruction = element('barcode-instruction').value.trim();
+        if (instruction) options.instructionText = instruction;
+        return options;
     }
 
     function scanBarcode() {
@@ -436,7 +650,7 @@
             renderOutput('barcode-output', errorPayload(error), true);
             return;
         }
-        setBusy('barcode-button', true, 'Scan barcode', 'Camera…');
+        setBusy('barcode-button', true, 'Scan with camera', 'Camera…');
         renderOutput('barcode-output', 'Opening camera…');
         element('barcode-summary').classList.add('hidden');
         MlKit.barcode.scan(options).then(function (result) {
@@ -449,18 +663,17 @@
         }).catch(function (error) {
             renderOutput('barcode-output', errorPayload(error), true);
         }).then(function () {
-            setBusy('barcode-button', false, 'Scan barcode', 'Camera…');
+            setBusy('barcode-button', false, 'Scan with camera', 'Camera…');
         });
     }
 
     function enableDemo() {
-        element('device-status').textContent = 'Ready';
-        element('device-status').className = 'status ready';
+        element('device-status').textContent = '';
+        element('device-status').className = 'status hidden';
         element('capabilities-button').disabled = false;
         element('document-button').disabled = false;
-        element('gallery-image-button').disabled = false;
-        element('text-button').disabled = false;
-        element('image-barcode-button').disabled = false;
+        element('text-gallery-button').disabled = false;
+        element('barcode-image-button').disabled = false;
         element('face-button').disabled = false;
         element('barcode-button').disabled = false;
         readCapabilities();
@@ -495,10 +708,10 @@
     element('formats-all').addEventListener('click', function () { setAllFormats(true); });
     element('formats-none').addEventListener('click', function () { setAllFormats(false); });
     element('document-button').addEventListener('click', scanDocument);
-    element('gallery-image-button').addEventListener('click', chooseImageFromGallery);
+    element('text-gallery-button').addEventListener('click', chooseTextImageFromGallery);
     element('ocr-document-button').addEventListener('click', recognizeLastDocumentPage);
     element('text-button').addEventListener('click', recognizeText);
-    element('image-barcode-button').addEventListener('click', scanImageBarcodes);
+    element('barcode-image-button').addEventListener('click', chooseBarcodeImage);
     element('capabilities-button').addEventListener('click', readCapabilities);
     element('face-button').addEventListener('click', captureFace);
     element('barcode-button').addEventListener('click', scanBarcode);

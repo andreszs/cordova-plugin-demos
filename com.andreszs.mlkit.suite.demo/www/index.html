@@ -7,14 +7,26 @@
     <meta name="msapplication-tap-highlight" content="no">
     <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
     <title>ML Kit Suite Demo</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/index.css">
 </head>
 <body>
     <header class="app-header">
+        <a class="github-credit" href="https://github.com/andreszs" target="_blank" rel="noopener">
+            <svg class="github-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.64 0 8.13c0 3.59 2.29 6.64 5.47 7.71.4.08.55-.18.55-.39 0-.19-.01-.83-.01-1.51-2.01.38-2.53-.5-2.69-.96-.09-.23-.48-.96-.82-1.15-.28-.15-.68-.53-.01-.54.63-.01 1.08.59 1.23.83.72 1.23 1.87.88 2.33.67.07-.53.28-.88.51-1.08-1.78-.2-3.64-.91-3.64-4.02 0-.89.31-1.62.82-2.19-.08-.2-.36-1.04.08-2.16 0 0 .67-.22 2.2.84A7.5 7.5 0 0 1 8 3.89a7.5 7.5 0 0 1 2 .27c1.53-1.06 2.2-.84 2.2-.84.44 1.12.16 1.96.08 2.16.51.57.82 1.3.82 2.19 0 3.12-1.87 3.82-3.65 4.02.29.25.54.73.54 1.49 0 1.08-.01 1.95-.01 2.22 0 .21.15.47.55.39A8.14 8.14 0 0 0 16 8.13C16 3.64 12.42 0 8 0Z"></path></svg>
+            <span>@andreszs</span>
+        </a>
         <div class="eyebrow">CORDOVA PLUGIN DEMO</div>
         <h1>ML Kit Suite</h1>
-        <p>Documents, OCR, barcodes, and face capture.</p>
-        <div id="device-status" class="status waiting">Waiting for Cordova…</div>
+        <p>Barcode scanning, Document scanner, Face detection, and Text recognition v2.</p>
+        <label class="locale-control">Plugin UI language
+            <select id="plugin-locale">
+                <option value="auto" selected>Automatic</option>
+                <option value="en">English</option>
+                <option value="es">Español</option>
+            </select>
+        </label>
+        <div id="device-status" class="status hidden" role="alert"></div>
     </header>
 
     <main>
@@ -22,30 +34,112 @@
             <div class="section-heading">
                 <div>
                     <span class="step">01</span>
-                    <h2>Document scanner</h2>
+                    <h2>Barcode scanning</h2>
+                </div>
+                <button class="settings-trigger" type="button" data-toggle="modal" data-target="#barcode-settings-modal" aria-label="Barcode scanning settings">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-1.6v-.2h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1z"></path></svg>
+                </button>
+            </div>
+            <div id="barcode-settings-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="barcode-settings-title" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 id="barcode-settings-title" class="modal-title">Barcode scanning settings</h3>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    </div>
+                    <div class="modal-body">
+                    <div class="format-actions">
+                        <h3>Formats</h3>
+                        <div>
+                            <button id="formats-all" class="text-button" type="button">All</button>
+                            <button id="formats-none" class="text-button" type="button">None</button>
+                        </div>
+                    </div>
+                    <div id="barcode-formats" class="format-grid"></div>
+
+                    <label>Instruction
+                        <input id="barcode-instruction" type="text" placeholder="Use localized default">
+                    </label>
+                    <label>Timeout (ms)
+                        <input id="barcode-timeout" type="number" min="0" max="600000" value="45000">
+                    </label>
+                    <div class="switches two-columns">
+                        <label><input id="barcode-close" type="checkbox" checked> Close</label>
+                        <label><input id="barcode-torch" type="checkbox" checked> Torch</label>
+                    </div>
+                    </div>
+                    </div>
                 </div>
             </div>
-            <div class="form-grid compact">
-                <label>Page limit
-                    <input id="document-page-limit" type="number" min="1" max="100" value="2">
-                </label>
-                <label>Scanner mode
-                    <select id="document-mode">
-                        <option value="FULL" selected>Full</option>
-                        <option value="BASE_WITH_FILTER">Base + filters</option>
-                        <option value="BASE">Base</option>
-                    </select>
-                </label>
+
+            <div class="button-row">
+                <button id="barcode-button" class="button primary" disabled>Scan with camera</button>
+                <button id="barcode-image-button" class="button secondary" disabled>Scan image</button>
             </div>
-            <div class="switches two-columns">
-                <label><input id="document-gallery" type="checkbox" checked> Gallery import</label>
-                <label><input id="document-jpeg" type="checkbox" checked> JPEG pages</label>
-                <label><input id="document-pdf" type="checkbox" checked> PDF document</label>
+            <div id="barcode-summary" class="scan-result hidden">
+                <span id="barcode-format" class="format-pill"></span>
+                <div id="barcode-text" class="decoded-text"></div>
+            </div>
+            <div class="result-block hidden" data-result-for="barcode-output">
+                <h3>Camera result</h3>
+                <div class="output-container">
+                    <button class="copy-output" type="button" data-copy-target="barcode-output" disabled>COPY</button>
+                    <pre id="barcode-output" class="output">—</pre>
+                </div>
+            </div>
+            <img id="barcode-image-preview" class="selected-image-preview hidden" alt="Barcode scanning image">
+            <div class="result-block hidden" data-result-for="image-barcode-output">
+                <h3>Image result</h3>
+                <div class="output-container">
+                    <button class="copy-output" type="button" data-copy-target="image-barcode-output" disabled>COPY</button>
+                    <pre id="image-barcode-output" class="output">—</pre>
+                </div>
+            </div>
+        </section>
+
+        <section class="card">
+            <div class="section-heading">
+                <div>
+                    <span class="step">02</span>
+                    <h2>Document scanner</h2>
+                </div>
+                <button class="settings-trigger" type="button" data-toggle="modal" data-target="#document-settings-modal" aria-label="Document scanner settings">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-1.6v-.2h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1z"></path></svg>
+                </button>
+            </div>
+            <div id="document-settings-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="document-settings-title" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 id="document-settings-title" class="modal-title">Document scanner settings</h3>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    </div>
+                    <div class="modal-body">
+                    <div class="form-grid compact">
+                        <label>Page limit
+                            <input id="document-page-limit" type="number" min="1" max="100" value="1">
+                        </label>
+                        <label>Scanner mode
+                            <select id="document-mode">
+                                <option value="FULL" selected>Full</option>
+                                <option value="BASE_WITH_FILTER">Base + filters</option>
+                                <option value="BASE">Base</option>
+                            </select>
+                        </label>
+                    </div>
+                    <div class="switches two-columns">
+                        <label><input id="document-gallery" type="checkbox" checked> Gallery import</label>
+                        <label><input id="document-jpeg" type="checkbox" checked> JPEG pages</label>
+                        <label><input id="document-pdf" type="checkbox"> PDF document</label>
+                    </div>
+                    </div>
+                    </div>
+                </div>
             </div>
 
             <button id="document-button" class="button primary" disabled>Scan document</button>
             <div id="document-previews" class="document-previews"></div>
-            <div class="output-container">
+            <div class="output-container result-block hidden" data-result-for="document-output">
                 <button class="copy-output" type="button" data-copy-target="document-output" disabled>COPY</button>
                 <pre id="document-output" class="output">—</pre>
             </div>
@@ -54,81 +148,65 @@
         <section class="card">
             <div class="section-heading">
                 <div>
-                    <span class="step">02</span>
-                    <h2>Process an image</h2>
-                </div>
-            </div>
-            <label>Image
-                <input id="image-path" type="text" placeholder="Choose an image or use the last scan" readonly>
-            </label>
-            <div class="source-actions">
-                <button id="gallery-image-button" class="text-button" type="button" disabled>Gallery</button>
-                <button id="ocr-document-button" class="text-button" type="button" disabled>OCR last scan</button>
-            </div>
-            <img id="selected-image-preview" class="selected-image-preview hidden" alt="Selected image preview">
-            <div class="button-row">
-                <button id="text-button" class="button secondary" disabled>Recognize text</button>
-                <button id="image-barcode-button" class="button secondary" disabled>Scan barcodes</button>
-            </div>
-            <h3>Recognized text</h3>
-            <div class="output-container">
-                <button class="copy-output" type="button" data-copy-target="text-output" disabled>COPY</button>
-                <pre id="text-output" class="output">—</pre>
-            </div>
-            <h3>Detected barcodes</h3>
-            <div class="output-container">
-                <button class="copy-output" type="button" data-copy-target="image-barcode-output" disabled>COPY</button>
-                <pre id="image-barcode-output" class="output">—</pre>
-            </div>
-        </section>
-
-        <section class="card">
-            <div class="section-heading">
-                <div>
                     <span class="step">03</span>
-                    <h2>Face capture</h2>
+                    <h2>Face detection</h2>
                 </div>
+                <button class="settings-trigger" type="button" data-toggle="modal" data-target="#face-settings-modal" aria-label="Face detection settings">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-1.6v-.2h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1z"></path></svg>
+                </button>
             </div>
-            <div class="form-grid compact">
-                <label>Width
-                    <input id="face-width" type="number" min="320" max="2048" value="600">
-                </label>
-                <label>Height
-                    <input id="face-height" type="number" min="320" max="2048" value="720">
-                </label>
-                <label>Quality
-                    <input id="face-quality" type="number" min="50" max="100" value="95">
-                </label>
-                <label>Timeout (ms)
-                    <input id="face-timeout" type="number" min="0" max="600000" value="45000">
-                </label>
-            </div>
+            <div id="face-settings-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="face-settings-title" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 id="face-settings-title" class="modal-title">Face detection settings</h3>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    </div>
+                    <div class="modal-body">
+                    <div class="form-grid compact">
+                        <label>Width
+                            <input id="face-width" type="number" min="320" max="2048" value="600">
+                        </label>
+                        <label>Height
+                            <input id="face-height" type="number" min="320" max="2048" value="720">
+                        </label>
+                        <label>Quality
+                            <input id="face-quality" type="number" min="50" max="100" value="95">
+                        </label>
+                        <label>Timeout (ms)
+                            <input id="face-timeout" type="number" min="0" max="600000" value="45000">
+                        </label>
+                    </div>
 
-            <label>Instruction
-                <input id="face-instruction" type="text" value="Place your face inside the oval">
-            </label>
+                    <label>Instruction
+                        <input id="face-instruction" type="text" placeholder="Use localized default">
+                    </label>
 
-            <div class="switches two-columns">
-                <label><input id="face-close" type="checkbox" checked> Close</label>
-                <label><input id="face-debug" type="checkbox" checked> Debug</label>
-            </div>
+                    <div class="switches two-columns">
+                        <label><input id="face-close" type="checkbox" checked> Close</label>
+                        <label><input id="face-debug" type="checkbox" checked> Debug</label>
+                    </div>
 
-            <h3>Quality checks</h3>
-            <div id="face-checks" class="switches two-columns">
-                <label><input data-check="singleFace" type="checkbox" checked> Single face</label>
-                <label><input data-check="faceSize" type="checkbox" checked> Face size</label>
-                <label><input data-check="centering" type="checkbox" checked> Centering</label>
-                <label><input data-check="pose" type="checkbox" checked> Head pose</label>
-                <label><input data-check="eyesOpen" type="checkbox" checked> Eyes open</label>
-                <label><input data-check="neutralExpression" type="checkbox" checked> Neutral expression</label>
-                <label><input data-check="stability" type="checkbox" checked> Stability</label>
-                <label><input data-check="sharpness" type="checkbox" checked> Sharpness</label>
-                <label><input data-check="brightness" type="checkbox" checked> Brightness</label>
+                    <h3>Quality checks</h3>
+                    <div id="face-checks" class="switches two-columns">
+                        <label><input data-check="singleFace" type="checkbox" checked> Single face</label>
+                        <label><input data-check="faceSize" type="checkbox" checked> Face size</label>
+                        <label><input data-check="centering" type="checkbox" checked> Centering</label>
+                        <label><input data-check="pose" type="checkbox" checked> Head pose</label>
+                        <label><input data-check="eyesOpen" type="checkbox" checked> Eyes open</label>
+                        <label><input data-check="neutralExpression" type="checkbox" checked> Neutral expression</label>
+                        <label><input data-check="stability" type="checkbox" checked> Stability</label>
+                        <label><input data-check="sharpness" type="checkbox" checked> Sharpness</label>
+                        <label><input data-check="brightness" type="checkbox" checked> Brightness</label>
+                    </div>
+                    </div>
+                    </div>
+                </div>
             </div>
 
             <button id="face-button" class="button primary" disabled>Capture face</button>
             <img id="face-preview" class="face-preview hidden" alt="Captured face">
-            <div class="output-container">
+            <div class="output-container result-block hidden" data-result-for="face-output">
                 <button class="copy-output" type="button" data-copy-target="face-output" disabled>COPY</button>
                 <pre id="face-output" class="output">—</pre>
             </div>
@@ -138,37 +216,24 @@
             <div class="section-heading">
                 <div>
                     <span class="step">04</span>
-                    <h2>Barcode scanner</h2>
+                    <h2>Text recognition v2</h2>
                 </div>
             </div>
-            <div class="format-actions">
-                <h3>Formats</h3>
-                <div>
-                    <button id="formats-all" class="text-button" type="button">All</button>
-                    <button id="formats-none" class="text-button" type="button">None</button>
+            <label>Image
+                <input id="text-image-path" class="image-path" type="text" placeholder="Choose an image or use the last scan" readonly>
+            </label>
+            <div class="source-actions">
+                <button id="text-gallery-button" class="text-button" type="button" disabled>Gallery</button>
+                <button id="ocr-document-button" class="text-button" type="button" title="Scan a document with JPEG pages first" disabled>OCR last scan</button>
+            </div>
+            <img id="text-image-preview" class="selected-image-preview hidden" alt="Text recognition image">
+            <button id="text-button" class="button primary" title="Choose an image first" disabled>Recognize text</button>
+            <div class="result-block hidden" data-result-for="text-output">
+                <h3>Recognized text</h3>
+                <div class="output-container">
+                    <button class="copy-output" type="button" data-copy-target="text-output" disabled>COPY</button>
+                    <pre id="text-output" class="output">—</pre>
                 </div>
-            </div>
-            <div id="barcode-formats" class="format-grid"></div>
-
-            <label>Instruction
-                <input id="barcode-instruction" type="text" value="Place a barcode inside the frame">
-            </label>
-            <label>Timeout (ms)
-                <input id="barcode-timeout" type="number" min="0" max="600000" value="45000">
-            </label>
-            <div class="switches two-columns">
-                <label><input id="barcode-close" type="checkbox" checked> Close</label>
-                <label><input id="barcode-torch" type="checkbox" checked> Torch</label>
-            </div>
-
-            <button id="barcode-button" class="button primary" disabled>Scan barcode</button>
-            <div id="barcode-summary" class="scan-result hidden">
-                <span id="barcode-format" class="format-pill"></span>
-                <div id="barcode-text" class="decoded-text"></div>
-            </div>
-            <div class="output-container">
-                <button class="copy-output" type="button" data-copy-target="barcode-output" disabled>COPY</button>
-                <pre id="barcode-output" class="output">—</pre>
             </div>
         </section>
 
@@ -200,6 +265,10 @@
                     <h2 id="about-title">About</h2>
                 </div>
             </div>
+            <p class="about-author"><a class="github-profile-link" href="https://github.com/andreszs">
+                <svg class="github-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.64 0 8.13c0 3.59 2.29 6.64 5.47 7.71.4.08.55-.18.55-.39 0-.19-.01-.83-.01-1.51-2.01.38-2.53-.5-2.69-.96-.09-.23-.48-.96-.82-1.15-.28-.15-.68-.53-.01-.54.63-.01 1.08.59 1.23.83.72 1.23 1.87.88 2.33.67.07-.53.28-.88.51-1.08-1.78-.2-3.64-.91-3.64-4.02 0-.89.31-1.62.82-2.19-.08-.2-.36-1.04.08-2.16 0 0 .67-.22 2.2.84A7.5 7.5 0 0 1 8 3.89a7.5 7.5 0 0 1 2 .27c1.53-1.06 2.2-.84 2.2-.84.44 1.12.16 1.96.08 2.16.51.57.82 1.3.82 2.19 0 3.12-1.87 3.82-3.65 4.02.29.25.54.73.54 1.49 0 1.08-.01 1.95-.01 2.22 0 .21.15.47.55.39A8.14 8.14 0 0 0 16 8.13C16 3.64 12.42 0 8 0Z"></path></svg>
+                <span>@andreszs</span>
+            </a></p>
             <div class="about-content">
                 <div>
                     <h3>Versions</h3>
@@ -220,6 +289,8 @@
         </section>
     </main>
 
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
     <script src="cordova.js"></script>
     <script src="js/index.js"></script>
 </body>
