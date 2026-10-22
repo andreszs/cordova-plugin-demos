@@ -127,6 +127,7 @@
             { name: 'Barcode scanning', value: result.barcode },
             { name: 'Document scanner', value: result.document },
             { name: 'Face detection', value: result.face },
+            { name: 'Image labeling', value: result.imageLabeling },
             { name: 'Text recognition v2', value: result.text }
         ];
         summary.textContent = '';
@@ -400,10 +401,15 @@
                 };
                 element('ocr-document-button').disabled = false;
                 element('ocr-document-button').removeAttribute('title');
+                element('image-labeling-document-button').disabled = false;
+                element('image-labeling-document-button').removeAttribute('title');
             } else if (result.status === 'success') {
                 lastDocumentImage = null;
                 element('ocr-document-button').disabled = true;
                 element('ocr-document-button').title = 'Scan a document with JPEG pages first';
+                element('image-labeling-document-button').disabled = true;
+                element('image-labeling-document-button').title =
+                    'Scan a document with JPEG pages first';
             }
         }).catch(function (error) {
             renderOutput('document-output', errorPayload(error), true);
@@ -494,6 +500,155 @@
         }).then(function () {
             setBusy('text-button', false, 'Recognize text', 'Processing…');
         });
+    }
+
+    function enableImageLabeling(imagePath) {
+        element('image-labeling-path').value = imagePath;
+        element('image-labeling-button').disabled = false;
+        element('image-labeling-button').removeAttribute('title');
+    }
+
+    function selectImageLabelingValue(imageValue, destinationType, sourceButtonId,
+                                      sourceIdleText) {
+        var select = destinationType === Camera.DestinationType.DATA_URL
+            ? selectGalleryData
+            : selectGalleryImage;
+        select(imageValue, 'image-labeling-path', 'image-labeling-preview', function (scanUri) {
+            enableImageLabeling(scanUri);
+            renderOutput('image-labeling-output', 'Image selected.');
+            setBusy(sourceButtonId, false, sourceIdleText, 'Opening…');
+        }, function (error, scanUri) {
+            if (!scanUri) {
+                renderOutput('image-labeling-output', errorPayload({
+                    code: 'IMAGE_CACHE_FAILED',
+                    message: error.message,
+                    recoverable: true
+                }), true);
+                setBusy(sourceButtonId, false, sourceIdleText, 'Opening…');
+                return;
+            }
+            enableImageLabeling(scanUri);
+            renderOutput('image-labeling-output', 'Image selected; preview unavailable.');
+            setBusy(sourceButtonId, false, sourceIdleText, 'Opening…');
+        });
+    }
+
+    function chooseImageLabelingImage() {
+        if (!navigator.camera || !window.Camera) {
+            renderOutput(
+                'image-labeling-output',
+                errorPayload(new Error('Camera gallery picker is unavailable.')),
+                true
+            );
+            return;
+        }
+
+        setBusy('image-labeling-gallery-button', true, 'Gallery', 'Opening…');
+        var destinationType = galleryDestinationType();
+        navigator.camera.getPicture(function (imageValue) {
+            selectImageLabelingValue(
+                imageValue, destinationType, 'image-labeling-gallery-button', 'Gallery'
+            );
+        }, function (message) {
+            if (message && message !== 'No Image Selected') {
+                renderOutput('image-labeling-output', errorPayload({
+                    code: 'IMAGE_PICK_FAILED',
+                    message: String(message),
+                    recoverable: true
+                }), true);
+            }
+            setBusy('image-labeling-gallery-button', false, 'Gallery', 'Opening…');
+        }, {
+            quality: 100,
+            destinationType: destinationType,
+            encodingType: Camera.EncodingType.JPEG,
+            sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+            mediaType: Camera.MediaType.PICTURE,
+            allowEdit: false,
+            correctOrientation: false
+        });
+    }
+
+    function captureImageLabelingPhoto() {
+        if (!navigator.camera || !window.Camera) {
+            renderOutput(
+                'image-labeling-output',
+                errorPayload(new Error('Camera is unavailable.')),
+                true
+            );
+            return;
+        }
+
+        setBusy('image-labeling-camera-button', true, 'Take photo', 'Camera…');
+        var destinationType = Camera.DestinationType.FILE_URI;
+        navigator.camera.getPicture(function (imageValue) {
+            selectImageLabelingValue(
+                imageValue, destinationType, 'image-labeling-camera-button', 'Take photo'
+            );
+        }, function (message) {
+            if (message && message !== 'No Image Selected' && message !== 'Camera cancelled.') {
+                renderOutput('image-labeling-output', errorPayload({
+                    code: 'IMAGE_CAPTURE_FAILED',
+                    message: String(message),
+                    recoverable: true
+                }), true);
+            }
+            setBusy('image-labeling-camera-button', false, 'Take photo', 'Camera…');
+        }, {
+            quality: 100,
+            destinationType: destinationType,
+            encodingType: Camera.EncodingType.JPEG,
+            sourceType: Camera.PictureSourceType.CAMERA,
+            mediaType: Camera.MediaType.PICTURE,
+            allowEdit: false,
+            correctOrientation: true,
+            saveToPhotoAlbum: false
+        });
+    }
+
+    function labelImage() {
+        var imagePath = requireImagePath('image-labeling-path', 'image-labeling-output');
+        if (!imagePath) return;
+        var threshold = Number(element('image-labeling-threshold').value);
+        if (!isFinite(threshold) || threshold < 0 || threshold > 1) {
+            renderOutput(
+                'image-labeling-output',
+                errorPayload(new Error('Confidence threshold must be from 0 to 1.')),
+                true
+            );
+            return;
+        }
+        setBusy('image-labeling-button', true, 'Label image', 'Processing…');
+        renderOutput('image-labeling-output', 'Labeling…');
+        MlKit.labelImage(imagePath, {
+            confidenceThreshold: threshold,
+            locale: pluginLocale()
+        }).then(function (labels) {
+            renderOutput('image-labeling-output', labels);
+        }).catch(function (error) {
+            renderOutput('image-labeling-output', errorPayload(error), true);
+        }).then(function () {
+            setBusy('image-labeling-button', false, 'Label image', 'Processing…');
+        });
+    }
+
+    function labelLastDocumentPage() {
+        if (!lastDocumentImage) {
+            renderOutput('image-labeling-output', errorPayload({
+                code: 'NO_DOCUMENT_IMAGE',
+                message: 'Scan a document with JPEG pages enabled first.',
+                recoverable: true
+            }), true);
+            return;
+        }
+        selectImage(
+            'image-labeling-path',
+            'image-labeling-preview',
+            lastDocumentImage.path,
+            lastDocumentImage.previewUri
+        );
+        enableImageLabeling(lastDocumentImage.path);
+        labelImage();
     }
 
     function recognizeLastDocumentPage() {
@@ -673,6 +828,8 @@
         element('capabilities-button').disabled = false;
         element('document-button').disabled = false;
         element('text-gallery-button').disabled = false;
+        element('image-labeling-gallery-button').disabled = false;
+        element('image-labeling-camera-button').disabled = false;
         element('barcode-image-button').disabled = false;
         element('face-button').disabled = false;
         element('barcode-button').disabled = false;
@@ -709,6 +866,10 @@
     element('formats-none').addEventListener('click', function () { setAllFormats(false); });
     element('document-button').addEventListener('click', scanDocument);
     element('text-gallery-button').addEventListener('click', chooseTextImageFromGallery);
+    element('image-labeling-gallery-button').addEventListener('click', chooseImageLabelingImage);
+    element('image-labeling-camera-button').addEventListener('click', captureImageLabelingPhoto);
+    element('image-labeling-document-button').addEventListener('click', labelLastDocumentPage);
+    element('image-labeling-button').addEventListener('click', labelImage);
     element('ocr-document-button').addEventListener('click', recognizeLastDocumentPage);
     element('text-button').addEventListener('click', recognizeText);
     element('barcode-image-button').addEventListener('click', chooseBarcodeImage);

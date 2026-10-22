@@ -38,6 +38,7 @@ npm run run:android
 - Previews scanned JPEG pages and displays PDF metadata.
 - Demonstrates Text recognition v2 with gallery images or the last scanned document page.
 - Demonstrates Barcode scanning from either the live camera or a gallery image.
+- Demonstrates Image labeling from a newly captured photo, gallery image, or the last scanned document page, with ML Kit's default model and a configurable confidence threshold.
 - Lets you test automatic, English, and Spanish native plugin localization at runtime.
 - Exercises every public face-capture option and quality-check switch.
 - Displays the captured JPEG and complete native result.

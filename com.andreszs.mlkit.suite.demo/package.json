@@ -33,6 +33,7 @@
         "ANDROID_MLKIT_MODEL_DELIVERY": "first-use",
         "ANDROID_MLKIT_FACE_MODE": "first-use",
         "ANDROID_MLKIT_BARCODE_MODE": "first-use",
+        "ANDROID_MLKIT_IMAGE_LABELING_MODE": "first-use",
         "ANDROID_MLKIT_OCR_MODE": "first-use"
       }
     }

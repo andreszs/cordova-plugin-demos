@@ -18,7 +18,7 @@
         </a>
         <div class="eyebrow">CORDOVA PLUGIN DEMO</div>
         <h1>ML Kit Suite</h1>
-        <p>Barcode scanning, Document scanner, Face detection, and Text recognition v2.</p>
+        <p>Barcode scanning, Document scanner, Face detection, Image labeling, and Text recognition v2.</p>
         <label class="locale-control">Plugin UI language
             <select id="plugin-locale">
                 <option value="auto" selected>Automatic</option>
@@ -216,6 +216,50 @@
             <div class="section-heading">
                 <div>
                     <span class="step">04</span>
+                    <h2>Image labeling</h2>
+                </div>
+                <button class="settings-trigger" type="button" data-toggle="modal" data-target="#image-labeling-settings-modal" aria-label="Image labeling settings">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-1.6v-.2h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1z"></path></svg>
+                </button>
+            </div>
+            <div id="image-labeling-settings-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="image-labeling-settings-title" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 id="image-labeling-settings-title" class="modal-title">Image labeling settings</h3>
+                            <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                        </div>
+                        <div class="modal-body">
+                            <label>Confidence threshold
+                                <input id="image-labeling-threshold" type="number" min="0" max="1" step="0.05" value="0.5">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <label>Image
+                <input id="image-labeling-path" class="image-path" type="text" placeholder="Choose an image" readonly>
+            </label>
+            <div class="source-actions">
+                <button id="image-labeling-camera-button" class="text-button" type="button" disabled>Take photo</button>
+                <button id="image-labeling-gallery-button" class="text-button" type="button" disabled>Gallery</button>
+                <button id="image-labeling-document-button" class="text-button" type="button" title="Scan a document with JPEG pages first" disabled>Label last scan</button>
+            </div>
+            <img id="image-labeling-preview" class="selected-image-preview hidden" alt="Image labeling input">
+            <button id="image-labeling-button" class="button primary" title="Choose an image first" disabled>Label image</button>
+            <div class="result-block hidden" data-result-for="image-labeling-output">
+                <h3>Labels</h3>
+                <div class="output-container">
+                    <button class="copy-output" type="button" data-copy-target="image-labeling-output" disabled>COPY</button>
+                    <pre id="image-labeling-output" class="output">—</pre>
+                </div>
+            </div>
+        </section>
+
+        <section class="card">
+            <div class="section-heading">
+                <div>
+                    <span class="step">05</span>
                     <h2>Text recognition v2</h2>
                 </div>
             </div>
@@ -240,7 +284,7 @@
         <section class="card" aria-labelledby="capabilities-title">
             <div class="section-heading">
                 <div>
-                    <span class="step">05</span>
+                    <span class="step">06</span>
                     <h2 id="capabilities-title">Capabilities</h2>
                 </div>
                 <button id="capabilities-button" class="button secondary" disabled>Refresh</button>
@@ -261,7 +305,7 @@
         <section class="card about-card" aria-labelledby="about-title">
             <div class="section-heading">
                 <div>
-                    <span class="step">06</span>
+                    <span class="step">07</span>
                     <h2 id="about-title">About</h2>
                 </div>
             </div>

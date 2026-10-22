@@ -139,7 +139,7 @@ The icons beside each plugin indicate its native mobile-platform support, indepe
 
 - **Plugin:** [cordova-plugin-mlkit-suite](https://github.com/andreszs/cordova-plugin-mlkit-suite) <img src="https://cdn.simpleicons.org/android/3DDC84" alt="Android" title="Android" width="16" height="16"> <img src="https://cdn.simpleicons.org/apple/000000" alt="iOS" title="iOS" width="16" height="16">
 - **Documentation:** [Demo files and setup instructions](com.andreszs.mlkit.suite.demo/)
-- **Purpose:** Test Barcode scanning, Face detection, Text recognition v2, and ML Kit delivery modes on Android and iOS, plus Document scanner on Android.
+- **Purpose:** Test Barcode scanning, Face detection, Image labeling, Text recognition v2, and ML Kit delivery modes on Android and iOS, plus Document scanner on Android.
 
 ### [`com.andreszs.recaptcha.v2.demo`](com.andreszs.recaptcha.v2.demo/)
 
