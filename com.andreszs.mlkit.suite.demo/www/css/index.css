@@ -519,6 +519,17 @@ input[type="checkbox"] { accent-color: var(--accent); }
     background: #06101c;
 }
 
+.transparent-preview {
+    background-color: #e8edf3;
+    background-image:
+        linear-gradient(45deg, #c7d0db 25%, transparent 25%),
+        linear-gradient(-45deg, #c7d0db 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #c7d0db 75%),
+        linear-gradient(-45deg, transparent 75%, #c7d0db 75%);
+    background-position: 0 0, 0 10px, 10px -10px, -10px 0;
+    background-size: 20px 20px;
+}
+
 .scan-result {
     margin-top: 18px;
     padding: 16px;
