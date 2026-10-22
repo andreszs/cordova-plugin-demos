@@ -40,6 +40,7 @@ npm run run:android
 - Demonstrates Barcode scanning from either the live camera or a gallery image.
 - Demonstrates Image labeling from a newly captured photo, gallery image, or the last scanned document page, with ML Kit's default model and a configurable confidence threshold.
 - Demonstrates Selfie segmentation from a newly captured photo or gallery image and previews the transparent PNG result.
+- Demonstrates Android Subject segmentation from a newly captured photo, gallery image, or the last scanned document page, including first-use module delivery and transparent PNG output.
 - Lets you test automatic, English, and Spanish native plugin localization at runtime.
 - Exercises every public face-capture option and quality-check switch.
 - Displays the captured JPEG and complete native result.

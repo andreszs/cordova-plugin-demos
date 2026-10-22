@@ -18,7 +18,7 @@
         </a>
         <div class="eyebrow">CORDOVA PLUGIN DEMO</div>
         <h1>ML Kit Suite</h1>
-        <p>Barcode scanning, Document scanner, Face detection, Image labeling, Selfie segmentation, and Text recognition v2.</p>
+        <p>Barcode scanning, Document scanner, Face detection, Image labeling, Selfie segmentation, Subject segmentation, and Text recognition v2.</p>
         <label class="locale-control">Plugin UI language
             <select id="plugin-locale">
                 <option value="auto" selected>Automatic</option>
@@ -304,6 +304,51 @@
             <div class="section-heading">
                 <div>
                     <span class="step">06</span>
+                    <h2>Subject segmentation</h2>
+                </div>
+                <button class="settings-trigger" type="button" data-toggle="modal" data-target="#subject-segmentation-settings-modal" aria-label="Subject segmentation settings">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-1.6v-.2h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1z"></path></svg>
+                </button>
+            </div>
+            <div id="subject-segmentation-settings-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="subject-segmentation-settings-title" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 id="subject-segmentation-settings-title" class="modal-title">Subject segmentation settings</h3>
+                            <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                        </div>
+                        <div class="modal-body">
+                            <label>Maximum output dimension
+                                <input id="subject-segmentation-max-dimension" type="number" min="256" max="4096" value="2048">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <label>Image
+                <input id="subject-segmentation-path" class="image-path" type="text" placeholder="Choose an image" readonly>
+            </label>
+            <div class="source-actions">
+                <button id="subject-segmentation-camera-button" class="text-button" type="button" disabled>Take photo</button>
+                <button id="subject-segmentation-gallery-button" class="text-button" type="button" disabled>Gallery</button>
+                <button id="subject-segmentation-document-button" class="text-button" type="button" title="Scan a document with JPEG pages first" disabled>Use last scan</button>
+            </div>
+            <img id="subject-segmentation-input-preview" class="selected-image-preview hidden" alt="Subject segmentation input">
+            <button id="subject-segmentation-button" class="button primary" title="Choose an image first" disabled>Remove background</button>
+            <div class="result-block hidden" data-result-for="subject-segmentation-output">
+                <h3>Transparent PNG</h3>
+                <img id="subject-segmentation-result-preview" class="selected-image-preview transparent-preview hidden" alt="Subject segmentation result">
+                <div class="output-container">
+                    <button class="copy-output" type="button" data-copy-target="subject-segmentation-output" disabled>COPY</button>
+                    <pre id="subject-segmentation-output" class="output">—</pre>
+                </div>
+            </div>
+        </section>
+
+        <section class="card">
+            <div class="section-heading">
+                <div>
+                    <span class="step">07</span>
                     <h2>Text recognition v2</h2>
                 </div>
             </div>
@@ -328,7 +373,7 @@
         <section class="card" aria-labelledby="capabilities-title">
             <div class="section-heading">
                 <div>
-                    <span class="step">07</span>
+                    <span class="step">08</span>
                     <h2 id="capabilities-title">Capabilities</h2>
                 </div>
                 <button id="capabilities-button" class="button secondary" disabled>Refresh</button>
@@ -349,7 +394,7 @@
         <section class="card about-card" aria-labelledby="about-title">
             <div class="section-heading">
                 <div>
-                    <span class="step">08</span>
+                    <span class="step">09</span>
                     <h2 id="about-title">About</h2>
                 </div>
             </div>

@@ -129,6 +129,7 @@
             { name: 'Face detection', value: result.face },
             { name: 'Image labeling', value: result.imageLabeling },
             { name: 'Selfie segmentation', value: result.selfieSegmentation },
+            { name: 'Subject segmentation', value: result.subjectSegmentation },
             { name: 'Text recognition v2', value: result.text }
         ];
         summary.textContent = '';
@@ -404,12 +405,17 @@
                 element('ocr-document-button').removeAttribute('title');
                 element('image-labeling-document-button').disabled = false;
                 element('image-labeling-document-button').removeAttribute('title');
+                element('subject-segmentation-document-button').disabled = false;
+                element('subject-segmentation-document-button').removeAttribute('title');
             } else if (result.status === 'success') {
                 lastDocumentImage = null;
                 element('ocr-document-button').disabled = true;
                 element('ocr-document-button').title = 'Scan a document with JPEG pages first';
                 element('image-labeling-document-button').disabled = true;
                 element('image-labeling-document-button').title =
+                    'Scan a document with JPEG pages first';
+                element('subject-segmentation-document-button').disabled = true;
+                element('subject-segmentation-document-button').title =
                     'Scan a document with JPEG pages first';
             }
         }).catch(function (error) {
@@ -808,6 +814,181 @@
         });
     }
 
+    function enableSubjectSegmentation(imagePath) {
+        element('subject-segmentation-path').value = imagePath;
+        element('subject-segmentation-button').disabled = false;
+        element('subject-segmentation-button').removeAttribute('title');
+    }
+
+    function selectSubjectSegmentationValue(imageValue, destinationType, sourceButtonId,
+                                              sourceIdleText) {
+        var select = destinationType === Camera.DestinationType.DATA_URL
+            ? selectGalleryData
+            : selectGalleryImage;
+        select(
+            imageValue,
+            'subject-segmentation-path',
+            'subject-segmentation-input-preview',
+            function (scanUri) {
+                enableSubjectSegmentation(scanUri);
+                renderOutput('subject-segmentation-output', 'Image selected.');
+                setBusy(sourceButtonId, false, sourceIdleText, 'Opening…');
+            },
+            function (error, scanUri) {
+                if (!scanUri) {
+                    renderOutput('subject-segmentation-output', errorPayload({
+                        code: 'IMAGE_CACHE_FAILED',
+                        message: error.message,
+                        recoverable: true
+                    }), true);
+                    setBusy(sourceButtonId, false, sourceIdleText, 'Opening…');
+                    return;
+                }
+                enableSubjectSegmentation(scanUri);
+                renderOutput(
+                    'subject-segmentation-output',
+                    'Image selected; preview unavailable.'
+                );
+                setBusy(sourceButtonId, false, sourceIdleText, 'Opening…');
+            }
+        );
+    }
+
+    function chooseSubjectSegmentationImage() {
+        if (!navigator.camera || !window.Camera) {
+            renderOutput(
+                'subject-segmentation-output',
+                errorPayload(new Error('Camera gallery picker is unavailable.')),
+                true
+            );
+            return;
+        }
+        setBusy('subject-segmentation-gallery-button', true, 'Gallery', 'Opening…');
+        var destinationType = galleryDestinationType();
+        navigator.camera.getPicture(function (imageValue) {
+            selectSubjectSegmentationValue(
+                imageValue,
+                destinationType,
+                'subject-segmentation-gallery-button',
+                'Gallery'
+            );
+        }, function (message) {
+            if (message && message !== 'No Image Selected') {
+                renderOutput('subject-segmentation-output', errorPayload({
+                    code: 'IMAGE_PICK_FAILED',
+                    message: String(message),
+                    recoverable: true
+                }), true);
+            }
+            setBusy('subject-segmentation-gallery-button', false, 'Gallery', 'Opening…');
+        }, {
+            quality: 100,
+            destinationType: destinationType,
+            encodingType: Camera.EncodingType.JPEG,
+            sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+            mediaType: Camera.MediaType.PICTURE,
+            allowEdit: false,
+            correctOrientation: false
+        });
+    }
+
+    function captureSubjectSegmentationPhoto() {
+        if (!navigator.camera || !window.Camera) {
+            renderOutput(
+                'subject-segmentation-output',
+                errorPayload(new Error('Camera is unavailable.')),
+                true
+            );
+            return;
+        }
+        setBusy('subject-segmentation-camera-button', true, 'Take photo', 'Camera…');
+        var destinationType = Camera.DestinationType.FILE_URI;
+        navigator.camera.getPicture(function (imageValue) {
+            selectSubjectSegmentationValue(
+                imageValue,
+                destinationType,
+                'subject-segmentation-camera-button',
+                'Take photo'
+            );
+        }, function (message) {
+            if (message && message !== 'No Image Selected' && message !== 'Camera cancelled.') {
+                renderOutput('subject-segmentation-output', errorPayload({
+                    code: 'IMAGE_CAPTURE_FAILED',
+                    message: String(message),
+                    recoverable: true
+                }), true);
+            }
+            setBusy('subject-segmentation-camera-button', false, 'Take photo', 'Camera…');
+        }, {
+            quality: 95,
+            destinationType: destinationType,
+            encodingType: Camera.EncodingType.JPEG,
+            sourceType: Camera.PictureSourceType.CAMERA,
+            mediaType: Camera.MediaType.PICTURE,
+            allowEdit: false,
+            correctOrientation: true,
+            saveToPhotoAlbum: false
+        });
+    }
+
+    function segmentSubjects() {
+        var imagePath = requireImagePath(
+            'subject-segmentation-path',
+            'subject-segmentation-output'
+        );
+        if (!imagePath) return;
+        var maxDimension = integerValue('subject-segmentation-max-dimension');
+        if (!Number.isInteger(maxDimension) || maxDimension < 256 || maxDimension > 4096) {
+            renderOutput(
+                'subject-segmentation-output',
+                errorPayload(new Error('Maximum dimension must be from 256 to 4096.')),
+                true
+            );
+            return;
+        }
+        setBusy('subject-segmentation-button', true, 'Remove background', 'Processing…');
+        renderOutput('subject-segmentation-output', 'Segmenting…');
+        MlKit.segmentSubjects(imagePath, {
+            maxDimension: maxDimension,
+            locale: pluginLocale()
+        }).then(function (result) {
+            renderOutput('subject-segmentation-output', result);
+            if (result && result.status === 'success' && result.imageUri) {
+                var preview = element('subject-segmentation-result-preview');
+                preview.src = result.imageUri + '?t=' + Date.now();
+                preview.classList.remove('hidden');
+            }
+        }).catch(function (error) {
+            renderOutput('subject-segmentation-output', errorPayload(error), true);
+        }).then(function () {
+            setBusy(
+                'subject-segmentation-button',
+                false,
+                'Remove background',
+                'Processing…'
+            );
+        });
+    }
+
+    function segmentLastDocumentSubjects() {
+        if (!lastDocumentImage) {
+            renderOutput('subject-segmentation-output', errorPayload({
+                code: 'NO_DOCUMENT_IMAGE',
+                message: 'Scan a document with JPEG pages enabled first.',
+                recoverable: true
+            }), true);
+            return;
+        }
+        selectImage(
+            'subject-segmentation-path',
+            'subject-segmentation-input-preview',
+            lastDocumentImage.path,
+            lastDocumentImage.previewUri
+        );
+        enableSubjectSegmentation(lastDocumentImage.path);
+        segmentSubjects();
+    }
+
     function recognizeLastDocumentPage() {
         if (!lastDocumentImage) {
             renderOutput('text-output', errorPayload({
@@ -989,6 +1170,8 @@
         element('image-labeling-camera-button').disabled = false;
         element('selfie-segmentation-gallery-button').disabled = false;
         element('selfie-segmentation-camera-button').disabled = false;
+        element('subject-segmentation-gallery-button').disabled = false;
+        element('subject-segmentation-camera-button').disabled = false;
         element('barcode-image-button').disabled = false;
         element('face-button').disabled = false;
         element('barcode-button').disabled = false;
@@ -1036,6 +1219,16 @@
         'click', captureSelfieSegmentationPhoto
     );
     element('selfie-segmentation-button').addEventListener('click', segmentSelfie);
+    element('subject-segmentation-gallery-button').addEventListener(
+        'click', chooseSubjectSegmentationImage
+    );
+    element('subject-segmentation-camera-button').addEventListener(
+        'click', captureSubjectSegmentationPhoto
+    );
+    element('subject-segmentation-document-button').addEventListener(
+        'click', segmentLastDocumentSubjects
+    );
+    element('subject-segmentation-button').addEventListener('click', segmentSubjects);
     element('ocr-document-button').addEventListener('click', recognizeLastDocumentPage);
     element('text-button').addEventListener('click', recognizeText);
     element('barcode-image-button').addEventListener('click', chooseBarcodeImage);
