@@ -2,7 +2,67 @@
 
 var app = {
 	/* informative variables manually updated */
-	PLUGIN_VERSION: '1.0.1',
+	PLUGIN_VERSION: '1.1.0',
+	MAX_SCAN_RETRIES: 2,
+	SCAN_RETRY_DELAY_MS: 2000,
+	showStatus: function (lines, className) {
+		var values = Array.isArray(lines) ? lines : [lines];
+		var $status = $('#status').empty();
+
+		$.each(values, function (index, value) {
+			if (index > 0) {
+				$status.append('<br />');
+			}
+			$status.append($('<span>').addClass(className).text(value));
+		});
+	},
+	setScanBusy: function (busy) {
+		$('#btnStartScan')
+			.prop('disabled', busy)
+			.attr('aria-busy', busy ? 'true' : 'false')
+			.text(busy ? 'Preparing scanner…' : 'startScan');
+	},
+	normalizeScanError: function (error) {
+		if (typeof error === 'object' && error !== null) {
+			return {
+				errorCode: typeof error.errorCode === 'number' ? error.errorCode : -1,
+				errorName: error.errorName || 'UNKNOWN',
+				message: error.message || 'Unknown scanner error.',
+				retryable: error.retryable === true,
+				canceled: error.canceled === true
+			};
+		}
+
+		var message = String(error || 'Unknown scanner error.');
+		return {
+			errorCode: -1,
+			errorName: message === 'Canceled' ? 'CODE_SCANNER_CANCELLED' : 'LEGACY_ERROR',
+			message: message,
+			retryable: message === 'Waiting for the Barcode UI module to be downloaded.',
+			canceled: message === 'Canceled'
+		};
+	},
+	getScanErrorMessage: function (error) {
+		switch (error.errorName) {
+			case 'CODE_SCANNER_UNAVAILABLE':
+			case 'MODULE_CHECK_FAILED':
+			case 'MODULE_INSTALL_FAILED':
+			case 'MODULE_INSTALL_CANCELED':
+				return 'The Barcode UI module is not ready yet.';
+			case 'CODE_SCANNER_GOOGLE_PLAY_SERVICES_VERSION_TOO_OLD':
+				return 'Google Play services must be updated before scanning.';
+			case 'CODE_SCANNER_CAMERA_PERMISSION_NOT_GRANTED':
+				return 'Google Play services does not have camera permission.';
+			case 'CODE_SCANNER_TASK_IN_PROGRESS':
+				return 'Another scan is already in progress.';
+			case 'CODE_SCANNER_PIPELINE_INITIALIZATION_ERROR':
+			case 'CODE_SCANNER_PIPELINE_INFERENCE_ERROR':
+			case 'INTERNAL':
+				return 'Google Play services could not start the scanner.';
+			default:
+				return error.message;
+		}
+	},
 	getVersion: function () {
 		if (typeof (cordova.getAppVersion) != 'undefined') {
 			// cordova-plugin-app-version present
@@ -17,7 +77,7 @@ var app = {
 		}
 	},
 	init: function () {
-		$('#status').html('<span class="text-success">Device is ready</span>');
+		app.showStatus('Device is ready', 'text-success');
 
 		$('#btnStartScan').on('click', app.startScan);
 		$('#btnGetBarcodeConstant').on('click', app.getBarcodeConstant);
@@ -45,11 +105,13 @@ var app = {
 			var formatName = jsonBarcode.formatName;
 			var formatValue = jsonBarcode.formatValue;
 
-			$('#status').html('<span class="text-success">formatName: ' + formatName + '</span>');
-			$('#status').append('<br /><span class="text-success">formatValue: ' + formatValue + '</span>');
+			app.showStatus([
+				'formatName: ' + formatName,
+				'formatValue: ' + formatValue
+			], 'text-success');
 		};
 		var onError = function (strError) {
-			$('#status').html('<span class="text-danger">' + strError + '</span>');
+			app.showStatus(String(strError), 'text-danger');
 		};
 
 		var options = {};
@@ -57,34 +119,64 @@ var app = {
 
 		cordova.plugins.GoogleCodeScanner.getBarcodeConstant(onSuccess, onError, options);
 	},
-	startScan: function () {
+	startScan: function (retryCount) {
+		retryCount = typeof retryCount === 'number' ? retryCount : 0;
+
+		var options = {};
+		options.barcodeFormats = $('#selBarcodeFormat').val();
+
+		var txtBarcodeFormats = $('#txtBarcodeFormats').val();
+		if (txtBarcodeFormats !== '' && isNaN(txtBarcodeFormats)) {
+			app.showStatus('Barcode format must be an integer value.', 'text-danger');
+			return;
+		} else if (parseInt(txtBarcodeFormats, 10) > 0) {
+			options.barcodeFormats = txtBarcodeFormats;
+		}
+
+		app.setScanBusy(true);
+		app.showStatus('Preparing the Barcode UI module…', 'text-info');
+
 		var onSuccess = function (jsonBarcode) {
 			var rawValue = jsonBarcode.rawValue;
 			var formatName = jsonBarcode.formatName;
 			var formatValue = jsonBarcode.formatValue;
 			var valueType = jsonBarcode.valueType;
 
-			$('#status').html('<span class="text-success">rawValue: ' + rawValue + '</span>');
-			$('#status').append('<br /><span class="text-success">formatName: ' + formatName + '</span>');
-			$('#status').append('<br /><span class="text-success">formatValue: ' + formatValue + '</span>');
-			$('#status').append('<br /><span class="text-success">valueType: ' + valueType + '</span>');
+			app.setScanBusy(false);
+			app.showStatus([
+				'rawValue: ' + rawValue,
+				'formatName: ' + formatName,
+				'formatValue: ' + formatValue,
+				'valueType: ' + valueType
+			], 'text-success');
 		};
-		var onError = function (strError) {
-			if (strError == 'Waiting for the Barcode UI module to be downloaded.') {
-				// Downloading barcode UI: consider showing a full-screen spinner, and auto-retry scan in a few seconds.
+		var onError = function (scanError) {
+			var error = app.normalizeScanError(scanError);
+
+			if (error.canceled) {
+				app.setScanBusy(false);
+				app.showStatus('Scan canceled.', 'text-secondary');
+				return;
 			}
-			$('#status').html('<span class="text-danger">' + strError + '</span>');
+
+			if (error.retryable && retryCount < app.MAX_SCAN_RETRIES) {
+				app.showStatus(
+					app.getScanErrorMessage(error) + ' Retrying (' +
+					(retryCount + 1) + '/' + app.MAX_SCAN_RETRIES + ')…',
+					'text-info'
+				);
+				window.setTimeout(function () {
+					app.startScan(retryCount + 1);
+				}, app.SCAN_RETRY_DELAY_MS);
+				return;
+			}
+
+			app.setScanBusy(false);
+			app.showStatus([
+				app.getScanErrorMessage(error),
+				'Error: ' + error.errorName + ' (' + error.errorCode + ')'
+			], 'text-danger');
 		};
-
-		var options = {};
-		options.barcodeFormats = $('#selBarcodeFormat').val();
-
-		var txtBarcodeFormats = $('#txtBarcodeFormats').val();
-		if (txtBarcodeFormats != '' && isNaN(txtBarcodeFormats)) {
-			$('#status').html('<span class="text-danger">Barcode format must be an integer value.</span>');
-		} else if (parseInt(txtBarcodeFormats) > 0) {
-			options.barcodeFormats = txtBarcodeFormats;
-		}
 
 		cordova.plugins.GoogleCodeScanner.startScan(onSuccess, onError, options);
 	}
