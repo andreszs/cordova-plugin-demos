@@ -1095,6 +1095,7 @@
             jpegQuality: integerValue('face-quality'),
             showCloseButton: element('face-close').checked,
             debugMode: element('face-debug').checked,
+            beepEnabled: element('face-beep').checked,
             timeoutMs: integerValue('face-timeout'),
             locale: pluginLocale(),
             checks: checks
@@ -1127,6 +1128,7 @@
             formats: formats,
             showCloseButton: element('barcode-close').checked,
             showTorchButton: element('barcode-torch').checked,
+            beepEnabled: element('barcode-beep').checked,
             timeoutMs: integerValue('barcode-timeout'),
             locale: pluginLocale()
         };
