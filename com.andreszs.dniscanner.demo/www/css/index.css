@@ -19,3 +19,8 @@
 .metadata-summary {
     line-height: 2.25rem;
 }
+
+#result-resolution {
+    font-variant-numeric: tabular-nums;
+    overflow-wrap: anywhere;
+}

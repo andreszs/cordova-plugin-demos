@@ -88,12 +88,48 @@
             </div>
 
             <div class="form-group">
-                <label for="max-output-long-edge"><code>maxOutputLongEdge</code></label>
-                <input id="max-output-long-edge" class="form-control" type="number"
-                       min="640" max="2048" step="1" value="1280" inputmode="numeric">
-                <small class="form-text text-muted">
-                    Maximum long edge of the corrected JPEG (640–2048 px).
-                </small>
+                <label for="instruction-text"><code>instructionText</code></label>
+                <input id="instruction-text" class="form-control" type="text"
+                       placeholder="Uses a side-specific demo message when empty">
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-12 col-sm-6">
+                    <label for="preferred-capture-long-edge"><code>preferredCaptureLongEdge</code></label>
+                    <input id="preferred-capture-long-edge" class="form-control" type="number"
+                           min="1280" max="2048" step="1" value="2048" inputmode="numeric">
+                    <small class="form-text text-muted">Preferred native capture long edge.</small>
+                </div>
+                <div class="form-group col-12 col-sm-6">
+                    <label for="max-output-long-edge"><code>maxOutputLongEdge</code></label>
+                    <input id="max-output-long-edge" class="form-control" type="number"
+                           min="640" max="2048" step="1" value="1280" inputmode="numeric">
+                    <small class="form-text text-muted">
+                        Maximum long edge of the corrected JPEG (640–2048 px).
+                    </small>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-12 col-sm-6">
+                    <label for="min-effective-document-long-edge"><code>minEffectiveDocumentLongEdge</code></label>
+                    <input id="min-effective-document-long-edge" class="form-control" type="number"
+                           min="0" max="4096" step="1" value="1000" inputmode="numeric">
+                    <small class="form-text text-muted">Zero disables the effective-resolution gate.</small>
+                </div>
+                <div class="form-group col-12 col-sm-6">
+                    <label for="min-still-sharpness-variance"><code>minStillSharpnessVariance</code></label>
+                    <input id="min-still-sharpness-variance" class="form-control" type="number"
+                           min="1" max="10000" step="1" value="158" inputmode="decimal">
+                    <small class="form-text text-muted">Final-photo Laplacian variance threshold.</small>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="timeout-ms"><code>timeoutMs</code></label>
+                <input id="timeout-ms" class="form-control" type="number"
+                       min="0" step="1" value="60000" inputmode="numeric">
+                <small class="form-text text-muted">Maximum scan duration; zero disables the timeout.</small>
             </div>
 
             <fieldset class="form-group">
@@ -109,6 +145,10 @@
                 <div class="custom-control custom-checkbox mt-2">
                     <input id="debug-mode" class="custom-control-input" type="checkbox" checked>
                     <label class="custom-control-label" for="debug-mode"><code>debugMode</code></label>
+                </div>
+                <div class="custom-control custom-checkbox mt-2">
+                    <input id="beep-enabled" class="custom-control-input" type="checkbox" checked>
+                    <label class="custom-control-label" for="beep-enabled"><code>beepEnabled</code></label>
                 </div>
             </fieldset>
         </div>
@@ -175,6 +215,7 @@
         <div class="card-body">
             <h2 id="result-title" class="h5 card-title">Result</h2>
             <p id="result-status" class="alert alert-secondary" role="status">No scan yet</p>
+            <p id="result-resolution" class="alert alert-info py-2 d-none" role="status"></p>
             <div id="preview-wrap" class="position-relative text-center mb-3 d-none">
                 <img id="result-image" class="img-fluid rounded border"
                      alt="Captured and corrected card">
@@ -226,8 +267,8 @@
 
             <h3 class="h6 mt-3">Versions</h3>
             <ul class="list-unstyled text-muted mb-0">
-                <li>Plugin version: <span id="plugin-version">0.2.1</span></li>
-                <li>App version: <span id="app-version">1.0.3</span></li>
+                <li>Plugin version: <span id="plugin-version">0.2.5</span></li>
+                <li>App version: <span id="app-version">1.0.4</span></li>
                 <li><span id="platform-name">Cordova platform</span>: <span id="platform-version">Detectando…</span></li>
             </ul>
 

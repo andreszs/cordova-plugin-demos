@@ -5,6 +5,7 @@ var scanLabel = document.getElementById('scan-label');
 var deviceStatus = document.getElementById('device-status');
 var resultCard = document.getElementById('result-card');
 var resultStatus = document.getElementById('result-status');
+var resultResolution = document.getElementById('result-resolution');
 var resultSummary = document.getElementById('result-summary');
 var resultJson = document.getElementById('result-json');
 var previewWrap = document.getElementById('preview-wrap');
@@ -52,6 +53,21 @@ function populateVersions() {
 }
 
 async function scan() {
+    var numericInputIds = [
+        'preferred-capture-long-edge',
+        'max-output-long-edge',
+        'min-effective-document-long-edge',
+        'min-still-sharpness-variance',
+        'timeout-ms'
+    ];
+    for (var inputIndex = 0; inputIndex < numericInputIds.length; inputIndex += 1) {
+        var numericInput = document.getElementById(numericInputIds[inputIndex]);
+        if (!numericInput.checkValidity()) {
+            numericInput.reportValidity();
+            return;
+        }
+    }
+
     var profile = scanProfile.value;
     var generic = profile === 'genericCard';
     var sideInput = document.querySelector('input[name="side"]:checked');
@@ -59,13 +75,27 @@ async function scan() {
     var sideValidation = generic ? 'off' : document.getElementById('side-validation').value;
     var flashMode = document.getElementById('flash-mode').value;
     var orientation = document.getElementById('scan-orientation').value;
+    var preferredCaptureLongEdge = parseInt(
+        document.getElementById('preferred-capture-long-edge').value,
+        10
+    );
     var maxOutputLongEdge = parseInt(
         document.getElementById('max-output-long-edge').value,
         10
     );
+    var minEffectiveDocumentLongEdge = parseInt(
+        document.getElementById('min-effective-document-long-edge').value,
+        10
+    );
+    var minStillSharpnessVariance = parseFloat(
+        document.getElementById('min-still-sharpness-variance').value
+    );
+    var timeoutMs = parseInt(document.getElementById('timeout-ms').value, 10);
     var showCloseButton = document.getElementById('show-close-button').checked;
     var showFlashButton = document.getElementById('show-flash-button').checked;
     var debugMode = document.getElementById('debug-mode').checked;
+    var beepEnabled = document.getElementById('beep-enabled').checked;
+    var customInstruction = document.getElementById('instruction-text').value.trim();
     var checks = {
         documentSize: document.getElementById('check-document-size').checked,
         centering: document.getElementById('check-centering').checked,
@@ -78,9 +108,10 @@ async function scan() {
         edgeOcclusion: document.getElementById('check-edge-occlusion').checked
     };
 
-
     setBusy(true);
     resultCard.classList.add('d-none');
+    resultResolution.classList.add('d-none');
+    resultResolution.textContent = '';
     previewWrap.classList.add('d-none');
     resultImage.removeAttribute('src');
     resetCopyActions();
@@ -96,14 +127,18 @@ async function scan() {
             showCloseButton: showCloseButton,
             showFlashButton: showFlashButton,
             debugMode: debugMode,
+            beepEnabled: beepEnabled,
+            preferredCaptureLongEdge: preferredCaptureLongEdge,
             maxOutputLongEdge: maxOutputLongEdge,
+            minEffectiveDocumentLongEdge: minEffectiveDocumentLongEdge,
+            minStillSharpnessVariance: minStillSharpnessVariance,
             checks: checks,
-            instructionText: generic
+            instructionText: customInstruction || (generic
                 ? 'Ubicá la tarjeta dentro del recuadro'
                 : side === 'back'
                     ? 'Ubicá el dorso del DNI dentro del recuadro'
-                    : 'Ubicá el frente del DNI dentro del recuadro',
-            timeoutMs: 60000
+                    : 'Ubicá el frente del DNI dentro del recuadro'),
+            timeoutMs: timeoutMs
         });
 
         if (result.status === 'cancelled') {
@@ -133,6 +168,7 @@ async function scan() {
         currentImageReference = result.imageUri || result.imagePath || '';
         resultImage.src = result.imageUri;
         previewWrap.classList.remove('d-none');
+        showCapturedResolution(result);
         showMessage(
             'Success',
             summaryParts.join(' · '),
@@ -151,6 +187,27 @@ async function scan() {
     } finally {
         setBusy(false);
     }
+}
+
+function showCapturedResolution(result) {
+    var parts = [];
+    if (Number.isFinite(result.rawWidth) && Number.isFinite(result.rawHeight)) {
+        parts.push('RAW ' + result.rawWidth + '×' + result.rawHeight + ' px');
+    }
+    if (Number.isFinite(result.effectiveDocumentLongEdge)) {
+        parts.push('effective document ' + result.effectiveDocumentLongEdge + ' px');
+    }
+    if (Number.isFinite(result.width) && Number.isFinite(result.height)) {
+        parts.push('final ' + result.width + '×' + result.height + ' px');
+    }
+    var sharpnessVariance = result.quality && result.quality.sharpnessVariance;
+    if (Number.isFinite(sharpnessVariance)) {
+        parts.push('sharpness ' + sharpnessVariance.toFixed(1));
+    }
+    resultResolution.textContent = 'Captured image: ' + (parts.length
+        ? parts.join(' · ')
+        : 'resolution unavailable');
+    resultResolution.classList.remove('d-none');
 }
 
 function setBusy(busy) {
