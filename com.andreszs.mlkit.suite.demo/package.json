@@ -1,7 +1,7 @@
 {
   "name": "com.andreszs.mlkit.suite.demo",
   "displayName": "ML Kit Suite Demo",
-  "version": "1.9.10",
+  "version": "1.9.11",
   "description": "Cordova Android demo for cordova-plugin-mlkit-suite.",
   "main": "index.js",
   "scripts": {
