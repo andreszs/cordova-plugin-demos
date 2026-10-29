@@ -175,18 +175,58 @@
                             <input id="face-quality" type="number" min="50" max="100" value="95">
                         </label>
                         <label>Timeout (ms)
-                            <input id="face-timeout" type="number" min="0" max="600000" value="45000">
+                            <input id="face-timeout" type="number" min="0" max="600000" value="90000">
                         </label>
                     </div>
 
-                    <label>Instruction
-                        <input id="face-instruction" type="text" placeholder="Use localized default">
-                    </label>
+                    <div class="form-grid compact">
+                        <label>First gesture
+                            <select id="face-first-gesture">
+                                <option value="">None</option>
+                                <option value="OPEN_MOUTH">Open mouth</option>
+                                <option value="NOD" selected>Nod up + down</option>
+                                <option value="TURN_LEFT">Nod left</option>
+                                <option value="TURN_RIGHT">Nod right</option>
+                                <option value="SHAKE">Nod right + left</option>
+                                <option value="BLINK">Blink</option>
+                                <option value="SMILE">Smile</option>
+                            </select>
+                        </label>
+                        <label>Second gesture
+                            <select id="face-second-gesture">
+                                <option value="" selected>None</option>
+                                <option value="OPEN_MOUTH">Open mouth</option>
+                                <option value="NOD">Nod up + down</option>
+                                <option value="TURN_LEFT">Nod left</option>
+                                <option value="TURN_RIGHT">Nod right</option>
+                                <option value="SHAKE">Nod right + left</option>
+                                <option value="BLINK">Blink</option>
+                                <option value="SMILE">Smile</option>
+                            </select>
+                        </label>
+                        <label>Capture selfie
+                            <select id="face-capture-after">
+                                <option value="1" selected>After first gesture</option>
+                                <option value="all">After all gestures</option>
+                            </select>
+                        </label>
+                        <label>Gesture timeout (ms)
+                            <input id="face-gesture-timeout" type="number" min="1000" max="15000" value="4000">
+                        </label>
+                        <label>Return to neutral (ms)
+                            <input id="face-neutral-timeout" type="number" min="500" max="5000" value="2000">
+                        </label>
+                        <label>Retry message (ms)
+                            <input id="face-retry-message" type="number" min="250" max="3000" value="1000">
+                        </label>
+                    </div>
 
                     <div class="switches two-columns">
                         <label><input id="face-close" type="checkbox" checked> Close</label>
                         <label><input id="face-debug" type="checkbox" checked> Debug</label>
                         <label><input id="face-beep" type="checkbox" checked> Beep</label>
+                        <label><input id="face-reveal-capture" type="checkbox"> Reveal capture moment</label>
+                        <label><input id="face-require-vertical" type="checkbox" checked> Require upright phone</label>
                     </div>
 
                     <h3>Quality checks</h3>
@@ -195,8 +235,8 @@
                         <label><input data-check="faceSize" type="checkbox" checked> Face size</label>
                         <label><input data-check="centering" type="checkbox" checked> Centering</label>
                         <label><input data-check="pose" type="checkbox" checked> Head pose</label>
-                        <label><input data-check="eyesOpen" type="checkbox" checked> Eyes open</label>
-                        <label><input data-check="neutralExpression" type="checkbox" checked> Neutral expression</label>
+                        <label><input data-check="eyesOpen" type="checkbox"> Eyes open</label>
+                        <label><input data-check="neutralExpression" type="checkbox"> Neutral expression</label>
                         <label><input data-check="stability" type="checkbox" checked> Stability</label>
                         <label><input data-check="sharpness" type="checkbox" checked> Sharpness</label>
                         <label><input data-check="brightness" type="checkbox" checked> Brightness</label>
@@ -408,8 +448,8 @@
                 <div>
                     <h3>Versions</h3>
                     <dl class="version-list">
-                        <div><dt>Plugin</dt><dd id="about-plugin-version">0.1.0</dd></div>
-                        <div><dt>Demo app</dt><dd id="about-app-version">1.0.0</dd></div>
+                        <div><dt>Plugin</dt><dd id="about-plugin-version">Waiting for Cordova…</dd></div>
+                        <div><dt>Demo app</dt><dd id="about-app-version">1.9.10</dd></div>
                         <div><dt id="about-platform-name">Cordova platform</dt><dd id="about-platform-version">Waiting for Cordova…</dd></div>
                     </dl>
                 </div>

@@ -55,9 +55,13 @@ Never edit generated files under `node_modules/`, `platforms/`, `plugins/`, `.gr
 
 Report preparation, compilation, and deployment failures separately. Include the failing demo name and the first actionable error rather than only the final nonzero exit code.
 
+For `com.andreszs.mlkit.suite.demo`, use the connected Xiaomi `M2004J19C` as the default physical test device. Verify `ro.product.model` before every deployment, and do not deploy this demo to the Samsung Galaxy S7 unless the user explicitly requests it again.
+
 ## Dependency and configuration changes
 
 - Keep platform and plugin versions explicit and reproducible in `package.json`.
+- Any plugin version shown inside a demo must come from Cordova's installed plugin metadata at runtime, or be verified against that metadata during the build. Never leave a hard-coded plugin version that can drift from the plugin actually installed.
+- Every tracked source or configuration change to a demo must also increment that demo's semantic version. Keep `config.xml`, `package.json`, the root/package entries in `package-lock.json`, and any version displayed in the UI synchronized. Use a patch increment for fixes and UI refinements, and a minor increment for new demo functionality.
 - Keep `devDependencies`, `cordova.platforms`, and `cordova.plugins` synchronized. Preserve the plugin ID recorded by the Cordova CLI even when it differs from the npm package name.
 - Regenerate `package-lock.json` whenever dependencies change and verify it with `npm ci`.
 - Do not commit local `file:` dependencies or machine-specific absolute paths. Public demos must resolve their dependencies from a public package registry or an intentional public repository URL.

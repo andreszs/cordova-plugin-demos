@@ -388,6 +388,7 @@ input[type="text"], input[type="number"], select {
 
 input:focus { border-color: var(--accent); }
 select:focus { border-color: var(--accent); }
+select:disabled { opacity: .45; }
 input[type="checkbox"] { accent-color: var(--accent); }
 
 .form-grid, .switches, .format-grid {

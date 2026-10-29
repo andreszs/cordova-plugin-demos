@@ -1096,13 +1096,38 @@
             showCloseButton: element('face-close').checked,
             debugMode: element('face-debug').checked,
             beepEnabled: element('face-beep').checked,
+            revealCapture: element('face-reveal-capture').checked,
+            requireDeviceVertical: element('face-require-vertical').checked,
             timeoutMs: integerValue('face-timeout'),
             locale: pluginLocale(),
             checks: checks
         };
-        var instruction = element('face-instruction').value.trim();
-        if (instruction) options.instructionText = instruction;
+        var gestures = [];
+        var firstGesture = element('face-first-gesture').value;
+        if (firstGesture) {
+            gestures.push(firstGesture);
+            var secondGesture = element('face-second-gesture').value;
+            if (secondGesture) gestures.push(secondGesture);
+        }
+        options.gestures = gestures;
+        if (gestures.length) {
+            var captureAfter = element('face-capture-after').value;
+            options.captureAfterGesture = captureAfter === 'all'
+                ? gestures.length
+                : Math.min(Number(captureAfter), gestures.length);
+        } else {
+            options.captureAfterGesture = 0;
+        }
+        options.gestureTimeoutMs = integerValue('face-gesture-timeout');
+        options.neutralTimeoutMs = integerValue('face-neutral-timeout');
+        options.retryMessageMs = integerValue('face-retry-message');
         return options;
+    }
+
+    function syncFaceGestureSettings() {
+        var hasFirstGesture = Boolean(element('face-first-gesture').value);
+        element('face-second-gesture').disabled = !hasFirstGesture;
+        element('face-capture-after').disabled = !hasFirstGesture;
     }
 
     function captureFace() {
@@ -1187,6 +1212,14 @@
 
     function populateAbout() {
         var platformId = window.cordova && cordova.platformId ? cordova.platformId : '';
+        var pluginVersion = 'Unavailable';
+        try {
+            var pluginList = cordova.require('cordova/plugin_list');
+            pluginVersion = pluginList.metadata['cordova-plugin-mlkit-suite'] || pluginVersion;
+        } catch (ignored) {
+            // Keep the fallback when Cordova metadata is unavailable.
+        }
+        element('about-plugin-version').textContent = pluginVersion;
         if (platformId === 'android') {
             element('about-platform-name').textContent = 'cordova-android';
         } else if (platformId === 'ios') {
@@ -1235,8 +1268,11 @@
     element('text-button').addEventListener('click', recognizeText);
     element('barcode-image-button').addEventListener('click', chooseBarcodeImage);
     element('capabilities-button').addEventListener('click', readCapabilities);
+    element('face-first-gesture').addEventListener('change', syncFaceGestureSettings);
     element('face-button').addEventListener('click', captureFace);
     element('barcode-button').addEventListener('click', scanBarcode);
+
+    syncFaceGestureSettings();
 
     document.addEventListener('deviceready', function () {
         populateAbout();
