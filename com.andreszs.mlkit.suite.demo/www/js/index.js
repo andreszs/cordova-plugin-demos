@@ -1084,6 +1084,18 @@
         });
     }
 
+    var FACE_GESTURES = [
+        'OPEN_MOUTH', 'NOD', 'TURN_LEFT', 'TURN_RIGHT', 'SHAKE', 'BLINK', 'SMILE'
+    ];
+
+    function resolvedFaceGesture(value, excluded) {
+        if (value !== 'RANDOM') return value;
+        var candidates = FACE_GESTURES.filter(function (gesture) {
+            return gesture !== excluded;
+        });
+        return candidates[Math.floor(Math.random() * candidates.length)];
+    }
+
     function faceOptions() {
         var checks = {};
         Array.prototype.forEach.call(document.querySelectorAll('#face-checks [data-check]'), function (input) {
@@ -1103,10 +1115,17 @@
             checks: checks
         };
         var gestures = [];
-        var firstGesture = element('face-first-gesture').value;
+        var requestedFirstGesture = element('face-first-gesture').value;
+        var requestedSecondGesture = element('face-second-gesture').value;
+        var firstGesture = resolvedFaceGesture(
+            requestedFirstGesture,
+            requestedSecondGesture && requestedSecondGesture !== 'RANDOM'
+                ? requestedSecondGesture
+                : null
+        );
         if (firstGesture) {
             gestures.push(firstGesture);
-            var secondGesture = element('face-second-gesture').value;
+            var secondGesture = resolvedFaceGesture(requestedSecondGesture, firstGesture);
             if (secondGesture) gestures.push(secondGesture);
         }
         options.gestures = gestures;
