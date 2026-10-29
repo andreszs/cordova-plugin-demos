@@ -1085,7 +1085,7 @@
     }
 
     var FACE_GESTURES = [
-        'OPEN_MOUTH', 'NOD', 'TURN_LEFT', 'TURN_RIGHT', 'SHAKE', 'BLINK', 'SMILE'
+        'OPEN_MOUTH', 'NOD', 'SHAKE', 'BLINK', 'SMILE'
     ];
 
     function resolvedFaceGesture(value, excluded) {
