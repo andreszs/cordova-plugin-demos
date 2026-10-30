@@ -128,7 +128,6 @@
             { name: 'Document scanner', value: result.document },
             { name: 'Face detection', value: result.face },
             { name: 'Image labeling', value: result.imageLabeling },
-            { name: 'Selfie segmentation', value: result.selfieSegmentation },
             { name: 'Subject segmentation', value: result.subjectSegmentation },
             { name: 'Text recognition v2', value: result.text }
         ];
@@ -658,162 +657,6 @@
         labelImage();
     }
 
-    function enableSelfieSegmentation(imagePath) {
-        element('selfie-segmentation-path').value = imagePath;
-        element('selfie-segmentation-button').disabled = false;
-        element('selfie-segmentation-button').removeAttribute('title');
-    }
-
-    function selectSelfieSegmentationValue(imageValue, destinationType, sourceButtonId,
-                                            sourceIdleText) {
-        var select = destinationType === Camera.DestinationType.DATA_URL
-            ? selectGalleryData
-            : selectGalleryImage;
-        select(
-            imageValue,
-            'selfie-segmentation-path',
-            'selfie-segmentation-input-preview',
-            function (scanUri) {
-                enableSelfieSegmentation(scanUri);
-                renderOutput('selfie-segmentation-output', 'Image selected.');
-                setBusy(sourceButtonId, false, sourceIdleText, 'Opening…');
-            },
-            function (error, scanUri) {
-                if (!scanUri) {
-                    renderOutput('selfie-segmentation-output', errorPayload({
-                        code: 'IMAGE_CACHE_FAILED',
-                        message: error.message,
-                        recoverable: true
-                    }), true);
-                    setBusy(sourceButtonId, false, sourceIdleText, 'Opening…');
-                    return;
-                }
-                enableSelfieSegmentation(scanUri);
-                renderOutput(
-                    'selfie-segmentation-output',
-                    'Image selected; preview unavailable.'
-                );
-                setBusy(sourceButtonId, false, sourceIdleText, 'Opening…');
-            }
-        );
-    }
-
-    function chooseSelfieSegmentationImage() {
-        if (!navigator.camera || !window.Camera) {
-            renderOutput(
-                'selfie-segmentation-output',
-                errorPayload(new Error('Camera gallery picker is unavailable.')),
-                true
-            );
-            return;
-        }
-        setBusy('selfie-segmentation-gallery-button', true, 'Gallery', 'Opening…');
-        var destinationType = galleryDestinationType();
-        navigator.camera.getPicture(function (imageValue) {
-            selectSelfieSegmentationValue(
-                imageValue,
-                destinationType,
-                'selfie-segmentation-gallery-button',
-                'Gallery'
-            );
-        }, function (message) {
-            if (message && message !== 'No Image Selected') {
-                renderOutput('selfie-segmentation-output', errorPayload({
-                    code: 'IMAGE_PICK_FAILED',
-                    message: String(message),
-                    recoverable: true
-                }), true);
-            }
-            setBusy('selfie-segmentation-gallery-button', false, 'Gallery', 'Opening…');
-        }, {
-            quality: 100,
-            destinationType: destinationType,
-            encodingType: Camera.EncodingType.JPEG,
-            sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
-            mediaType: Camera.MediaType.PICTURE,
-            allowEdit: false,
-            correctOrientation: false
-        });
-    }
-
-    function captureSelfieSegmentationPhoto() {
-        if (!navigator.camera || !window.Camera) {
-            renderOutput(
-                'selfie-segmentation-output',
-                errorPayload(new Error('Camera is unavailable.')),
-                true
-            );
-            return;
-        }
-        setBusy('selfie-segmentation-camera-button', true, 'Take photo', 'Camera…');
-        var destinationType = Camera.DestinationType.FILE_URI;
-        navigator.camera.getPicture(function (imageValue) {
-            selectSelfieSegmentationValue(
-                imageValue,
-                destinationType,
-                'selfie-segmentation-camera-button',
-                'Take photo'
-            );
-        }, function (message) {
-            if (message && message !== 'No Image Selected' && message !== 'Camera cancelled.') {
-                renderOutput('selfie-segmentation-output', errorPayload({
-                    code: 'IMAGE_CAPTURE_FAILED',
-                    message: String(message),
-                    recoverable: true
-                }), true);
-            }
-            setBusy('selfie-segmentation-camera-button', false, 'Take photo', 'Camera…');
-        }, {
-            quality: 95,
-            destinationType: destinationType,
-            encodingType: Camera.EncodingType.JPEG,
-            sourceType: Camera.PictureSourceType.CAMERA,
-            mediaType: Camera.MediaType.PICTURE,
-            allowEdit: false,
-            correctOrientation: true,
-            saveToPhotoAlbum: false
-        });
-    }
-
-    function segmentSelfie() {
-        var imagePath = requireImagePath(
-            'selfie-segmentation-path',
-            'selfie-segmentation-output'
-        );
-        if (!imagePath) return;
-        var maxDimension = integerValue('selfie-segmentation-max-dimension');
-        if (!Number.isInteger(maxDimension) || maxDimension < 256 || maxDimension > 4096) {
-            renderOutput(
-                'selfie-segmentation-output',
-                errorPayload(new Error('Maximum dimension must be from 256 to 4096.')),
-                true
-            );
-            return;
-        }
-        setBusy('selfie-segmentation-button', true, 'Remove background', 'Processing…');
-        renderOutput('selfie-segmentation-output', 'Segmenting…');
-        MlKit.segmentSelfie(imagePath, {
-            maxDimension: maxDimension,
-            locale: pluginLocale()
-        }).then(function (result) {
-            renderOutput('selfie-segmentation-output', result);
-            if (result && result.status === 'success' && result.imageUri) {
-                var preview = element('selfie-segmentation-result-preview');
-                preview.src = result.imageUri + '?t=' + Date.now();
-                preview.classList.remove('hidden');
-            }
-        }).catch(function (error) {
-            renderOutput('selfie-segmentation-output', errorPayload(error), true);
-        }).then(function () {
-            setBusy(
-                'selfie-segmentation-button',
-                false,
-                'Remove background',
-                'Processing…'
-            );
-        });
-    }
-
     function enableSubjectSegmentation(imagePath) {
         element('subject-segmentation-path').value = imagePath;
         element('subject-segmentation-button').disabled = false;
@@ -1214,8 +1057,6 @@
         element('text-gallery-button').disabled = false;
         element('image-labeling-gallery-button').disabled = false;
         element('image-labeling-camera-button').disabled = false;
-        element('selfie-segmentation-gallery-button').disabled = false;
-        element('selfie-segmentation-camera-button').disabled = false;
         element('subject-segmentation-gallery-button').disabled = false;
         element('subject-segmentation-camera-button').disabled = false;
         element('barcode-image-button').disabled = false;
@@ -1266,13 +1107,6 @@
     element('image-labeling-camera-button').addEventListener('click', captureImageLabelingPhoto);
     element('image-labeling-document-button').addEventListener('click', labelLastDocumentPage);
     element('image-labeling-button').addEventListener('click', labelImage);
-    element('selfie-segmentation-gallery-button').addEventListener(
-        'click', chooseSelfieSegmentationImage
-    );
-    element('selfie-segmentation-camera-button').addEventListener(
-        'click', captureSelfieSegmentationPhoto
-    );
-    element('selfie-segmentation-button').addEventListener('click', segmentSelfie);
     element('subject-segmentation-gallery-button').addEventListener(
         'click', chooseSubjectSegmentationImage
     );
