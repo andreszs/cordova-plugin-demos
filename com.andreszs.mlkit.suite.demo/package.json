@@ -2,11 +2,13 @@
   "name": "com.andreszs.mlkit.suite.demo",
   "displayName": "ML Kit Suite Demo",
   "version": "1.11.0",
-  "description": "Cordova Android demo for cordova-plugin-mlkit-suite.",
+  "description": "Cordova Android and iOS demo for cordova-plugin-mlkit-suite.",
   "main": "index.js",
   "scripts": {
     "build:android": "cordova build android --debug",
-    "run:android": "cordova run android --device --debug"
+    "run:android": "cordova run android --device --debug",
+    "build:ios": "cordova build ios --debug",
+    "run:ios": "cordova run ios --device --debug"
   },
   "keywords": [
     "ecosystem:cordova"
@@ -15,13 +17,15 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "cordova-android": "15.1.0",
+    "cordova-ios": "8.1.0",
     "cordova-plugin-camera": "6.0.0",
-    "cordova-plugin-mlkit-suite": "https://github.com/andreszs/cordova-plugin-mlkit-suite/archive/fcb699fd3dbe526b5113a1926da06d11941be10a.tar.gz",
+    "cordova-plugin-mlkit-suite": "https://github.com/andreszs/cordova-plugin-mlkit-suite/archive/7169f8dd4f1c2945df3596ba10f77727511c73bb.tar.gz",
     "cordova-plugin-native-spinner": "1.1.4"
   },
   "cordova": {
     "platforms": [
-      "android"
+      "android",
+      "ios"
     ],
     "plugins": {
       "cordova-plugin-camera": {},

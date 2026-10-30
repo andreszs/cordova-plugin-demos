@@ -14,6 +14,12 @@
         <icon background="res/icons/android/mipmap-xxhdpi/ic_launcher_background.png" density="xxhdpi" foreground="res/icons/android/mipmap-xxhdpi/ic_launcher_foreground.png" src="res/icons/android/mipmap-xxhdpi/ic_launcher.png" />
         <icon background="res/icons/android/mipmap-xxxhdpi/ic_launcher_background.png" density="xxxhdpi" foreground="res/icons/android/mipmap-xxxhdpi/ic_launcher_foreground.png" src="res/icons/android/mipmap-xxxhdpi/ic_launcher.png" />
     </platform>
+    <platform name="ios">
+        <preference name="deployment-target" value="15.5" />
+        <edit-config file="*-Info.plist" mode="merge" target="NSCameraUsageDescription">
+            <string>Use the camera to test ML Kit scanning and face capture features.</string>
+        </edit-config>
+    </platform>
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
     <access origin="cdvfile://*" />

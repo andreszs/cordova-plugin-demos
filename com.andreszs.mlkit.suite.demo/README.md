@@ -1,6 +1,6 @@
 # ML Kit Suite Demo
 
-Android demo for [`cordova-plugin-mlkit-suite`](https://github.com/andreszs/cordova-plugin-mlkit-suite).
+Android and iOS demo for [`cordova-plugin-mlkit-suite`](https://github.com/andreszs/cordova-plugin-mlkit-suite).
 
 > [!WARNING]
 > The plugin and this demo are in active development. APIs and native behavior may change before a stable release.
@@ -10,24 +10,30 @@ Bootstrap 4.6.2 and jQuery 3.6.0 are bundled locally so the demo UI works withou
 ## Requirements
 
 - Node.js 20 and Cordova CLI 12.
-- JDK 17, Gradle 8.14.2, and Android SDK 36.
-- Android 7.0 / API 24 or newer with a front and rear camera.
-- At least 1.7 GB of total RAM and Google Play services for document scanning.
+- For Android: JDK 17, Gradle 8.14.2, Android SDK 36, and Android 7.0 / API 24 or newer with front and rear cameras.
+- For iOS: macOS, Xcode, Cordova iOS 8.1, and an iPhone running iOS 15.5 or newer with front and rear cameras.
+- Android Document Scanner additionally requires at least 1.7 GB of total RAM and Google Play services.
 
 ## Setup
 
 ```shell
 npm ci
 cordova platform add android
+# On macOS, add iOS instead or add both platforms:
+cordova platform add ios
 ```
 
-The project uses Cordova Android 15.1.0 and pins the plugin to an exact GitHub commit.
+The project uses Cordova Android 15.1.0 and Cordova iOS 8.1.0. It pins plugin version 0.4.0 to an exact GitHub commit while npm still serves 0.3.0.
 
 ## Build and run
 
 ```shell
 npm run build:android
 npm run run:android
+
+# macOS only
+npm run build:ios
+npm run run:ios
 ```
 
 ## Demo features
@@ -46,3 +52,5 @@ npm run run:android
 - Exercises all 13 barcode formats supported by ML Kit.
 - Allows selecting any subset of barcode formats and configuring the native instruction, close button, torch button, and timeout.
 - Displays the exact decoded `text`, `format`, cancellation, and structured errors.
+
+Document Scanner and Subject Segmentation are Android-only. The remaining demonstrated APIs are available on Android and iOS as described by the plugin capabilities.
