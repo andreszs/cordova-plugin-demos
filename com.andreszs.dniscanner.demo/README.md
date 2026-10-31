@@ -1,6 +1,6 @@
 # DNI Scanner Demo
 
-Cordova Android and iOS demo for [`cordova-plugin-dni-scanner`](https://github.com/andreszs/cordova-plugin-dni-scanner), an offline automatic scanner for Argentine identity cards and generic ID-1 cards.
+Cordova Android and iOS demo for [`cordova-plugin-dni-scanner`](https://github.com/andreszs/cordova-plugin-dni-scanner), an offline automatic or manual scanner for Argentine identity cards and generic ID-1 cards.
 
 ## Requirements
 
@@ -28,8 +28,8 @@ npm run build:ios
 npm run run:ios
 ```
 
-The project uses Cordova Android 15 and Cordova iOS 8.1. The scanner plugin is pinned to the exact public Git commit for version 0.2.5 because that version is not yet available from npm. A fresh checkout does not require a local plugin repository.
+The project uses Cordova Android 15 and Cordova iOS 8.1. The scanner plugin is pinned to version 0.3.0 from npm. A fresh checkout does not require a local plugin repository.
 
 ## Demo features
 
-The app can scan either side of a DNI or a generic credit/debit, license, or ID-1-style card in portrait, landscape, or automatic orientation. It exposes every configurable scanner option, including preferred native capture size, maximum output size, minimum effective document resolution, final-photo sharpness variance, timeout, beep, native controls, all quality checks, and the `off`, `advisory`, and `strict` DNI side-validation policies. A successful scan displays the corrected JPEG plus a visible resolution label with RAW dimensions, effective document pixels, final dimensions, and measured sharpness, followed by the complete metadata response.
+The app can scan either side of a DNI or a generic credit/debit, license, or ID-1-style card in portrait, landscape, or automatic orientation. It exposes every configurable scanner option, including automatic/manual mode, preferred native capture size, maximum output size, minimum effective document resolution, final-photo sharpness variance, timeout, beep, native controls, all quality checks, and the `off`, `advisory`, and `strict` DNI side-validation policies. A successful scan displays the corrected JPEG plus a visible resolution label with RAW dimensions, effective document pixels, final dimensions, and measured sharpness, followed by the complete metadata response.

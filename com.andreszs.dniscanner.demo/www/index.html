@@ -114,7 +114,7 @@
                 <div class="form-group col-12 col-sm-6">
                     <label for="min-effective-document-long-edge"><code>minEffectiveDocumentLongEdge</code></label>
                     <input id="min-effective-document-long-edge" class="form-control" type="number"
-                           min="0" max="4096" step="1" value="1000" inputmode="numeric">
+                           min="0" max="4096" step="1" value="900" inputmode="numeric">
                     <small class="form-text text-muted">Zero disables the effective-resolution gate.</small>
                 </div>
                 <div class="form-group col-12 col-sm-6">
@@ -141,6 +141,10 @@
                 <div class="custom-control custom-checkbox">
                     <input id="show-flash-button" class="custom-control-input" type="checkbox" checked>
                     <label class="custom-control-label" for="show-flash-button"><code>showFlashButton</code></label>
+                </div>
+                <div class="custom-control custom-checkbox mt-2">
+                    <input id="auto-capture" class="custom-control-input" type="checkbox" checked>
+                    <label class="custom-control-label" for="auto-capture"><code>autoCapture</code></label>
                 </div>
                 <div class="custom-control custom-checkbox mt-2">
                     <input id="debug-mode" class="custom-control-input" type="checkbox" checked>
@@ -206,7 +210,7 @@
                 <span id="scan-label">Open scanner</span>
             </button>
             <small class="form-text text-muted text-center">
-                There is no shutter button: keep the card steady inside the guide.
+                Automatic capture can be disabled; the native Capturar button is always available.
             </small>
         </div>
     </section>
@@ -267,8 +271,8 @@
 
             <h3 class="h6 mt-3">Versions</h3>
             <ul class="list-unstyled text-muted mb-0">
-                <li>Plugin version: <span id="plugin-version">0.2.5</span></li>
-                <li>App version: <span id="app-version">1.0.4</span></li>
+                <li>Plugin version: <span id="plugin-version">0.3.0</span></li>
+                <li>App version: <span id="app-version">1.1.0</span></li>
                 <li><span id="platform-name">Cordova platform</span>: <span id="platform-version">Detectando…</span></li>
             </ul>
 

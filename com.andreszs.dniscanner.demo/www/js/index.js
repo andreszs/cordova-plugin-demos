@@ -93,6 +93,7 @@ async function scan() {
     var timeoutMs = parseInt(document.getElementById('timeout-ms').value, 10);
     var showCloseButton = document.getElementById('show-close-button').checked;
     var showFlashButton = document.getElementById('show-flash-button').checked;
+    var autoCapture = document.getElementById('auto-capture').checked;
     var debugMode = document.getElementById('debug-mode').checked;
     var beepEnabled = document.getElementById('beep-enabled').checked;
     var customInstruction = document.getElementById('instruction-text').value.trim();
@@ -121,7 +122,7 @@ async function scan() {
             profile: profile,
             side: side,
             sideValidation: sideValidation,
-            autoCapture: true,
+            autoCapture: autoCapture,
             flashMode: flashMode,
             orientation: orientation,
             showCloseButton: showCloseButton,
