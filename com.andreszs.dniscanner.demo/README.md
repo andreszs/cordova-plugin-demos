@@ -28,7 +28,7 @@ npm run build:ios
 npm run run:ios
 ```
 
-The project uses Cordova Android 15 and Cordova iOS 8.1. The scanner plugin is pinned to version 0.3.0 from npm. A fresh checkout does not require a local plugin repository.
+The project uses Cordova Android 15 and Cordova iOS 8.1. The scanner plugin is pinned to version 0.3.1 from npm. A fresh checkout does not require a local plugin repository.
 
 ## Demo features
 
