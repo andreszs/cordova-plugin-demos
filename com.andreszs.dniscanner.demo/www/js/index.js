@@ -18,6 +18,8 @@ var clipboardImageBlob = null;
 var currentImageReference = '';
 
 document.addEventListener('deviceready', function () {
+    document.getElementById('min-still-sharpness-variance').value =
+        cordova.platformId === 'ios' ? '65' : '90';
     populateVersions();
     setDeviceStatus('Device ready. Configure the scan and open the scanner.', 'success');
     scanButton.disabled = false;
@@ -105,8 +107,7 @@ async function scan() {
         sharpness: document.getElementById('check-sharpness').checked,
         brightness: document.getElementById('check-brightness').checked,
         glare: document.getElementById('check-glare').checked,
-        shadows: document.getElementById('check-shadows').checked,
-        edgeOcclusion: document.getElementById('check-edge-occlusion').checked
+        shadows: document.getElementById('check-shadows').checked
     };
 
     setBusy(true);
